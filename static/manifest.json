@@ -1,0 +1,13 @@
+{
+	"name": "迷失港鐵",
+	"description": "以車廂及車門編號來尋找你在港鐵列車上的位置。",
+	"display": "standalone",
+	"icons": [
+		{
+			"src": "favicon.png",
+			"sizes": "128x128",
+			"type": "image/png"
+		}
+	],
+	"start_url": "."
+}
