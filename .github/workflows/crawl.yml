@@ -25,6 +25,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r ./_crawling/requirements.txt
 
+      - name: Set up chrome driver
+        uses: nanasess/setup-chromedriver@v2
+
+      - name: Set up chrome driver
+        run: |
+          export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
+
       - name: Crawl
         run: |
           set -o xtrace
