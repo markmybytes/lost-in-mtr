@@ -1,5 +1,4 @@
 import json
-import pprint
 import time
 
 import utils
@@ -10,6 +9,7 @@ from selenium.webdriver.common.by import By
 option = webdriver.ChromeOptions()
 option.add_argument('--headless')
 option.add_argument(f'--user-agent="{UserAgent().random}"')
+option.add_argument('log-level=3')
 
 web = webdriver.Chrome(option)
 
@@ -92,18 +92,19 @@ for line, configs in target.items():
     for config in configs:
         web.get(config['url'])
 
-        rows = web\
-            .find_elements(By.TAG_NAME, 'table')[int(config['table'])]\
-            .find_elements(By.TAG_NAME, 'tr')
+        rows = web.find_elements(By.XPATH,
+                                 f'(//table)[{config["table"] + 1}]//tr')
+
+        left_dest = web.find_element(
+            By.XPATH, f'(//table)[{config["table"] + 1}]//tr[contains(string(.), \'往\')]/td').text
 
         carriages[line].extend(
             utils.parse_formation(
-                '\n'.join([l.text for l in rows[-1].find_elements(By.CSS_SELECTOR, 'td > ol')]), '下行' in rows[0].find_element(By.TAG_NAME, 'td').text))
+                '\n'.join([l.text for l in rows[-1].find_elements(By.CSS_SELECTOR, 'td > ol')]), '下行' in left_dest))
 
-        time.sleep(1)
+    time.sleep(1)
 
 
-# pprint.pprint(carriages)
 with open('fleet.json', 'w', encoding='utf-8') as f:
     json.dump(carriages, f, indent=4)
 
