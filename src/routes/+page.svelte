@@ -166,7 +166,7 @@
 							{$t('common.carNumber', {
 								number: inputs.flip
 									? result.carNumber
-									: result.stock.length - (result.carNumber % 8) + 1
+									: ((result.stock.length - result.carNumber) % result.stock.length) + 1
 							} as any)}
 						</p>
 
