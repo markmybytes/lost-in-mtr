@@ -30,7 +30,7 @@
 				if (stockArr.includes(inputs.carriage)) {
 					matches.push({
 						line: line as keyof typeof lines,
-						carNumber: stockArr.indexOf(inputs.carriage) + 1,
+						position: stockArr.indexOf(inputs.carriage) + 1,
 						formation: stockArr
 					});
 				}

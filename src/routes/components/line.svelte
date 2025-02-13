@@ -8,7 +8,7 @@
 
 	let props: {
 		line: keyof typeof lines;
-		carNumber: number;
+		position: number;
 		formation: Array<string>;
 		codes: {
 			carriage: string;
@@ -19,21 +19,28 @@
 
 	const lineColor = lines[props.line]['color'];
 
-	let opposite: boolean = $state(false);
+	/** Train driection, `true` means up/inbound direction otherwise down/outbound direction */
+	let inbound: boolean = $state(false);
 
-	function doors(line: keyof typeof lines, carriage: string) {
-		if ((line == 'EAL' && carriage.includes('F')) || line == 'AEL') {
+	let doors = $derived.by(() => {
+		if ((props.line == 'EAL' && props.codes.carriage.includes('F')) || props.line == 'AEL') {
 			return [1, 2];
 		} else {
 			return [1, 2, 3, 4, 5];
 		}
-	}
+	});
 
-	function destination(line: string, direction: 'DOWN' | 'UP') {
-		return lines[line as keyof typeof lines]['terminals'][direction]
+	let carNumber = $derived(
+		inbound
+			? props.position
+			: ((props.formation.length - props.position) % props.formation.length) + 1
+	);
+
+	let destination = $derived.by(() => {
+		return lines[props.line]['terminals'][inbound ? 'UP' : 'DOWN']
 			.map((s) => $t(`station.${s}`))
 			.join('／');
-	}
+	});
 </script>
 
 <div class="flex flex-col gap-y-2 rounded border border-gray-200 p-2" transition:fade>
@@ -49,34 +56,30 @@
 		<div class="flex items-center">
 			<button
 				class="me-1 h-5 rounded bg-gray-300 px-1 text-center text-gray-600"
-				onclick={() => (opposite = !opposite)}
+				onclick={() => (inbound = !inbound)}
 			>
 				<ArrowLeftRight width={13} height={13}></ArrowLeftRight>
 			</button>
 
 			<p>
-				{`${$t('common.to')} ${destination(props.line, opposite ? 'UP' : 'DOWN')}`}
+				{`${$t('common.to')} ${destination}`}
 			</p>
 		</div>
 	</div>
 
 	<div>
 		<p class="content-center text-center">
-			{$t('common.carNumber', {
-				number: opposite
-					? props.carNumber
-					: ((props.formation.length - props.carNumber) % props.formation.length) + 1
-			} as any)}
+			{$t('common.carNumber', { number: carNumber } as any)}
 		</p>
 
 		<div
 			class="flex h-34 w-full flex-col justify-between rounded border-y-2 px-2 py-1"
-			class:border-s-2={props.carNumber == 1}
-			class:border-e-2={props.carNumber == props.formation.length}
+			class:border-s-2={props.position == 1}
+			class:border-e-2={props.position == props.formation.length}
 			style:border-color={lineColor}
 		>
 			<div class="flex justify-around">
-				{#each doors(props.line as keyof typeof lines, props.codes.carriage).toReversed() as i}
+				{#each doors.toReversed() as i}
 					<Door
 						active={(['D', 'A'].includes(props.codes.sides ?? '') && props.codes.door === i) ||
 							(!props.codes.sides && props.codes.door === i)}
@@ -90,7 +93,7 @@
 				<div class="col-span-2">
 					<p>
 						<span class="text-glacier-600 font-semibold">
-							← {destination(props.line, 'UP')}
+							← {$t(`station.${lines[props.line]['terminals']['UP']}`)}
 						</span>
 					</p>
 				</div>
@@ -98,14 +101,14 @@
 				<div class="col-span-2 text-end">
 					<p>
 						<span class="text-glacier-600 font-semibold">
-							{destination(props.line, 'DOWN')} →
+							{$t(`station.${lines[props.line]['terminals']['DOWN']}`)} →
 						</span>
 					</p>
 				</div>
 			</div>
 
 			<div class="flex justify-around">
-				{#each doors(props.line as keyof typeof lines, props.codes.carriage).toReversed() as i}
+				{#each doors.toReversed() as i}
 					<Door
 						active={(['U', 'B'].includes(props.codes.sides ?? '') && props.codes.door === i) ||
 							(!props.codes.sides && props.codes.door === i)}
