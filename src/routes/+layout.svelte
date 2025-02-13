@@ -22,7 +22,7 @@
 
 <div class="m-auto h-screen max-w-md">
 	<nav class="bg-chestnut-rose-300 rounded border-gray-200">
-		<div class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between px-4 py-2">
+		<div class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between px-4 py-3">
 			<a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
 				<img src="https://flowbite.com/docs/images/logo.svg" class="h-7" alt="Flowbite Logo" />
 				<span class="self-center text-lg font-semibold whitespace-nowrap"> 迷失港鐵 </span>
