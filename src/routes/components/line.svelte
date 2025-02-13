@@ -56,9 +56,9 @@
 
 			<p>
 				{#if opposite}
-					{`${destination(props.line, 'DOWN')} → ${destination(props.line, 'UP')}`}
+					{`${$t('common.to')} ${destination(props.line, 'UP')}`}
 				{:else}
-					{`${destination(props.line, 'UP')} → ${destination(props.line, 'DOWN')}`}
+					{`${$t('common.to')} ${destination(props.line, 'DOWN')}`}
 				{/if}
 			</p>
 		</div>

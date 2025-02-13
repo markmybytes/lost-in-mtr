@@ -1,9 +1,10 @@
 {
-    "carriageCode": "Carriage Code",
-    "doorCode": "Door Code",
-    "inbound": "Inbound",
-    "outbound": "Outbound",
-    "direction": "Direction",
-    "carNumber": "Car {{number}}",
-    "flipDirection": "Flip Direction"
+	"carNumber": "Car {{number}}",
+	"carriageCode": "Carriage Code",
+	"direction": "Direction",
+	"doorCode": "Door Code",
+	"flipDirection": "Flip Direction",
+	"inbound": "Inbound",
+	"outbound": "Outbound",
+	"to": "To"
 }
