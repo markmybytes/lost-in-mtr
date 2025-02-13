@@ -100,7 +100,7 @@ for line, configs in target.items():
             utils.parse_formation(
                 '\n'.join([l.text for l in rows[-1].find_elements(By.CSS_SELECTOR, 'td > ol')]), '下行' in rows[0].find_element(By.TAG_NAME, 'td').text))
 
-        time.sleep(0.2)
+        time.sleep(1)
 
 
 # pprint.pprint(carriages)
