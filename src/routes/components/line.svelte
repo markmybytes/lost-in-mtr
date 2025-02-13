@@ -102,7 +102,7 @@
 				<div class="col-span-2">
 					<p>
 						<span class="text-glacier-600 font-semibold">
-							← {$t(`station.${lines[props.line]['terminals']['UP']}`)}
+							← {lines[props.line]['terminals']['UP'].map((s) => $t(`station.${s}`)).join('／')}
 						</span>
 					</p>
 				</div>
@@ -110,7 +110,7 @@
 				<div class="col-span-2 text-end">
 					<p>
 						<span class="text-glacier-600 font-semibold">
-							{$t(`station.${lines[props.line]['terminals']['DOWN']}`)} →
+							{lines[props.line]['terminals']['DOWN'].map((s) => $t(`station.${s}`)).join('／')} →
 						</span>
 					</p>
 				</div>
