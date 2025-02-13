@@ -36,7 +36,7 @@
 	});
 
 	const doorNumber = $derived.by(() => {
-		if (!props.codes.door) {
+		if (!props.codes.door || props.codes.door > doors.length) {
 			return null;
 		}
 
