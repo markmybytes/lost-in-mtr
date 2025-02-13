@@ -1,6 +1,7 @@
 import { loadTranslations } from '$lib/i18n/translations';
 
 export const prerender = true;
+
 export const ssr = false;
 
 /** @type {import('@sveltejs/kit').Load} */

@@ -1,0 +1,9 @@
+{
+    "carriageCode": "Carriage Code",
+    "doorCode": "Door Code",
+    "inbound": "Inbound",
+    "outbound": "Outbound",
+    "direction": "Direction",
+    "carNumber": "Car {{number}}",
+    "flipDirection": "Flip Direction"
+}

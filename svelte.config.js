@@ -14,8 +14,7 @@ const config = {
 		paths:
 			process.env.NODE_ENV === 'production'
 				? {
-						base: '/lost-in-mtr',
-						relative: true
+						base: '/lost-in-mtr'
 					}
 				: undefined
 	}

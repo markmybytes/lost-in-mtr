@@ -6,6 +6,7 @@
 	import { textColor } from '$lib/utils/index';
 	import { fade, slide } from 'svelte/transition';
 	import { t } from '$lib/i18n/translations';
+	import ArrowLeftRight from '$lib/icons/ArrowLeftRight.svelte';
 
 	const inputs: {
 		carriage: string;
@@ -13,7 +14,7 @@
 		door: null | 1 | 2 | 3 | 4 | 5;
 		flip: boolean;
 	} = $state({
-		carriage: '',
+		carriage: 'C302',
 		sides: null,
 		door: null,
 		flip: false
@@ -27,11 +28,12 @@
 		const matches = [];
 		for (const [line, stocks] of Object.entries(carriage)) {
 			for (const stock of stocks) {
-				if (stock.split(/[-\+]+/).includes(inputs.carriage)) {
+				const stockArr = stock.split(/[-\+]+/);
+				if (stockArr.includes(inputs.carriage)) {
 					matches.push({
 						line: line,
-						carNumber: stock.split(/[-\+]+/).indexOf(inputs.carriage) + 1,
-						stock: stock
+						carNumber: stockArr.indexOf(inputs.carriage) + 1,
+						stock: stockArr
 					});
 				}
 			}
@@ -46,6 +48,12 @@
 		} else {
 			return [1, 2, 3, 4, 5];
 		}
+	}
+
+	function destination(line: string, direction: 'DOWN' | 'UP') {
+		return lines[line as keyof typeof lines]['terminals'][direction]
+			.map((s) => $t(`station.${s}`))
+			.join('／');
 	}
 </script>
 
@@ -113,7 +121,7 @@
 
 		<div class="flex gap-x-2">
 			<label class="flex w-38 items-center gap-x-2 text-sm font-medium text-gray-900">
-				<TrainLightrailFrontIcon></TrainLightrailFrontIcon>
+				<ArrowLeftRight></ArrowLeftRight>
 				{$t('common.flipDirection')}
 			</label>
 
@@ -124,92 +132,117 @@
 	</form>
 
 	{#if results.length > 0}
-		<div class="flex flex-col gap-y-6 rounded-lg bg-white/70 p-3" transition:slide>
+		<div class="flex flex-col gap-y-4 rounded-lg bg-white/70 p-2" transition:slide>
 			{#each results as result}
 				{@const lineColor = lines[result.line as keyof typeof lines]['color']}
 
-				<div class="flex flex-col gap-y-2">
-					<div class="flex justify-center gap-x-4">
+				<div class="flex flex-col gap-y-2 rounded border border-gray-200 p-2">
+					<div class="flex items-center gap-x-4">
 						<span
-							class="rounded-sm bg-blue-100 px-2"
+							class="h-6 rounded-sm bg-blue-100 px-2 text-nowrap"
 							style:background-color={lineColor}
 							style:color={textColor(lineColor)}
 						>
 							{$t(`line.${result.line}`)}
 						</span>
-						<p class="content-center">
-							{$t('common.carNumber', { number: result.carNumber } as any)}
+
+						<p>
+							{#if inputs.flip}
+								{`${destination(result.line, 'DOWN')} → ${destination(result.line, 'UP')}`}
+							{:else}
+								{`${destination(result.line, 'UP')} → ${destination(result.line, 'DOWN')}`}
+							{/if}
 						</p>
 					</div>
 
-					<div class="flex justify-between" class:flex-row-reverse={inputs.flip}>
-						<div>
-							<p class="text-sm" class:text-end={inputs.flip}>{$t('common.outbound')}</p>
-							<p>
-								<span class="text-glacier-600 font-semibold">
-									{lines[result.line as keyof typeof lines]['terminals']['DOWN']
-										.map((s) => $t(`station.${s}`))
-										.join('／')}
-								</span>{$t('common.direction')}
-							</p>
-						</div>
+					<div>
+						<p class="content-center text-center">
+							{$t('common.carNumber', {
+								number: inputs.flip
+									? result.carNumber
+									: result.stock.length - (result.carNumber % 8) + 1
+							} as any)}
+						</p>
 
-						<div>
-							<p class="text-sm" class:text-end={!inputs.flip}>{$t('common.inbound')}</p>
-							<p>
-								<span class="text-glacier-600 font-semibold">
-									{lines[result.line as keyof typeof lines]['terminals']['UP']
-										.map((s) => $t(`station.${s}`))
-										.join('／')}
-								</span>{$t('common.direction')}
-							</p>
-						</div>
-					</div>
-
-					<div
-						class="flex h-32 w-full flex-col justify-between rounded border-y-2 py-1"
-						style:border-color={lineColor}
-					>
-						{#snippet door(active: boolean)}
-							<div class="relative flex" style:background-color={active ? `${lineColor}60` : null}>
+						<div
+							class="flex h-34 w-full flex-col justify-between rounded border-y-2 py-1"
+							style:border-color={lineColor}
+						>
+							{#snippet door(active: boolean)}
 								<div
-									class="h-9 w-4 rounded-s-xs border-y border-s"
-									style:border-color={lineColor}
-								></div>
-								<div
-									class="h-9 w-4 rounded-e-xs border-y border-e"
-									style:border-color={lineColor}
-								></div>
+									class="relative flex"
+									style:background-color={active ? `${lineColor}60` : null}
+								>
+									<div
+										class="h-9 w-4 rounded-s-xs border-y border-s"
+										style:border-color={lineColor}
+									></div>
+									<div
+										class="h-9 w-4 rounded-e-xs border-y border-e"
+										style:border-color={lineColor}
+									></div>
 
-								<!-- door slit -->
-								<div class="absolute left-1/2 h-9 w-[1px]" style:background-color={lineColor}></div>
-								<!-- window -->
-								<div class="absolute top-1 left-1 h-3.5 w-2 rounded-xs border"></div>
-								<div class="absolute top-1 right-1 h-3.5 w-2 rounded-xs border"></div>
+									<!-- door slit -->
+									<div
+										class="absolute left-1/2 h-9 w-[1px]"
+										style:background-color={lineColor}
+									></div>
+									<!-- window -->
+									<div class="absolute top-1 left-1 h-3.5 w-2 rounded-xs border"></div>
+									<div class="absolute top-1 right-1 h-3.5 w-2 rounded-xs border"></div>
+								</div>
+							{/snippet}
+
+							<div class="flex justify-around">
+								{#each doors(result.line as keyof typeof lines, inputs.carriage).toReversed() as i}
+									{@render door(
+										(['D', 'A'].includes(inputs.sides ?? '') && inputs.door === i) ||
+											(!inputs.sides && inputs.door === i)
+									)}
+								{/each}
 							</div>
-						{/snippet}
 
-						<div class="flex justify-around" class:flex-row-reverse={inputs.flip}>
-							{#each doors(result.line as keyof typeof lines, inputs.carriage) as i}
-								{@render door(
-									(['U', 'B'].includes(inputs.sides ?? '') && inputs.door === i) ||
-										(!inputs.sides && inputs.door === i)
-								)}
-							{/each}
-						</div>
+							<!-- direction marker -->
+							<div class="flex justify-between text-xs">
+								<div class="col-span-2">
+									<p>
+										<span class="text-glacier-600 font-semibold">
+											← {destination(result.line, 'UP')}
+										</span>
+									</p>
+								</div>
 
-						<div class="flex justify-around" class:flex-row-reverse={inputs.flip}>
-							{#each doors(result.line as keyof typeof lines, inputs.carriage) as i}
-								{@render door(
-									(['D', 'A'].includes(inputs.sides ?? '') && inputs.door === i) ||
-										(!inputs.sides && inputs.door === i)
-								)}
-							{/each}
+								<div class="col-span-2 text-end">
+									<p>
+										<span class="text-glacier-600 font-semibold">
+											{destination(result.line, 'DOWN')} →
+										</span>
+									</p>
+								</div>
+							</div>
+
+							<div class="flex justify-around">
+								{#each doors(result.line as keyof typeof lines, inputs.carriage).toReversed() as i}
+									{@render door(
+										(['U', 'B'].includes(inputs.sides ?? '') && inputs.door === i) ||
+											(!inputs.sides && inputs.door === i)
+									)}
+								{/each}
+							</div>
 						</div>
 					</div>
 
-					<div class="text-xs">
-						列車編組：{result.stock}
+					<div class="flex justify-around gap-x-0.5">
+						{#each result.stock as stock}
+							<button
+								class="rounded-xs border px-0.5 font-mono text-[0.7rem]"
+								style:background-color={inputs.carriage == stock ? lineColor : ''}
+								style:color={inputs.carriage == stock ? textColor(lineColor) : ''}
+								style:border-color={lineColor}
+							>
+								{stock}
+							</button>
+						{/each}
 					</div>
 				</div>
 			{/each}

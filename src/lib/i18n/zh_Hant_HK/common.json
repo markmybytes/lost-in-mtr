@@ -4,6 +4,6 @@
     "inbound": "上行",
     "outbound": "下行",
     "direction": "方向",
-    "carNumber": "第{{number}}卡",
+    "carNumber": "第 {{number}} 卡",
     "flipDirection": "調轉行車方向"
 }
