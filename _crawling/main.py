@@ -1,0 +1,111 @@
+import json
+import pprint
+import time
+
+import utils
+from fake_useragent import UserAgent
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+option = webdriver.ChromeOptions()
+option.add_argument('--headless')
+option.add_argument(f'--user-agent="{UserAgent().random}"')
+
+web = webdriver.Chrome(option)
+
+target = {
+    'AEL': [{
+        'url': 'https://hkrail.fandom.com/wiki/港鐵機場鐵路ADTranz-CAF列車',
+        'table': 3
+    }],
+    'DRL': [{
+        'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車',
+        'table': 13
+    }],
+    'EAL': [{
+        'url': 'https://hkrail.fandom.com/wiki/港鐵東鐵綫現代列車',
+        'table': 2
+    }],
+    'ISL': [{
+        'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車',
+        'table': 10
+    }],
+    'KTL': [
+        {
+            'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車',
+            'table': 8
+        },
+        {
+            'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫中國長春製列車',
+            'table': 1
+        },
+        {
+            'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫中國青島四方製列車',
+            'table': 1
+        },
+    ],
+    'SIL': [{
+        'url': 'https://hkrail.fandom.com/wiki/港鐵南港島綫中國長春製列車',
+        'table': 1
+    }],
+    'TCL': [
+        {
+            'url': 'https://hkrail.fandom.com/wiki/港鐵機場鐵路ADTranz-CAF列車',
+            'table': 1
+        },
+        {
+            'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫．東涌綫韓製列車',
+            'table': 3
+        },
+    ],
+    'TKL': [
+        {
+            'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車',
+            'table': 8
+        },
+        {
+            'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫中國長春製列車',
+            'table': 1
+        },
+    ],
+    'TML': [
+        {
+            'url': 'https://hkrail.fandom.com/wiki/港鐵屯馬綫中國製列車',
+            'table': 1
+        },
+        {
+            'url': 'https://hkrail.fandom.com/wiki/港鐵近畿川崎列車',
+            'table': 3
+        },
+    ],
+    'TWL': [{
+        'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車',
+        'table': 9
+    }],
+}
+
+carriages: dict[str, list] = {}
+
+for line, configs in target.items():
+    carriages[line] = []
+
+    for config in configs:
+        web.get(config['url'])
+
+        rows = web\
+            .find_elements(By.TAG_NAME, 'table')[int(config['table'])]\
+            .find_elements(By.TAG_NAME, 'tr')
+
+        carriages[line].extend(
+            utils.parse_formation(
+                '\n'.join([l.text for l in rows[-1].find_elements(By.CSS_SELECTOR, 'td > ol')]), '下行' in rows[0].find_element(By.TAG_NAME, 'td').text))
+
+        time.sleep(0.2)
+
+
+# pprint.pprint(carriages)
+with open('fleet.json', 'w', encoding='utf-8') as f:
+    json.dump(carriages, f, indent=4)
+
+with open('fleet.min.json', 'w', encoding='utf-8') as f:
+    json.dump(carriages, f)
