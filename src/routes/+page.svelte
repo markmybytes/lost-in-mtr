@@ -14,7 +14,7 @@
 		door: null | 1 | 2 | 3 | 4 | 5;
 		flip: boolean;
 	} = $state({
-		carriage: 'C302',
+		carriage: '',
 		sides: null,
 		door: null,
 		flip: false
