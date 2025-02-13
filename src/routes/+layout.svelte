@@ -27,22 +27,22 @@
 			<span class="self-center text-lg font-semibold whitespace-nowrap"> 迷失港鐵 </span>
 		</a>
 
-		<ul class="flex items-center gap-x-6">
+		<ul class="flex items-center gap-x-4">
 			<li>
-				<a href={`${base}/`}>
+				<a href={`${base}/`} class="flex h-6 w-8 items-center justify-center">
 					<HomeIcon></HomeIcon>
 				</a>
 			</li>
 			<li>
-				<a href={`${base}/about`}>
+				<a href={`${base}/about`} class="flex h-6 w-8 items-center justify-center">
 					<InfoSquareIcon></InfoSquareIcon>
 				</a>
 			</li>
-			<li class="border-s ps-4">
+			<li class="border-s ps-3">
 				<div class="relative">
 					<button
 						type="button"
-						class="h-3.5"
+						class=" flex h-6 w-8 items-center justify-center"
 						onclick={() => (showLocalDropdown = !showLocalDropdown)}
 					>
 						<TranslateIcon></TranslateIcon>
