@@ -4,6 +4,7 @@
 	import lines from '$lib/data/lines.json';
 	import Door from './door.svelte';
 	import ArrowLeftRight from '$lib/icons/ArrowLeftRight.svelte';
+	import { fade } from 'svelte/transition';
 
 	let props: {
 		line: keyof typeof lines;
@@ -35,7 +36,7 @@
 	}
 </script>
 
-<div class="flex flex-col gap-y-2 rounded border border-gray-200 p-2">
+<div class="flex flex-col gap-y-2 rounded border border-gray-200 p-2" transition:fade>
 	<div class="flex items-center gap-x-3">
 		<span
 			class="h-6 rounded-sm bg-blue-100 px-2 text-nowrap"
