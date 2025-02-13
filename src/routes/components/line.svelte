@@ -136,7 +136,7 @@
 		</div>
 	</div>
 
-	<div class="flex justify-around gap-x-0.5">
+	<div class="flex justify-around gap-x-0.5 overflow-y-auto">
 		{#each props.formation as stock}
 			<button
 				class="rounded-xs border px-0.5 font-mono text-[0.7rem]"
