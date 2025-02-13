@@ -18,12 +18,16 @@
 		};
 	} = $props();
 
-	const lineColor = lines[props.line]['color'];
-
 	/** Train driection, `true` means up/inbound direction otherwise down/outbound direction */
 	let inbound: boolean = $state(false);
 
-	let doors = $derived.by(() => {
+	// if matching results are updated and the fade-out transition is still in progress,
+	// the DOM component will be reused, which the line color will not be updated.
+	//
+	// use $derived can make svelete react to the update
+	const lineColor = $derived(lines[props.line]['color']);
+
+	const doors = $derived.by(() => {
 		if ((props.line == 'EAL' && props.codes.carriage.includes('F')) || props.line == 'AEL') {
 			return [1, 2];
 		} else {
@@ -31,7 +35,7 @@
 		}
 	});
 
-	let doorNumber = $derived.by(() => {
+	const doorNumber = $derived.by(() => {
 		if (!props.codes.door) {
 			return null;
 		}
@@ -39,13 +43,13 @@
 		return inbound ? ((5 - props.codes.door) % 5) + 1 : props.codes.door;
 	});
 
-	let carNumber = $derived(
+	const carNumber = $derived(
 		inbound
 			? props.position
 			: ((props.formation.length - props.position) % props.formation.length) + 1
 	);
 
-	let destination = $derived.by(() => {
+	const destination = $derived.by(() => {
 		return lines[props.line]['terminals'][inbound ? 'UP' : 'DOWN']
 			.map((s) => $t(`station.${s}`))
 			.join($t('common./'));
