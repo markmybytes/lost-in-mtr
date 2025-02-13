@@ -59,15 +59,17 @@
 
 <div class="flex flex-col gap-y-4 p-2">
 	<form class="flex flex-col gap-y-4 rounded-lg bg-white/70 p-3">
-		<div class="flex gap-x-2">
-			<label class="flex w-38 items-center gap-x-2 text-sm font-medium text-gray-900" for="name">
-				<TrainLightrailFrontIcon></TrainLightrailFrontIcon>
+		<div class="grid grid-cols-11">
+			<label class="col-span-5 content-center font-medium text-gray-900">
+				<i class="inline-block">
+					<TrainLightrailFrontIcon></TrainLightrailFrontIcon>
+				</i>
 				{$t('common.carriageCode')}
 			</label>
+
 			<input
 				type="text"
-				name="car_number"
-				class="grow p-1.5 text-sm shadow-xs"
+				class="col-span-6 p-0.5"
 				maxlength="4"
 				autocomplete="off"
 				required
@@ -78,13 +80,15 @@
 			/>
 		</div>
 
-		<div class="flex gap-x-2">
-			<label class="flex w-38 items-center gap-x-2 text-sm font-medium text-gray-900" for="name">
-				<DoorColsedIcon></DoorColsedIcon>
+		<div class="grid grid-cols-11">
+			<label class="col-span-5 content-center font-medium text-gray-900">
+				<i class="inline-block">
+					<DoorColsedIcon></DoorColsedIcon>
+				</i>
 				{$t('common.doorCode')}
 			</label>
 
-			<div class="flex grow flex-col gap-x-2 gap-y-2 text-start">
+			<div class="col-span-6 flex flex-col gap-2 text-start">
 				<div class="flex gap-x-2">
 					{#each ['D', 'U', 'A', 'B'] as side}
 						<button
@@ -119,14 +123,16 @@
 			</div>
 		</div>
 
-		<div class="flex gap-x-2">
-			<label class="flex w-38 items-center gap-x-2 text-sm font-medium text-gray-900">
-				<ArrowLeftRight></ArrowLeftRight>
+		<div class="grid grid-cols-11">
+			<label class="col-span-5 content-center font-medium text-gray-900">
+				<i class="inline-block">
+					<ArrowLeftRight></ArrowLeftRight>
+				</i>
 				{$t('common.flipDirection')}
 			</label>
 
-			<div class="grow">
-				<input type="checkbox" name="flip_direction" class="" bind:checked={inputs.flip} />
+			<div class="col-span-6">
+				<input type="checkbox" bind:checked={inputs.flip} />
 			</div>
 		</div>
 	</form>
