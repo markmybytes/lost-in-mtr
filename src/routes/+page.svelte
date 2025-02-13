@@ -5,8 +5,9 @@
 	import { t } from '$lib/i18n/translations';
 	import Line from './components/line.svelte';
 	import { onMount } from 'svelte';
+	import CarriageInput from './components/CarriageInput.svelte';
 
-	let fleets: { [key: string]: any } = {};
+	let fleets: { [key: string]: any } = $state({});
 
 	const inputs: {
 		carriage: string;
@@ -40,6 +41,10 @@
 		return matches;
 	});
 
+	$effect(() => {
+		inputs.carriage = inputs.carriage.toUpperCase();
+	});
+
 	onMount(() => {
 		fetch(
 			'https://raw.githubusercontent.com/SuperDumbTM/lost-in-mtr/refs/heads/data/fleet.min.json'
@@ -67,17 +72,12 @@
 				{$t('common.carriageCode')}
 			</label>
 
-			<input
-				type="text"
-				class="col-span-6 p-0.5"
-				maxlength="4"
-				autocomplete="off"
-				required
+			<CarriageInput
 				bind:value={inputs.carriage}
-				oninput={() => {
-					inputs.carriage = inputs.carriage.toUpperCase();
-				}}
-			/>
+				options={new Set(
+					Object.values(fleets).flatMap((l: Array<string>) => l.flatMap((s) => s.split('-')))
+				)}
+			></CarriageInput>
 		</div>
 
 		<div class="grid grid-cols-11">
