@@ -74,7 +74,9 @@
 		</p>
 
 		<div
-			class="flex h-34 w-full flex-col justify-between rounded border-y-2 py-1"
+			class="flex h-34 w-full flex-col justify-between rounded border-y-2 px-2 py-1"
+			class:border-s-2={props.carNumber == 1}
+			class:border-e-2={props.carNumber == props.formation.length}
 			style:border-color={lineColor}
 		>
 			<div class="flex justify-around">
