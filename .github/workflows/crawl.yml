@@ -1,6 +1,5 @@
 name: Data Fetching
 on: 
-  push:
   schedule:
     - cron: "0 0 * * *"
   workflow_dispatch:
@@ -9,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  crawl:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
