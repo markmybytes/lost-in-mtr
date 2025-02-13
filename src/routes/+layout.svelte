@@ -20,7 +20,7 @@
 	});
 </script>
 
-<div class="m-auto flex h-screen max-w-xl flex-col">
+<div class="m-auto flex h-svh max-w-xl flex-col">
 	<div class="bg-chestnut-rose-300 flex justify-between rounded-sm px-4 py-3">
 		<a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
 			<img src="https://flowbite.com/docs/images/logo.svg" class="h-7" alt="Flowbite Logo" />
