@@ -6,5 +6,6 @@
 	"flipDirection": "Flip Direction",
 	"inbound": "Inbound",
 	"outbound": "Outbound",
+	"positionDescrTxt": "{{name}} Direction | Car {{car}}{{door:gte; 1:, {{door}}ˢᵗ Door; 2:, {{door}}ⁿᵈ Door; 3:, {{door}}ʳᵈ Door; 4:, {{door}}ᵗʰ Door; default:}}",
 	"to": "To"
 }

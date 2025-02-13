@@ -5,6 +5,7 @@
 	import Door from './door.svelte';
 	import ArrowLeftRight from '$lib/icons/ArrowLeftRight.svelte';
 	import { fade } from 'svelte/transition';
+	import ClipboardIcon from '$lib/icons/ClipboardIcon.svelte';
 
 	let props: {
 		line: keyof typeof lines;
@@ -28,6 +29,14 @@
 		} else {
 			return [1, 2, 3, 4, 5];
 		}
+	});
+
+	let doorNumber = $derived.by(() => {
+		if (!props.codes.door) {
+			return null;
+		}
+
+		return inbound ? ((5 - props.codes.door) % 5) + 1 : props.codes.door;
 	});
 
 	let carNumber = $derived(
@@ -130,5 +139,25 @@
 				{stock}
 			</button>
 		{/each}
+	</div>
+
+	<div class="mt-3 flex gap-x-3">
+		<p class="text-glacier-500/80 text-xs md:text-sm">
+			<span>㊢ </span>
+			<span>
+				{`${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: doorNumber || -1 } as any)}`}
+			</span>
+		</p>
+
+		<button
+			type="button"
+			onclick={() => {
+				navigator.clipboard.writeText(
+					`${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: doorNumber || -1 } as any)}`
+				);
+			}}
+		>
+			<ClipboardIcon width={12} height={12}></ClipboardIcon>
+		</button>
 	</div>
 </div>
