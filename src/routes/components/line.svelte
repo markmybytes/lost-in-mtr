@@ -48,7 +48,7 @@
 	let destination = $derived.by(() => {
 		return lines[props.line]['terminals'][inbound ? 'UP' : 'DOWN']
 			.map((s) => $t(`station.${s}`))
-			.join('／');
+			.join($t('common./'));
 	});
 </script>
 
@@ -102,7 +102,9 @@
 				<div class="col-span-2">
 					<p>
 						<span class="text-glacier-600 font-semibold">
-							← {lines[props.line]['terminals']['UP'].map((s) => $t(`station.${s}`)).join('／')}
+							← {lines[props.line]['terminals']['UP']
+								.map((s) => $t(`station.${s}`))
+								.join($t('common./'))}
 						</span>
 					</p>
 				</div>
@@ -110,7 +112,9 @@
 				<div class="col-span-2 text-end">
 					<p>
 						<span class="text-glacier-600 font-semibold">
-							{lines[props.line]['terminals']['DOWN'].map((s) => $t(`station.${s}`)).join('／')} →
+							{lines[props.line]['terminals']['DOWN']
+								.map((s) => $t(`station.${s}`))
+								.join($t('common./'))} →
 						</span>
 					</p>
 				</div>

@@ -1,4 +1,5 @@
 {
+	"/": "/",
 	"carNumber": "Car {{number}}",
 	"carriageCode": "Carriage Code",
 	"direction": "Direction",

@@ -1,4 +1,5 @@
 {
+	"/": "／",
 	"carNumber": "第 {{number}} 卡",
 	"carriageCode": "車廂編號",
 	"direction": "方向",
