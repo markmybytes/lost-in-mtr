@@ -55,11 +55,7 @@
 			</button>
 
 			<p>
-				{#if opposite}
-					{`${$t('common.to')} ${destination(props.line, 'UP')}`}
-				{:else}
-					{`${$t('common.to')} ${destination(props.line, 'DOWN')}`}
-				{/if}
+				{`${$t('common.to')} ${destination(props.line, opposite ? 'UP' : 'DOWN')}`}
 			</p>
 		</div>
 	</div>
