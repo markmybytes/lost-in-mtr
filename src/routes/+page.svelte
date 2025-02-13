@@ -5,15 +5,18 @@
 	import TrainLightrailFrontIcon from '$lib/icons/TrainLightrailFrontIcon.svelte';
 	import { textColor } from '$lib/utils/index';
 	import { fade, slide } from 'svelte/transition';
+	import { t } from '$lib/i18n/translations';
 
 	const inputs: {
 		carriage: string;
-		sides: null | 'U' | 'D';
+		sides: null | 'U' | 'D' | 'A' | 'B';
 		door: null | 1 | 2 | 3 | 4 | 5;
+		flip: boolean;
 	} = $state({
 		carriage: '',
 		sides: null,
-		door: null
+		door: null,
+		flip: false
 	});
 
 	const results = $derived.by(() => {
@@ -47,16 +50,16 @@
 </script>
 
 <div class="flex flex-col gap-y-4 p-2">
-	<form class="flex flex-col gap-y-4 p-3 bg-white/70 rounded-lg">
-		<div class="flex">
-			<label class="flex gap-x-2 items-center w-38 text-sm font-medium text-gray-900" for="name">
+	<form class="flex flex-col gap-y-4 rounded-lg bg-white/70 p-3">
+		<div class="flex gap-x-2">
+			<label class="flex w-38 items-center gap-x-2 text-sm font-medium text-gray-900" for="name">
 				<TrainLightrailFrontIcon></TrainLightrailFrontIcon>
-				車廂編號
+				{$t('common.carriageCode')}
 			</label>
 			<input
 				type="text"
 				name="car_number"
-				class="w-full p-1.5 text-sm shadow-xs"
+				class="grow p-1.5 text-sm shadow-xs"
 				maxlength="4"
 				autocomplete="off"
 				required
@@ -67,18 +70,18 @@
 			/>
 		</div>
 
-		<div class="flex">
-			<label class="flex gap-x-2 items-center w-38 text-sm font-medium text-gray-900" for="name">
+		<div class="flex gap-x-2">
+			<label class="flex w-38 items-center gap-x-2 text-sm font-medium text-gray-900" for="name">
 				<DoorColsedIcon></DoorColsedIcon>
-				車門編號
+				{$t('common.doorCode')}
 			</label>
 
-			<div class="flex flex-col gap-y-2 w-full gap-x-2 text-start">
+			<div class="flex grow flex-col gap-x-2 gap-y-2 text-start">
 				<div class="flex gap-x-2">
-					{#each ['D', 'U'] as side}
+					{#each ['D', 'U', 'A', 'B'] as side}
 						<button
 							type="button"
-							class="w-7 border border-chestnut-rose-400 rounded"
+							class="border-chestnut-rose-400 w-7 rounded border"
 							class:bg-chestnut-rose-400={inputs.sides == side}
 							class:text-white={inputs.sides == side}
 							onclick={() => {
@@ -94,7 +97,7 @@
 					{#each [1, 2, 3, 4, 5] as i}
 						<button
 							type="button"
-							class="w-7 border border-chestnut-rose-400 rounded"
+							class="border-chestnut-rose-400 w-7 rounded border"
 							class:bg-chestnut-rose-400={inputs.door === i}
 							class:text-white={inputs.door === i}
 							onclick={() => {
@@ -107,80 +110,99 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="flex gap-x-2">
+			<label class="flex w-38 items-center gap-x-2 text-sm font-medium text-gray-900">
+				<TrainLightrailFrontIcon></TrainLightrailFrontIcon>
+				{$t('common.flipDirection')}
+			</label>
+
+			<div class="grow">
+				<input type="checkbox" name="flip_direction" class="" bind:checked={inputs.flip} />
+			</div>
+		</div>
 	</form>
 
 	{#if results.length > 0}
-		<div class="flex flex-col gap-y-6 p-3 bg-white/70 rounded-lg" transition:slide>
+		<div class="flex flex-col gap-y-6 rounded-lg bg-white/70 p-3" transition:slide>
 			{#each results as result}
 				{@const lineColor = lines[result.line as keyof typeof lines]['color']}
 
 				<div class="flex flex-col gap-y-2">
 					<div class="flex justify-center gap-x-4">
 						<span
-							class="bg-blue-100 px-2 rounded-sm"
+							class="rounded-sm bg-blue-100 px-2"
 							style:background-color={lineColor}
 							style:color={textColor(lineColor)}
 						>
-							{result.line}
+							{$t(`line.${result.line}`)}
 						</span>
-						<p class="content-center">第{result.carNumber}卡</p>
+						<p class="content-center">
+							{$t('common.carNumber', { number: result.carNumber } as any)}
+						</p>
 					</div>
 
-					<div class="flex justify-between">
+					<div class="flex justify-between" class:flex-row-reverse={inputs.flip}>
 						<div>
-							<p class="text-sm">下行</p>
+							<p class="text-sm" class:text-end={inputs.flip}>{$t('common.outbound')}</p>
 							<p>
 								<span class="text-glacier-600 font-semibold">
-									{lines[result.line as keyof typeof lines]['terminals']['DOWN']}
-								</span>方向
+									{lines[result.line as keyof typeof lines]['terminals']['DOWN']
+										.map((s) => $t(`station.${s}`))
+										.join('／')}
+								</span>{$t('common.direction')}
 							</p>
 						</div>
 
 						<div>
-							<p class="text-sm text-end">上行</p>
+							<p class="text-sm" class:text-end={!inputs.flip}>{$t('common.inbound')}</p>
 							<p>
 								<span class="text-glacier-600 font-semibold">
-									{lines[result.line as keyof typeof lines]['terminals']['UP']}
-								</span>方向
+									{lines[result.line as keyof typeof lines]['terminals']['UP']
+										.map((s) => $t(`station.${s}`))
+										.join('／')}
+								</span>{$t('common.direction')}
 							</p>
 						</div>
 					</div>
 
 					<div
-						class="flex flex-col justify-between w-full h-32 py-1 border-y-2 rounded"
+						class="flex h-32 w-full flex-col justify-between rounded border-y-2 py-1"
 						style:border-color={lineColor}
 					>
 						{#snippet door(active: boolean)}
-							<div class="flex relative" style:background-color={active ? `${lineColor}60` : null}>
+							<div class="relative flex" style:background-color={active ? `${lineColor}60` : null}>
 								<div
-									class="w-4 h-9 border-s border-y rounded-s-xs"
+									class="h-9 w-4 rounded-s-xs border-y border-s"
 									style:border-color={lineColor}
 								></div>
 								<div
-									class="w-4 h-9 border-e border-y rounded-e-xs"
+									class="h-9 w-4 rounded-e-xs border-y border-e"
 									style:border-color={lineColor}
 								></div>
 
 								<!-- door slit -->
-								<div class="absolute left-1/2 w-[1px] h-9" style:background-color={lineColor}></div>
+								<div class="absolute left-1/2 h-9 w-[1px]" style:background-color={lineColor}></div>
 								<!-- window -->
-								<div class="absolute top-1 left-1 w-2 h-3.5 border rounded-xs"></div>
-								<div class="absolute top-1 right-1 w-2 h-3.5 border rounded-xs"></div>
+								<div class="absolute top-1 left-1 h-3.5 w-2 rounded-xs border"></div>
+								<div class="absolute top-1 right-1 h-3.5 w-2 rounded-xs border"></div>
 							</div>
 						{/snippet}
 
-						<div class="flex justify-around">
+						<div class="flex justify-around" class:flex-row-reverse={inputs.flip}>
 							{#each doors(result.line as keyof typeof lines, inputs.carriage) as i}
 								{@render door(
-									(inputs.sides == 'U' && inputs.door === i) || (!inputs.sides && inputs.door === i)
+									(['U', 'B'].includes(inputs.sides ?? '') && inputs.door === i) ||
+										(!inputs.sides && inputs.door === i)
 								)}
 							{/each}
 						</div>
 
-						<div class="flex justify-around">
+						<div class="flex justify-around" class:flex-row-reverse={inputs.flip}>
 							{#each doors(result.line as keyof typeof lines, inputs.carriage) as i}
 								{@render door(
-									(inputs.sides == 'D' && inputs.door === i) || (!inputs.sides && inputs.door === i)
+									(['D', 'A'].includes(inputs.sides ?? '') && inputs.door === i) ||
+										(!inputs.sides && inputs.door === i)
 								)}
 							{/each}
 						</div>
