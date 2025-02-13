@@ -13,10 +13,6 @@
 
 	onMount(() => {
 		locale.set(localStorage.getItem('locale') ?? 'zh-hk');
-
-		locale.subscribe((lc) => {
-			localStorage.setItem('locale', lc);
-		});
 	});
 </script>
 
@@ -57,6 +53,7 @@
 								onclick={() => {
 									showLocalDropdown = false;
 									locale.set(lc[1]);
+									localStorage.setItem('locale', lc[1]);
 								}}
 							>
 								{lc[0]}
