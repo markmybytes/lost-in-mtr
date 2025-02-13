@@ -10,7 +10,7 @@ export const trailingSlash = 'always';
 export const load = async ({ url }) => {
 	const { pathname } = url;
 
-	const initLocale = 'zh_Hant_HK';
+	const initLocale = 'zh-hk';
 
 	await loadTranslations(initLocale, pathname);
 
