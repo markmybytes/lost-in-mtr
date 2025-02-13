@@ -1,17 +1,19 @@
 <script lang="ts">
 	import lines from '$lib/data/lines.json';
-	import carriage from '$lib/data/carriage.json';
 	import DoorColsedIcon from '$lib/icons/DoorColsedIcon.svelte';
 	import TrainLightrailFrontIcon from '$lib/icons/TrainLightrailFrontIcon.svelte';
 	import { t } from '$lib/i18n/translations';
 	import Line from './components/line.svelte';
+	import { onMount } from 'svelte';
+
+	let fleets: { [key: string]: any } = {};
 
 	const inputs: {
 		carriage: string;
 		sides: null | 'U' | 'D' | 'A' | 'B';
 		door: null | 1 | 2 | 3 | 4 | 5;
 	} = $state({
-		carriage: 'C302',
+		carriage: '',
 		sides: null,
 		door: null
 	});
@@ -22,7 +24,7 @@
 		}
 
 		const matches = [];
-		for (const [line, stocks] of Object.entries(carriage)) {
+		for (const [line, stocks] of Object.entries(fleets)) {
 			for (const stock of stocks) {
 				const stockArr = stock.split(/[-\+]+/);
 				if (stockArr.includes(inputs.carriage)) {
@@ -36,6 +38,16 @@
 		}
 
 		return matches;
+	});
+
+	onMount(() => {
+		fetch(
+			'https://raw.githubusercontent.com/SuperDumbTM/lost-in-mtr/refs/heads/data/fleet.min.json'
+		)
+			.then((response) => response.json())
+			.then((body) => {
+				fleets = body;
+			});
 	});
 </script>
 
