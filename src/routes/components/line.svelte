@@ -6,6 +6,8 @@
 	import ArrowLeftRight from '$lib/icons/ArrowLeftRight.svelte';
 	import { fade } from 'svelte/transition';
 	import ClipboardIcon from '$lib/icons/ClipboardIcon.svelte';
+	import WhatsappIcon from '$lib/icons/WhatsappIcon.svelte';
+	import TelegramIcon from '$lib/icons/TelegramIcon.svelte';
 
 	let props: {
 		line: keyof typeof lines;
@@ -54,6 +56,10 @@
 			.map((s) => $t(`station.${s}`))
 			.join($t('common./'));
 	});
+
+	const description = $derived(
+		`${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: doorNumber || -1 } as any)}`
+	);
 </script>
 
 <div class="flex flex-col gap-y-2 rounded border border-gray-200 p-2" transition:fade>
@@ -149,23 +155,32 @@
 		{/each}
 	</div>
 
-	<div class="mt-3 flex gap-x-3">
-		<p class="text-glacier-500/80 text-xs md:text-sm">
+	<div class="mt-1 flex flex-col gap-x-3">
+		<p class="text-glacier-500/80 text-[0.8rem] md:text-sm">
 			<span>㊢ </span>
 			<span>
-				{`${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: doorNumber || -1 } as any)}`}
+				{description}
 			</span>
 		</p>
 
-		<button
-			type="button"
-			onclick={() => {
-				navigator.clipboard.writeText(
-					`${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: doorNumber || -1 } as any)}`
-				);
-			}}
-		>
-			<ClipboardIcon width={12} height={12}></ClipboardIcon>
-		</button>
+		<div class="flex justify-end gap-x-5 p-1">
+			<a href={`whatsapp://send?text=${encodeURIComponent(description)}`}>
+				<WhatsappIcon width={15} height={15}></WhatsappIcon>
+			</a>
+
+			<a href={`tg://msg?text=${encodeURIComponent(description)}`}>
+				<TelegramIcon width={15} height={15}></TelegramIcon>
+			</a>
+
+			<button
+				type="button"
+				class="cursor-pointer"
+				onclick={() => {
+					navigator.clipboard.writeText(description);
+				}}
+			>
+				<ClipboardIcon width={15} height={15}></ClipboardIcon>
+			</button>
+		</div>
 	</div>
 </div>
