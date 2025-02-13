@@ -1,0 +1,115 @@
+{
+    "AEL": {
+        "terminals": {
+            "DOWN": [
+                "HOK"
+            ],
+            "UP": [
+                "AIR",
+                "AWE"
+            ]
+        },
+        "color": "#1c7670"
+    },
+    "DRL": {
+        "terminals": {
+            "DOWN": [
+                "DIS"
+            ],
+            "UP": [
+                "SUN"
+            ]
+        },
+        "color": "#f550a6"
+    },
+    "EAL": {
+        "terminals": {
+            "DOWN": [
+                "ADM"
+            ],
+            "UP": [
+                "LOW",
+                "LMC"
+            ]
+        },
+        "color": "#53b7e8"
+    },
+    "ISL": {
+        "terminals": {
+            "DOWN": [
+                "KET"
+            ],
+            "UP": [
+                "CHW"
+            ]
+        },
+        "color": "#0860a8"
+    },
+    "KTL": {
+        "terminals": {
+            "DOWN": [
+                "WHA"
+            ],
+            "UP": [
+                "TIK"
+            ]
+        },
+        "color": "#1a9431"
+    },
+    "SIL": {
+        "terminals": {
+            "DOWN": [
+                "HOK"
+            ],
+            "UP": [
+                "AWE"
+            ]
+        },
+        "color": "#b5bd00"
+    },
+    "TCL": {
+        "terminals": {
+            "DOWN": [
+                "ADM"
+            ],
+            "UP": [
+                "SOH"
+            ]
+        },
+        "color": "#fe7f1d"
+    },
+    "TKL": {
+        "terminals": {
+            "DOWN": [
+                "NOP"
+            ],
+            "UP": [
+                "POA",
+                "LHP"
+            ]
+        },
+        "color": "#6b208b"
+    },
+    "TML": {
+        "terminals": {
+            "DOWN": [
+                "WKS"
+            ],
+            "UP": [
+                "TUM"
+            ]
+        },
+        "color": "#9a3b26"
+    },
+    "TWL": {
+        "terminals": {
+            "DOWN": [
+                "CEN"
+            ],
+            "UP": [
+                "TSW"
+            ]
+        },
+        "color": "#ff0000"
+    }
+}

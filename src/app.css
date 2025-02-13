@@ -1,0 +1,87 @@
+@import 'tailwindcss';
+
+@theme {
+  /* color palette: https://colorhunt.co/palette/c96868fadfa1fff4ea7eacb5 */
+
+  --color-chestnut-rose-50: #fcf4f4;
+  --color-chestnut-rose-100: #f9ecea;
+  --color-chestnut-rose-200: #f3d9d8;
+  --color-chestnut-rose-300: #e8bbb9;
+  --color-chestnut-rose-400: #db9391;
+  --color-chestnut-rose-500: #c96868;
+  --color-chestnut-rose-600: #b34b50;
+  --color-chestnut-rose-700: #963a41;
+  --color-chestnut-rose-800: #7e333b;
+  --color-chestnut-rose-900: #6d2e37;
+  --color-chestnut-rose-950: #3b161a;
+
+  --color-marzipan-50: #fef9ec;
+  --color-marzipan-100: #fcedc9;
+  --color-marzipan-200: #fadfa1;
+  --color-marzipan-300: #f6bf53;
+  --color-marzipan-400: #f4a72b;
+  --color-marzipan-500: #ed8513;
+  --color-marzipan-600: #d2620d;
+  --color-marzipan-700: #ae440f;
+  --color-marzipan-800: #8d3413;
+  --color-marzipan-900: #742c13;
+  --color-marzipan-950: #431505;
+
+  --color-serenade-50: #fff4ea;
+  --color-serenade-100: #ffead5;
+  --color-serenade-200: #fed0aa;
+  --color-serenade-300: #fdaf74;
+  --color-serenade-400: #fb833c;
+  --color-serenade-500: #f96116;
+  --color-serenade-600: #ea460c;
+  --color-serenade-700: #c2330c;
+  --color-serenade-800: #9a2912;
+  --color-serenade-900: #7c2512;
+  --color-serenade-950: #430f07;
+
+  --color-glacier-50: #f2f8f9;
+  --color-glacier-100: #dfedee;
+  --color-glacier-200: #c3dade;
+  --color-glacier-300: #99c1c7;
+  --color-glacier-400: #7eacb5;
+  --color-glacier-500: #4c828e;
+  --color-glacier-600: #426b78;
+  --color-glacier-700: #3a5a64;
+  --color-glacier-800: #364c54;
+  --color-glacier-900: #304149;
+  --color-glacier-950: #1d292f;
+}
+
+@layer base {
+  /*
+    The default border color has changed to `currentColor` in Tailwind CSS v4,
+    so we've added these compatibility styles to make sure everything still
+    looks the same as it did with Tailwind CSS v3.
+  
+    If we ever want to remove these styles, we need to add an explicit border
+    color utility to any element that depends on these defaults.
+  */
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-color-gray-200, currentColor);
+  }
+
+  input,
+  select {
+    border-width: 1px;
+    border-radius: 0.375rem;
+    border-color: var(--color-chestnut-rose-400);
+  }
+
+  input:focus,
+  select:focus {
+    outline-color: var(--color-chestnut-rose-400);
+  }
+
+  input[type='checkbox'] {
+    accent-color: var(--color-chestnut-rose-400);
+  }
+}
