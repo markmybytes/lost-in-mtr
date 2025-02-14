@@ -30,9 +30,8 @@
 	onfocusin={() => {
 		focused = true;
 	}}
-	onfocusout={(event) => {
-		focused = event.relatedTarget != null;
-	}}
+	onfocusout={() => setTimeout(() => (focused = false))}
+	tabindex="-2"
 >
 	<input
 		type="text"
@@ -46,13 +45,13 @@
 	<div
 		class="absolute top-full right-0 left-0 max-h-22 overflow-y-auto rounded
          bg-white py-1 {focused ? 'inline-block' : 'hidden'}"
+		tabindex="-1"
 	>
 		{#each filtered as option}
 			<button
 				type="button"
 				class="text-glacier-600 hover:bg-glacier-50 rounded px-2"
 				onclick={() => {
-					focused = false;
 					value = option;
 				}}
 			>
