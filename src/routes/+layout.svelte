@@ -5,15 +5,10 @@
 	import TranslateIcon from '$lib/icons/TranslateIcon.svelte';
 	import '../app.css';
 	import { locale } from '$lib/i18n/translations';
-	import { onMount } from 'svelte';
 
 	let { children } = $props();
 
 	let showLocalDropdown = $state(false);
-
-	onMount(() => {
-		locale.set(localStorage.getItem('locale') ?? 'zh-hk');
-	});
 </script>
 
 <div class="m-auto flex h-svh max-w-xl flex-col">
@@ -53,7 +48,6 @@
 								onclick={() => {
 									showLocalDropdown = false;
 									locale.set(lc[1]);
-									localStorage.setItem('locale', lc[1]);
 								}}
 							>
 								{lc[0]}

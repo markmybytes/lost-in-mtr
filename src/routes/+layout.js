@@ -1,4 +1,4 @@
-import { loadTranslations } from '$lib/i18n/translations';
+import { loadTranslations, locale } from '$lib/i18n/translations';
 
 export const prerender = true;
 
@@ -10,9 +10,9 @@ export const trailingSlash = 'always';
 export const load = async ({ url }) => {
 	const { pathname } = url;
 
-	const initLocale = 'zh-hk';
+	await loadTranslations(localStorage.getItem('locale') || 'zh-hk', pathname);
 
-	await loadTranslations(initLocale, pathname);
+	locale.subscribe((lc) => localStorage.setItem('locale', lc));
 
 	return {};
 };
