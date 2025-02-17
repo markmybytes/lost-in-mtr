@@ -41,10 +41,6 @@
 		return matches;
 	});
 
-	$effect(() => {
-		inputs.carriage = inputs.carriage.toUpperCase();
-	});
-
 	onMount(() => {
 		fetch(
 			'https://raw.githubusercontent.com/SuperDumbTM/lost-in-mtr/refs/heads/data/fleet.min.json'

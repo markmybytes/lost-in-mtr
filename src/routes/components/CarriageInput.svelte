@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { isMobileUA } from '$lib/utils';
+
 	let {
 		value = $bindable(''),
 		options
@@ -6,6 +8,8 @@
 		value: string;
 		options: Array<string> | Set<string>;
 	} = $props();
+
+	const isMobile = isMobileUA();
 
 	let focused = $state(false);
 
@@ -23,6 +27,10 @@
 		});
 		return matches;
 	});
+
+	$effect(() => {
+		value = value.toUpperCase();
+	});
 </script>
 
 <div
@@ -30,8 +38,14 @@
 	onfocusin={() => {
 		focused = true;
 	}}
-	onfocusout={() => setTimeout(() => (focused = false), 100)}
-	tabindex="-2"
+	onfocusout={() => {
+		setTimeout(
+			() => {
+				focused = false;
+			},
+			isMobile ? 0 : 100
+		);
+	}}
 >
 	<input
 		type="text"
@@ -45,15 +59,14 @@
 	<div
 		class="absolute top-full right-0 left-0 max-h-22 overflow-y-auto rounded
          bg-white py-1 {focused ? 'inline-block' : 'hidden'}"
-		tabindex="-1"
 	>
 		{#each filtered as option}
 			<button
 				type="button"
 				class="hover:bg-battleship-gray-100 text-battleship-gray-700 rounded border-0 px-2"
 				onclick={() => {
-					console.log('click');
 					value = option;
+					focused = false;
 				}}
 			>
 				{option}
