@@ -167,11 +167,11 @@
 
 		<div class="flex justify-end gap-x-5 p-1">
 			<a href={`whatsapp://send?text=${encodeURIComponent(description)}`}>
-				<WhatsappIcon width={15} height={15}></WhatsappIcon>
+				<WhatsappIcon></WhatsappIcon>
 			</a>
 
 			<a href={`tg://msg?text=${encodeURIComponent(description)}`}>
-				<TelegramIcon width={15} height={15}></TelegramIcon>
+				<TelegramIcon></TelegramIcon>
 			</a>
 
 			<button
@@ -181,7 +181,7 @@
 					navigator.clipboard.writeText(description);
 				}}
 			>
-				<ClipboardIcon width={15} height={15}></ClipboardIcon>
+				<ClipboardIcon></ClipboardIcon>
 			</button>
 		</div>
 	</div>
