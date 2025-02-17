@@ -30,7 +30,7 @@
 	onfocusin={() => {
 		focused = true;
 	}}
-	onfocusout={() => setTimeout(() => (focused = false))}
+	onfocusout={() => setTimeout(() => (focused = false), 100)}
 	tabindex="-2"
 >
 	<input
@@ -52,6 +52,7 @@
 				type="button"
 				class="hover:bg-battleship-gray-100 text-battleship-gray-700 rounded border-0 px-2"
 				onclick={() => {
+					console.log('click');
 					value = option;
 				}}
 			>
