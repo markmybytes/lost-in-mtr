@@ -5,7 +5,7 @@
 	<div class="flex flex-col gap-y-4 rounded bg-white p-2">
 		<div class="flex flex-col gap-y-2">
 			<p>迷失港鐵是一個車廂位置定位工具。透過車廂編號及車門編號來尋找你所在的位置。</p>
-			<p>而此工具與港鐵是完全沒有關係。</p>
+			<p>列車編組資料並非來自港鐵，因此有可能會出錯或未能尋找新投入服務的列車資訊。</p>
 		</div>
 
 		<hr class="my-3 border-gray-300" />
