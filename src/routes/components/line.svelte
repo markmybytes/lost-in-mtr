@@ -100,7 +100,7 @@
 			<div class="flex justify-around">
 				{#each doors.toReversed() as i}
 					<Door
-						active={(['D', 'A'].includes(props.codes.sides ?? '') && props.codes.door === i) ||
+						active={(['D', 'B'].includes(props.codes.sides ?? '') && props.codes.door === i) ||
 							(!props.codes.sides && props.codes.door === i)}
 						color={lineColor}
 					></Door>
@@ -133,7 +133,7 @@
 			<div class="flex justify-around">
 				{#each doors.toReversed() as i}
 					<Door
-						active={(['U', 'B'].includes(props.codes.sides ?? '') && props.codes.door === i) ||
+						active={(['U', 'A'].includes(props.codes.sides ?? '') && props.codes.door === i) ||
 							(!props.codes.sides && props.codes.door === i)}
 						color={lineColor}
 					></Door>
