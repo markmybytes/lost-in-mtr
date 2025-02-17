@@ -93,8 +93,8 @@
 					{#each ['D', 'U', 'A', 'B'] as side}
 						<button
 							type="button"
-							class="border-chestnut-rose-400 w-7 rounded border"
-							class:bg-chestnut-rose-400={inputs.sides == side}
+							class="w-7 rounded border"
+							class:bg-new-orleans-700={inputs.sides == side}
 							class:text-white={inputs.sides == side}
 							onclick={() => {
 								inputs.sides = inputs.sides == side ? null : (side as typeof inputs.sides);
@@ -109,8 +109,8 @@
 					{#each [1, 2, 3, 4, 5] as i}
 						<button
 							type="button"
-							class="border-chestnut-rose-400 w-7 rounded border"
-							class:bg-chestnut-rose-400={inputs.door === i}
+							class="w-7 rounded border"
+							class:bg-new-orleans-700={inputs.door === i}
 							class:text-white={inputs.door === i}
 							onclick={() => {
 								inputs.door = inputs.door == i ? null : (i as typeof inputs.door);
