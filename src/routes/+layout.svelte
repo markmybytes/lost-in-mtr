@@ -5,6 +5,7 @@
 	import TranslateIcon from '$lib/icons/TranslateIcon.svelte';
 	import '../app.css';
 	import { locale } from '$lib/i18n/translations';
+	import GearIcon from '$lib/icons/GearIcon.svelte';
 
 	let { children } = $props();
 
@@ -25,8 +26,8 @@
 				</a>
 			</li>
 			<li>
-				<a href={`${base}/about`} class="flex h-6 w-8 items-center justify-center">
-					<InfoSquareIcon></InfoSquareIcon>
+				<a href={`${base}/setting`} class="flex h-6 w-8 items-center justify-center">
+					<GearIcon></GearIcon>
 				</a>
 			</li>
 			<li class="border-s ps-3">
