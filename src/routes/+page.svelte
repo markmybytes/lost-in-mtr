@@ -86,7 +86,7 @@
 
 			<div class="col-span-6 flex flex-col gap-2 text-start">
 				<div class="flex gap-x-2">
-					{#each ['D', 'U', 'A', 'B'] as side}
+					{#each ['U', 'D', 'A', 'B'] as side}
 						<button
 							type="button"
 							class="w-7 rounded border"
