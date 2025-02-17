@@ -32,6 +32,8 @@
 	const doors = $derived.by(() => {
 		if ((props.line == 'EAL' && props.codes.carriage.includes('F')) || props.line == 'AEL') {
 			return [2, 1];
+		} else if (props.line == 'DRL') {
+			return [3, 2, 1];
 		} else {
 			return [5, 4, 3, 2, 1];
 		}
