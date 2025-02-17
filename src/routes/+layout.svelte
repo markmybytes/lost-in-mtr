@@ -12,7 +12,7 @@
 </script>
 
 <div class="m-auto flex h-svh max-w-xl flex-col">
-	<div class="bg-chestnut-rose-300 flex justify-between p-4">
+	<div class="bg-apple-blossom-100 flex justify-between p-4">
 		<a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
 			<img src="https://flowbite.com/docs/images/logo.svg" class="h-7" alt="Flowbite Logo" />
 			<span class="self-center text-lg font-semibold whitespace-nowrap"> 迷失港鐵 </span>

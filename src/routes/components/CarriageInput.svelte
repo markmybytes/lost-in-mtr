@@ -50,7 +50,7 @@
 		{#each filtered as option}
 			<button
 				type="button"
-				class="text-glacier-600 hover:bg-glacier-50 rounded px-2"
+				class="hover:bg-battleship-gray-100 text-battleship-gray-700 rounded border-0 px-2"
 				onclick={() => {
 					value = option;
 				}}

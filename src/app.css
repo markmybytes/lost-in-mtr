@@ -1,59 +1,74 @@
 @import 'tailwindcss';
 
 @theme {
-  /* color palette: https://colorhunt.co/palette/c96868fadfa1fff4ea7eacb5 */
+	/* color palette: https://colorhunt.co/palette/c96868fadfa1fff4ea7eacb5 */
 
-  --color-chestnut-rose-50: #fcf4f4;
-  --color-chestnut-rose-100: #f9ecea;
-  --color-chestnut-rose-200: #f3d9d8;
-  --color-chestnut-rose-300: #e8bbb9;
-  --color-chestnut-rose-400: #db9391;
-  --color-chestnut-rose-500: #c96868;
-  --color-chestnut-rose-600: #b34b50;
-  --color-chestnut-rose-700: #963a41;
-  --color-chestnut-rose-800: #7e333b;
-  --color-chestnut-rose-900: #6d2e37;
-  --color-chestnut-rose-950: #3b161a;
+	/* https://colorhunt.co/palette/690b22e07a5ff1e3d31b4d3e */
+	/* https://colorhunt.co/palette/a94a4af4d793fff6da889e73 */
 
-  --color-marzipan-50: #fef9ec;
-  --color-marzipan-100: #fcedc9;
-  --color-marzipan-200: #fadfa1;
-  --color-marzipan-300: #f6bf53;
-  --color-marzipan-400: #f4a72b;
-  --color-marzipan-500: #ed8513;
-  --color-marzipan-600: #d2620d;
-  --color-marzipan-700: #ae440f;
-  --color-marzipan-800: #8d3413;
-  --color-marzipan-900: #742c13;
-  --color-marzipan-950: #431505;
+	--color-apple-blossom-50: oklch(89.273% 0.02674 17.664);
+	--color-apple-blossom-100: oklch(85.153% 0.03753 17.913);
+	--color-apple-blossom-200: oklch(76.905% 0.06049 18.557);
+	--color-apple-blossom-300: oklch(68.711% 0.08539 19.487);
+	--color-apple-blossom-400: oklch(60.714% 0.11183 20.88);
+	--color-apple-blossom-500: oklch(53.213% 0.12563 22.283);
+	--color-apple-blossom-600: oklch(48.459% 0.11245 22.165);
+	--color-apple-blossom-700: oklch(43.25% 0.09901 22.076);
+	--color-apple-blossom-800: oklch(38.231% 0.08494 21.886);
+	--color-apple-blossom-900: oklch(33.048% 0.07025 21.621);
+	--color-apple-blossom-950: oklch(30.197% 0.06271 21.489);
 
-  --color-serenade-50: #fff4ea;
-  --color-serenade-100: #ffead5;
-  --color-serenade-200: #fed0aa;
-  --color-serenade-300: #fdaf74;
-  --color-serenade-400: #fb833c;
-  --color-serenade-500: #f96116;
-  --color-serenade-600: #ea460c;
-  --color-serenade-700: #c2330c;
-  --color-serenade-800: #9a2912;
-  --color-serenade-900: #7c2512;
-  --color-serenade-950: #430f07;
+	--color-new-orleans-50: oklch(97.35% 0.02201 89.79);
+	--color-new-orleans-100: oklch(96.343% 0.02964 85.564);
+	--color-new-orleans-200: oklch(94.578% 0.04572 87.756);
+	--color-new-orleans-300: oklch(92.619% 0.06194 87.825);
+	--color-new-orleans-400: oklch(90.708% 0.07661 87.468);
+	--color-new-orleans-500: oklch(88.807% 0.09184 87.395);
+	--color-new-orleans-600: oklch(83.878% 0.12772 86.091);
+	--color-new-orleans-700: oklch(79.255% 0.15107 83.015);
+	--color-new-orleans-800: oklch(70.035% 0.14004 81.496);
+	--color-new-orleans-900: oklch(56.729% 0.11251 82.369);
+	--color-new-orleans-950: oklch(49.74% 0.09779 82.028);
 
-  --color-glacier-50: #f2f8f9;
-  --color-glacier-100: #dfedee;
-  --color-glacier-200: #c3dade;
-  --color-glacier-300: #99c1c7;
-  --color-glacier-400: #7eacb5;
-  --color-glacier-500: #4c828e;
-  --color-glacier-600: #426b78;
-  --color-glacier-700: #3a5a64;
-  --color-glacier-800: #364c54;
-  --color-glacier-900: #304149;
-  --color-glacier-950: #1d292f;
+	--color-parchment-50: oklch(98.358% 0.00512 67.765);
+	--color-parchment-100: oklch(97.783% 0.0079 73.745);
+	--color-parchment-200: oklch(96.361% 0.01244 75.367);
+	--color-parchment-300: oklch(95.016% 0.01759 73.075);
+	--color-parchment-400: oklch(93.616% 0.02108 72.145);
+	--color-parchment-500: oklch(92.27% 0.02631 71.181);
+	--color-parchment-600: oklch(86.746% 0.04509 70.464);
+	--color-parchment-700: oklch(81.421% 0.06433 71.394);
+	--color-parchment-800: oklch(75.923% 0.08307 70.266);
+	--color-parchment-900: oklch(70.588% 0.1017 68.261);
+	--color-parchment-950: oklch(67.909% 0.10963 67.131);
+
+	--color-varden-50: oklch(99.038% 0.0148 94.194);
+	--color-varden-100: oklch(98.765% 0.0176 92.677);
+	--color-varden-200: oklch(98.442% 0.02292 93.323);
+	--color-varden-300: oklch(97.926% 0.02726 90.9);
+	--color-varden-400: oklch(97.607% 0.03253 91.664);
+	--color-varden-500: oklch(97.291% 0.03778 92.225);
+	--color-varden-600: oklch(95.554% 0.06266 92.449);
+	--color-varden-700: oklch(93.865% 0.08762 92.735);
+	--color-varden-800: oklch(92.07% 0.109 91.829);
+	--color-varden-900: oklch(90.533% 0.12986 91.734);
+	--color-varden-950: oklch(89.795% 0.13909 91.549);
+
+	--color-battleship-gray-50: oklch(89.746% 0.02025 128.71);
+	--color-battleship-gray-100: oklch(87.138% 0.02456 127.62);
+	--color-battleship-gray-200: oklch(82.316% 0.03537 128.95);
+	--color-battleship-gray-300: oklch(77.224% 0.0448 129.13);
+	--color-battleship-gray-400: oklch(72.287% 0.05614 129.87);
+	--color-battleship-gray-500: oklch(67.064% 0.06602 130.06);
+	--color-battleship-gray-600: oklch(60.208% 0.06574 129.77);
+	--color-battleship-gray-700: oklch(52.405% 0.05699 130.28);
+	--color-battleship-gray-800: oklch(44.403% 0.04597 130.37);
+	--color-battleship-gray-900: oklch(35.997% 0.03573 129.64);
+	--color-battleship-gray-950: oklch(31.622% 0.02958 129.57);
 }
 
 @layer base {
-  /*
+	/*
     The default border color has changed to `currentColor` in Tailwind CSS v4,
     so we've added these compatibility styles to make sure everything still
     looks the same as it did with Tailwind CSS v3.
@@ -61,27 +76,31 @@
     If we ever want to remove these styles, we need to add an explicit border
     color utility to any element that depends on these defaults.
   */
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-color-gray-200, currentColor);
-  }
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--color-color-gray-200, currentColor);
+	}
 
-  input,
-  select {
-    border-width: 1px;
-    border-radius: 0.375rem;
-    border-color: var(--color-chestnut-rose-400);
-  }
+	input,
+	select {
+		border-width: 1px;
+		border-radius: 0.375rem;
+		border-color: var(--color-new-orleans-700);
+	}
 
-  input:focus,
-  select:focus {
-    outline-color: var(--color-chestnut-rose-400);
-  }
+	button {
+		border-color: var(--color-new-orleans-700);
+	}
 
-  input[type='checkbox'] {
-    accent-color: var(--color-chestnut-rose-400);
-  }
+	input:focus,
+	select:focus {
+		outline-color: var(--color-new-orleans-700);
+	}
+
+	input[type='checkbox'] {
+		accent-color: var(--color-new-orleans-700);
+	}
 }

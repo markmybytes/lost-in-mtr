@@ -111,7 +111,7 @@
 			<div class="flex justify-between text-xs">
 				<div class="col-span-2">
 					<p>
-						<span class="text-glacier-600 font-semibold">
+						<span class="text-battleship-gray-700 font-semibold">
 							← {lines[props.line]['terminals']['UP']
 								.map((s) => $t(`station.${s}`))
 								.join($t('common./'))}
@@ -121,7 +121,7 @@
 
 				<div class="col-span-2 text-end">
 					<p>
-						<span class="text-glacier-600 font-semibold">
+						<span class="text-battleship-gray-700 font-semibold">
 							{lines[props.line]['terminals']['DOWN']
 								.map((s) => $t(`station.${s}`))
 								.join($t('common./'))} →
@@ -156,7 +156,7 @@
 	</div>
 
 	<div class="mt-1 flex flex-col gap-x-3">
-		<p class="text-glacier-500/80 text-[0.8rem] md:text-sm">
+		<p class="text-battleship-gray-400 text-[0.8rem] md:text-sm">
 			<span>㊢ </span>
 			<span>
 				{description}
