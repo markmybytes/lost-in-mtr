@@ -52,7 +52,7 @@
 	});
 </script>
 
-<div class="flex h-full flex-col gap-y-4 px-2 py-6 sm:flex-col-reverse md:py-2">
+<div class="flex h-full flex-col gap-y-4 sm:flex-col-reverse">
 	<div class="flex h-0 grow flex-col gap-y-4 overflow-y-auto rounded-lg bg-white/70 p-2">
 		{#each results as result}
 			<Line {...result} codes={{ ...inputs }}></Line>

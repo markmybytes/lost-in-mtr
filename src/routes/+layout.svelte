@@ -59,8 +59,10 @@
 		</ul>
 	</div>
 
-	<!-- <main style="height: calc(100% - 52px);"> -->
-	<main class="h-full">
+	<main
+		class="5 h-full px-2 pt-5"
+		style="padding-bottom: max(env(safe-area-inset-bottom), calc(var(--spacing)* 5));"
+	>
 		{@render children()}
 	</main>
 </div>
