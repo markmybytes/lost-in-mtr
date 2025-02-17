@@ -31,9 +31,9 @@
 
 	const doors = $derived.by(() => {
 		if ((props.line == 'EAL' && props.codes.carriage.includes('F')) || props.line == 'AEL') {
-			return [1, 2];
+			return [2, 1];
 		} else {
-			return [1, 2, 3, 4, 5];
+			return [5, 4, 3, 2, 1];
 		}
 	});
 
@@ -98,7 +98,7 @@
 			style:border-color={lineColor}
 		>
 			<div class="flex justify-around">
-				{#each doors.toReversed() as i}
+				{#each doors as i}
 					<Door
 						active={(['D', 'B'].includes(props.codes.sides ?? '') && props.codes.door === i) ||
 							(!props.codes.sides && props.codes.door === i)}
@@ -131,7 +131,7 @@
 			</div>
 
 			<div class="flex justify-around">
-				{#each doors.toReversed() as i}
+				{#each doors as i}
 					<Door
 						active={(['U', 'A'].includes(props.codes.sides ?? '') && props.codes.door === i) ||
 							(!props.codes.sides && props.codes.door === i)}
