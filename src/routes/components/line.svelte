@@ -8,6 +8,7 @@
 	import ClipboardIcon from '$lib/icons/ClipboardIcon.svelte';
 	import WhatsappIcon from '$lib/icons/WhatsappIcon.svelte';
 	import TelegramIcon from '$lib/icons/TelegramIcon.svelte';
+	import SymmetryVerticalIcon from '$lib/icons/SymmetryVerticalIcon.svelte';
 
 	let props: {
 		line: keyof typeof lines;
@@ -22,6 +23,8 @@
 
 	/** Train driection, `true` means up/inbound direction otherwise down/outbound direction */
 	let inbound: boolean = $state(false);
+
+	let flip: boolean = $state(false);
 
 	// if matching results are updated and the fade-out transition is still in progress,
 	// the DOM component will be reused, which the line color will not be updated.
@@ -62,30 +65,48 @@
 	const description = $derived(
 		`${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: doorNumber || -1 } as any)}`
 	);
+
+	function appenArrow(direction: 'UP' | 'DOWN') {
+		let text = lines[props.line]['terminals'][direction]
+			.map((s) => $t(`station.${s}`))
+			.join($t('common./'));
+
+		if (!flip) {
+			return direction == 'UP' ? `← ${text}` : `${text} →`;
+		} else {
+			return direction == 'UP' ? `${text} →` : `← ${text}`;
+		}
+	}
 </script>
 
 <div class="flex flex-col gap-y-2 rounded border border-gray-200 p-2" transition:fade>
-	<div class="flex items-center gap-x-3">
-		<span
-			class="h-6 rounded-sm bg-blue-100 px-2 text-nowrap"
-			style:background-color={lineColor}
-			style:color={textColor(lineColor)}
-		>
-			{$t(`line.${props.line}`)}
-		</span>
-
-		<div class="flex items-center">
-			<button
-				class="me-1 h-5 rounded bg-gray-300 px-1 text-center text-gray-600"
-				onclick={() => (inbound = !inbound)}
+	<div class="flex items-center justify-between gap-x-3">
+		<div class="flex min-w-0 gap-x-2">
+			<span
+				class="h-6 rounded-sm bg-blue-100 px-2 text-nowrap"
+				style:background-color={lineColor}
+				style:color={textColor(lineColor)}
 			>
-				<ArrowLeftRight width={13} height={13}></ArrowLeftRight>
-			</button>
+				{$t(`line.${props.line}`)}
+			</span>
 
-			<p>
-				{`${$t('common.to')} ${destination}`}
-			</p>
+			<div class="flex min-w-0 items-center">
+				<button
+					class="me-1 h-5 rounded bg-gray-300 px-1 text-center text-gray-600"
+					onclick={() => (inbound = !inbound)}
+				>
+					<ArrowLeftRight width={13} height={13}></ArrowLeftRight>
+				</button>
+
+				<p class="truncate">
+					{`${$t('common.to')} ${destination}`}
+				</p>
+			</div>
 		</div>
+
+		<button type="button" onclick={() => (flip = !flip)}>
+			<SymmetryVerticalIcon></SymmetryVerticalIcon>
+		</button>
 	</div>
 
 	<div>
@@ -99,7 +120,7 @@
 			class:border-e-2={props.position == props.formation.length}
 			style:border-color={lineColor}
 		>
-			<div class="flex justify-around">
+			<div class="flex justify-around" class:flex-row-reverse={flip}>
 				{#each doors as i}
 					<Door
 						active={(['D', 'B'].includes(props.codes.sides ?? '') && props.codes.door === i) ||
@@ -110,29 +131,35 @@
 			</div>
 
 			<!-- direction marker -->
-			<div class="flex justify-between text-xs">
-				<div class="col-span-2">
-					<p>
-						<span class="text-battleship-gray-700 font-semibold">
-							← {lines[props.line]['terminals']['UP']
-								.map((s) => $t(`station.${s}`))
-								.join($t('common./'))}
-						</span>
-					</p>
+			<div class="text-battleship-gray-700 flex justify-between gap-x-1 text-xs">
+				<span>←</span>
+
+				<div class="flex grow justify-between" class:flex-row-reverse={flip}>
+					<div class="col-span-2">
+						<p>
+							<span class=" font-semibold">
+								{lines[props.line]['terminals']['UP']
+									.map((s) => $t(`station.${s}`))
+									.join($t('common./'))}
+							</span>
+						</p>
+					</div>
+
+					<div class="col-span-2 text-end">
+						<p>
+							<span class="font-semibold">
+								{lines[props.line]['terminals']['DOWN']
+									.map((s) => $t(`station.${s}`))
+									.join($t('common./'))}
+							</span>
+						</p>
+					</div>
 				</div>
 
-				<div class="col-span-2 text-end">
-					<p>
-						<span class="text-battleship-gray-700 font-semibold">
-							{lines[props.line]['terminals']['DOWN']
-								.map((s) => $t(`station.${s}`))
-								.join($t('common./'))} →
-						</span>
-					</p>
-				</div>
+				<span>→</span>
 			</div>
 
-			<div class="flex justify-around">
+			<div class="flex justify-around" class:flex-row-reverse={flip}>
 				{#each doors as i}
 					<Door
 						active={(['U', 'A'].includes(props.codes.sides ?? '') && props.codes.door === i) ||
@@ -144,7 +171,7 @@
 		</div>
 	</div>
 
-	<div class="flex justify-around gap-x-0.5 overflow-y-auto">
+	<div class="flex justify-around gap-x-0.5 overflow-y-auto" class:flex-row-reverse={flip}>
 		{#each props.formation as stock}
 			<button
 				class="rounded-xs border px-0.5 font-mono text-[0.7rem]"
