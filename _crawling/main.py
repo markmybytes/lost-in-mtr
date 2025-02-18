@@ -99,8 +99,10 @@ for line, configs in target.items():
     for config in configs:
         web.get(config['url'])
 
-        rows = web.find_elements(By.XPATH,
-                                 f'(//table)[{config['table'] + 1}]//tr')
+        time.sleep(1)
+
+        rows = web.find_elements(
+            By.XPATH, f'(//table)[{config['table'] + 1}]//tr')
 
         try:
             left_dest = web.find_element(
@@ -119,8 +121,6 @@ for line, configs in target.items():
 
         carriages[line].extend(
             utils.parse_formation(formations, '下行' in left_dest))
-
-    time.sleep(1)
 
 
 with open('fleet.json', 'w', encoding='utf-8') as f:
