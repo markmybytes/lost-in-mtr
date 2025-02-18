@@ -3,7 +3,7 @@
 	import DoorColsedIcon from '$lib/icons/DoorColsedIcon.svelte';
 	import TrainLightrailFrontIcon from '$lib/icons/TrainLightrailFrontIcon.svelte';
 	import { t } from '$lib/i18n/translations';
-	import Line from './components/line.svelte';
+	import Line from './components/Line.svelte';
 	import { onMount } from 'svelte';
 	import CarriageInput from './components/CarriageInput.svelte';
 	import { fleetData } from '$lib/utils';

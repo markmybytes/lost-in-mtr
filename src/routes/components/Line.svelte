@@ -2,7 +2,7 @@
 	import { t } from '$lib/i18n/translations';
 	import { textColor } from '$lib/utils';
 	import lines from '$lib/data/lines.json';
-	import Door from './door.svelte';
+	import Door from './Door.svelte';
 	import ArrowLeftRight from '$lib/icons/ArrowLeftRight.svelte';
 	import { fade } from 'svelte/transition';
 	import ClipboardIcon from '$lib/icons/ClipboardIcon.svelte';
