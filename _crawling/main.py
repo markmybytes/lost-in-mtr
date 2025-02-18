@@ -107,6 +107,9 @@ for line, configs in target.items():
             utils.parse_formation(
                 '\n'.join([l.text for l in rows[-1].find_elements(By.CSS_SELECTOR, 'td > ol')]), '下行' in left_dest))
 
+    if len(carriages[line]) == 0:
+        raise RuntimeError(f'crawled nothing for {line}')
+
     time.sleep(1)
 
 
