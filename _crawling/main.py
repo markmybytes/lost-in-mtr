@@ -4,6 +4,7 @@ import time
 import utils
 from fake_useragent import UserAgent
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 option = webdriver.ChromeOptions()
@@ -95,8 +96,12 @@ for line, configs in target.items():
         rows = web.find_elements(By.XPATH,
                                  f'(//table)[{config["table"] + 1}]//tr')
 
-        left_dest = web.find_element(
-            By.XPATH, f'(//table)[{config["table"] + 1}]//tr[contains(string(.), \'往\')]/td').text
+        try:
+            left_dest = web.find_element(
+                By.XPATH, f'(//table)[{config["table"] + 1}]//tr[contains(string(.), \'往\')]/td').text
+        except NoSuchElementException:
+            print(f'Error occurs on line: {line} ({config['url']})')
+            raise RuntimeError(f'incorrect table: {config["table"]}')
 
         carriages[line].extend(
             utils.parse_formation(
