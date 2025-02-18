@@ -6,6 +6,7 @@
 	import Line from './components/line.svelte';
 	import { onMount } from 'svelte';
 	import CarriageInput from './components/CarriageInput.svelte';
+	import { fleetData } from '$lib/utils';
 
 	let fleets: { [key: string]: any } = $state({});
 
@@ -42,13 +43,7 @@
 	});
 
 	onMount(() => {
-		fetch(
-			'https://raw.githubusercontent.com/SuperDumbTM/lost-in-mtr/refs/heads/data/fleet.min.json'
-		)
-			.then((response) => response.json())
-			.then((body) => {
-				fleets = body;
-			});
+		fleetData(false).then((data) => (fleets = data));
 	});
 </script>
 
