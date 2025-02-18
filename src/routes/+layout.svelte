@@ -13,10 +13,10 @@
 
 <div class="m-auto flex h-svh max-w-xl flex-col">
 	<div class="bg-apple-blossom-100 flex justify-between px-3 py-5">
-		<a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
-			<img src="https://flowbite.com/docs/images/logo.svg" class="h-7" alt="Flowbite Logo" />
+		<div class="flex items-center space-x-3 rtl:space-x-reverse">
+			<!-- <img src="" class="h-7" alt="Logo" /> -->
 			<span class="self-center text-lg font-semibold whitespace-nowrap"> 迷失港鐵 </span>
-		</a>
+		</div>
 
 		<ul class="flex items-center gap-x-4">
 			<li>
