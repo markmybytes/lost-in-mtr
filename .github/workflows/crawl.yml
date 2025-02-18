@@ -54,6 +54,11 @@ jobs:
       - name: Create "build" directory
         run: mkdir -p build
 
+      - name: Calculate MD5 checksum
+        run: |
+          md5sum fleet.json | cut -c -32 > fleet.json.md5
+          md5sum  fleet.min.json | cut -c -32 >  fleet.min.json.md5
+
       - name: Copy output to "build" directory
         run: |
           cp \
