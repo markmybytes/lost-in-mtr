@@ -27,10 +27,16 @@ target = {
         'url': 'https://hkrail.fandom.com/wiki/港鐵東鐵綫現代列車',
         'table': 2
     }],
-    'ISL': [{
-        'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車',
-        'table': 10
-    }],
+    'ISL': [
+        {
+            'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車',
+            'table': 10
+        },
+        {
+            'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫中國青島四方製列車',
+            'table': 2
+        },
+    ],
     'KTL': [
         {
             'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車',
