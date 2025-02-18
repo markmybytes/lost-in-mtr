@@ -106,8 +106,9 @@ for line, configs in target.items():
             left_dest = web.find_element(
                 By.XPATH, f'(//table)[{config['table'] + 1}]//tr[contains(string(.), \'往\')]/td').text
         except NoSuchElementException:
-            print(f'Error occurs on line: {line} ({config['url']})')
-            raise RuntimeError(f'incorrect table: {config['table']}')
+            print('Error occurs on line: '
+                  f'{line} ({config['url']}@{config['table']})')
+            raise RuntimeError('incorrect table')
 
         formations = '\n'.join(
             [l.text for l in rows[-1].find_elements(By.CSS_SELECTOR, 'td > ol')])
