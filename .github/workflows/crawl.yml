@@ -58,7 +58,9 @@ jobs:
         run: |
           cp \
           fleet.json \
+          fleet.json.md5 \
           fleet.min.json \
+          fleet.min.json.md5 \
           build/
 
       - name: Update resources
