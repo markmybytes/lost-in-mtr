@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { locale } from '$lib/i18n/translations';
+	import { locale, t } from '$lib/i18n/translations';
 	import CaretDownFillIcon from '$lib/icons/CaretDownFillIcon.svelte';
-	import IocShareIcon from '$lib/icons/IosShareIcon.svelte';
+	import IosShareIcon from '$lib/icons/IosShareIcon.svelte';
 	import Spinner from '$lib/icons/Spinner.svelte';
 	import ThreeDotsVerticalIcon from '$lib/icons/ThreeDotsVerticalIcon.svelte';
 	import { fleetLastUpdate, fleetData, os } from '$lib/utils';
@@ -20,10 +20,10 @@
 
 <div class="flex flex-col gap-y-4">
 	<div class="flex flex-col gap-y-2 rounded bg-white p-2">
-		<h1 class="font-bold">編組資料</h1>
+		<h1 class="font-bold">{$t('setting.fleetData')}</h1>
 
 		<div>
-			<p class="w-1/2">上次更新時間</p>
+			<p class="w-1/2">{$t('setting.updateTime')}</p>
 			<p class="text-gray-400">
 				{#if update.time !== null}
 					{update.time.toLocaleString(locale.get())}
@@ -43,7 +43,7 @@
 				}}
 			>
 				{#if !update.inprogress}
-					更新
+					{$t('setting.update')}
 				{:else}
 					<Spinner class_="h-6 w-8 animate-spin fill-new-orleans-800 text-new-orleans-200"
 					></Spinner>
@@ -53,7 +53,7 @@
 	</div>
 
 	<div class="flex flex-col gap-y-2 rounded bg-white p-2">
-		<h1 class="font-bold">離線模式／安裝</h1>
+		<h1 class="font-bold">{$t('setting.pwaGuideTitle')}</h1>
 
 		<div>
 			<div class="flex w-1/2 gap-x-2">
@@ -71,7 +71,7 @@
 			{#if pwaGuideShow.ios}
 				<p class="text-battleship-gray-800 text-sm" transition:slide={{ duration: 100 }}>
 					在 Safai 中點擊
-					<span class="inline-block"><IocShareIcon></IocShareIcon></span>
+					<span class="inline-block"><IosShareIcon></IosShareIcon></span>
 					按鈕，再點擊「加至主畫面」選項。
 				</p>
 			{/if}
@@ -102,14 +102,16 @@
 
 	<div class="flex flex-col gap-y-3 rounded bg-white p-2">
 		<div class="flex">
-			<p class="w-1/2">源碼／匯報問題</p>
+			<p class="w-1/2">
+				{`${$t('setting.sourceCode')}${$t('common./')}${$t('setting.reportBugs')}`}
+			</p>
 			<a href="https://github.com/SuperDumbTM/lost-in-mtr" class="content-center font-mono"
 				>🔗 Github
 			</a>
 		</div>
 
 		<div class="flex">
-			<p class="w-1/2">編組資料來源</p>
+			<p class="w-1/2">{$t('setting.fleetDataSource')}</p>
 			<a href="https://hkrail.fandom.com/wiki/%E9%A6%96%E9%A0%81" class="content-center"
 				>🔗 香港鐵路大典
 			</a>
