@@ -109,12 +109,15 @@ for line, configs in target.items():
             print(f'Error occurs on line: {line} ({config['url']})')
             raise RuntimeError(f'incorrect table: {config["table"]}')
 
-        carriages[line].extend(
-            utils.parse_formation(
-                '\n'.join([l.text for l in rows[-1].find_elements(By.CSS_SELECTOR, 'td > ol')]), '下行' in left_dest))
+        formations = '\n'.join(
+            [l.text for l in rows[-1].find_elements(By.CSS_SELECTOR, 'td > ol')])
 
-    if len(carriages[line]) == 0:
-        raise RuntimeError(f'crawled nothing for {line}')
+        if (formations == ''):
+            print(f'Empty formation list on line {line} ({config['url']}@)')
+            raise RuntimeError(f'empty formation list {config["table"]}')
+
+        carriages[line].extend(
+            utils.parse_formation(formations, '下行' in left_dest))
 
     time.sleep(1)
 
