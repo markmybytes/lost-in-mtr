@@ -48,7 +48,7 @@
 	}}
 >
 	<input
-		type="text"
+		type="search"
 		class="peer w-full p-0.5"
 		maxlength="4"
 		autocomplete="off"
