@@ -76,7 +76,8 @@ export async function fleetData(nocache: boolean) {
 
 	if (nocache || data === null || localStorage.getItem('fleetsAutoUpdate') == 'true') {
 		await fetch(
-			'https://raw.githubusercontent.com/SuperDumbTM/lost-in-mtr/refs/heads/data/fleet.min.json.md5'
+			'https://raw.githubusercontent.com/SuperDumbTM/lost-in-mtr/refs/heads/data/fleet.min.json.md5',
+			{ cache: 'no-cache' }
 		)
 			.then((response) => response.text())
 			.then((hash) => {
@@ -84,7 +85,8 @@ export async function fleetData(nocache: boolean) {
 					localStorage.setItem('fleetsHash', hash);
 
 					return fetch(
-						'https://raw.githubusercontent.com/SuperDumbTM/lost-in-mtr/refs/heads/data/fleet.min.json'
+						'https://raw.githubusercontent.com/SuperDumbTM/lost-in-mtr/refs/heads/data/fleet.min.json',
+						{ cache: 'no-store' }
 					)
 						.then((response) => response.text())
 						.then((raw) => {
