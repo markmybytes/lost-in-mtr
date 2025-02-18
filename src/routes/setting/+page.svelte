@@ -14,13 +14,30 @@
 
 	let update = $state({
 		time: fleetLastUpdate(),
-		inprogress: false
+		inprogress: false,
+		auto: (localStorage.getItem('fleetsAutoUpdate') ?? 'false') == 'true'
+	});
+
+	$effect(() => {
+		localStorage.setItem('fleetsAutoUpdate', update.auto ? 'true' : 'false');
 	});
 </script>
 
 <div class="flex flex-col gap-y-4">
 	<div class="flex flex-col gap-y-2 rounded bg-white p-2">
 		<h1 class="font-bold">{$t('setting.fleetData')}</h1>
+
+		<div class="flex">
+			<p class="w-1/2">自動更新</p>
+			<div class="w-1/2 text-end text-gray-400">
+				<label class="inline-flex cursor-pointer items-center">
+					<input type="checkbox" class="peer sr-only" bind:checked={update.auto} />
+					<div
+						class="peer peer-checked:bg-new-orleans-500 relative h-6 w-11 rounded-full bg-gray-200 peer-focus:ring-2 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white"
+					></div>
+				</label>
+			</div>
+		</div>
 
 		<div>
 			<p class="w-1/2">{$t('setting.updateTime')}</p>
@@ -39,7 +56,7 @@
 					update.inprogress = true;
 					fleetData(true)
 						.then(() => (update.time = fleetLastUpdate()))
-						.finally(() => (update.inprogress = false));
+						.finally(() => setTimeout(() => (update.inprogress = false), 200));
 				}}
 			>
 				{#if !update.inprogress}

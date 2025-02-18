@@ -74,19 +74,32 @@ export function os() {
 export async function fleetData(nocache: boolean) {
 	let data = localStorage.getItem('fleets');
 
-	if (nocache || data === null) {
+	if (nocache || data === null || localStorage.getItem('fleetsAutoUpdate') == 'true') {
 		await fetch(
-			'https://raw.githubusercontent.com/SuperDumbTM/lost-in-mtr/refs/heads/data/fleet.min.json'
-		).then((response) => {
-			return response.text().then((raw) => {
-				localStorage.setItem('fleets', raw);
-				localStorage.setItem('fleetsTimestamp', Date.now().toString());
-				data = raw;
+			'https://raw.githubusercontent.com/SuperDumbTM/lost-in-mtr/refs/heads/data/fleet.min.json.md5'
+		)
+			.then((response) => response.text())
+			.then((hash) => {
+				if (nocache || hash != localStorage.getItem('fleetsHash')) {
+					localStorage.setItem('fleetsHash', hash);
+
+					return fetch(
+						'https://raw.githubusercontent.com/SuperDumbTM/lost-in-mtr/refs/heads/data/fleet.min.json'
+					)
+						.then((response) => response.text())
+						.then((raw) => {
+							localStorage.setItem('fleets', raw);
+							localStorage.setItem('fleetsTimestamp', Date.now().toString());
+							data = raw;
+						});
+				}
 			});
-		});
 	}
 
-	return JSON.parse(data!);
+	if (data === null) {
+		return null;
+	}
+	return JSON.parse(data);
 }
 
 export function fleetLastUpdate() {
