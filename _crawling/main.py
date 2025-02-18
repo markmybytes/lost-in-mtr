@@ -100,21 +100,21 @@ for line, configs in target.items():
         web.get(config['url'])
 
         rows = web.find_elements(By.XPATH,
-                                 f'(//table)[{config["table"] + 1}]//tr')
+                                 f'(//table)[{config['table'] + 1}]//tr')
 
         try:
             left_dest = web.find_element(
-                By.XPATH, f'(//table)[{config["table"] + 1}]//tr[contains(string(.), \'往\')]/td').text
+                By.XPATH, f'(//table)[{config['table'] + 1}]//tr[contains(string(.), \'往\')]/td').text
         except NoSuchElementException:
             print(f'Error occurs on line: {line} ({config['url']})')
-            raise RuntimeError(f'incorrect table: {config["table"]}')
+            raise RuntimeError(f'incorrect table: {config['table']}')
 
         formations = '\n'.join(
             [l.text for l in rows[-1].find_elements(By.CSS_SELECTOR, 'td > ol')])
 
         if (formations == ''):
             print(f'Empty formation list on line {line} ({config['url']}@)')
-            raise RuntimeError(f'empty formation list {config["table"]}')
+            raise RuntimeError(f'empty formation list {config['table']}')
 
         carriages[line].extend(
             utils.parse_formation(formations, '下行' in left_dest))
