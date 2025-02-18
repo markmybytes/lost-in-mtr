@@ -1,9 +1,9 @@
 {
 	"/": "／",
+	"carNo": "車廂編號",
 	"carNumber": "第 {{number}} 卡",
-	"carriageCode": "車廂編號",
 	"direction": "方向",
-	"doorCode": "車門編號",
+	"doorNo": "車門編號",
 	"flipDirection": "調轉行車方向",
 	"inbound": "上行",
 	"outbound": "下行",

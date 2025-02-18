@@ -1,9 +1,9 @@
 {
 	"/": "/",
+	"carNo": "Car No.",
 	"carNumber": "Car {{number}}",
-	"carriageCode": "Carriage Code",
 	"direction": "Direction",
-	"doorCode": "Door Code",
+	"doorNo": "Door No.",
 	"flipDirection": "Flip Direction",
 	"inbound": "Inbound",
 	"outbound": "Outbound",
