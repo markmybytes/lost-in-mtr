@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import HomeIcon from '$lib/icons/HomeIcon.svelte';
-	import InfoSquareIcon from '$lib/icons/InfoSquareIcon.svelte';
 	import TranslateIcon from '$lib/icons/TranslateIcon.svelte';
 	import '../app.css';
 	import { locale } from '$lib/i18n/translations';
