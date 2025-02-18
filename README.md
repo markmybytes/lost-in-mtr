@@ -38,7 +38,7 @@
 ## 簡介
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/01e0b2dd-657f-40de-b964-50df423f5f1b">
+  <img src="https://github.com/user-attachments/assets/01e0b2dd-657f-40de-b964-50df423f5f1b" alt="project screenshot">
 <p align="right">
 
 迷失港鐵是一個車廂位置定位工具，透過車廂編號及車門編號來尋找你所在的位置。而搜尋結果亦能方便地分享至 Whatsapp 或 Telegram。
@@ -91,17 +91,17 @@ npm install
 ### 搜尋
 
 在主頁的搜尋器內，輸入車門側上的車廂編號及車門編號資料。<br>
-<img src="https://github.com/user-attachments/assets/4cfdf627-e417-41df-9ef2-0b8305e93378">
+<img src="https://github.com/user-attachments/assets/4cfdf627-e417-41df-9ef2-0b8305e93378" alt="search box screenshot">
 
 因為同一個車廂編號可能會被分配至多個車卡，所吻合的結果將會被顯示出來。<br>
-<img src="https://github.com/user-attachments/assets/0893c65b-1940-45c5-a5c7-73d187e7d66d">
+<img src="https://github.com/user-attachments/assets/0893c65b-1940-45c5-a5c7-73d187e7d66d" alt="search result screenshot">
 
 ### 切換方向
 
 每個搜尋結果上均設有
   1. 行車方向切換按鈕（用作選擇列車的行車方向）
   2. 列車方向切換按鈕（用作調轉列車頭尾在屏幕上的顯示方向）
-<img src="https://github.com/user-attachments/assets/94941419-4f1d-4639-803b-726b70ce40bf">
+<img src="https://github.com/user-attachments/assets/94941419-4f1d-4639-803b-726b70ce40bf" alt="buttons demo">
 
 <p align="right">(<a href="#readme-top">回到最頂</a>)</p>
 
