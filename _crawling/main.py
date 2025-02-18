@@ -1,4 +1,3 @@
-import hashlib
 import json
 import time
 
@@ -107,15 +106,7 @@ for line, configs in target.items():
 
 
 with open('fleet.json', 'w', encoding='utf-8') as f:
-    data = json.dumps(carriages, indent=4, sort_keys=True)
-    f.write(data)
-
-    with open('fleet.json.md5', 'w', encoding='utf-8') as g:
-        g.write(hashlib.md5(data.encode()).hexdigest())
+    json.dump(carriages, f, indent=4)
 
 with open('fleet.min.json', 'w', encoding='utf-8') as f:
-    data = json.dumps(carriages, separators=(',', ':'), sort_keys=True)
-    f.write(data)
-
-    with open('fleet.min.json.md5', 'w', encoding='utf-8') as g:
-        g.write(hashlib.md5(data.encode()).hexdigest())
+    json.dump(carriages, f)
