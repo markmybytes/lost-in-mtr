@@ -13,9 +13,13 @@
 	});
 
 	let update = $state({
-		time: fleetLastUpdate(),
+		time: fleetLastUpdate()?.toLocaleString(locale.get()),
 		inprogress: false,
 		auto: (localStorage.getItem('fleetsAutoUpdate') ?? 'false') == 'true'
+	});
+
+	locale.subscribe((lc) => {
+		update.time = fleetLastUpdate()?.toLocaleString(lc);
 	});
 
 	$effect(() => {
@@ -43,7 +47,7 @@
 			<p class="w-1/2">{$t('setting.updateTime')}</p>
 			<p class="text-gray-400">
 				{#if update.time !== null}
-					{update.time.toLocaleString(locale.get())}
+					{update.time}
 				{/if}
 			</p>
 		</div>
@@ -55,7 +59,7 @@
 				onclick={() => {
 					update.inprogress = true;
 					fleetData(true)
-						.then(() => (update.time = fleetLastUpdate()))
+						.then(() => (update.time = fleetLastUpdate()?.toLocaleString(locale.get())))
 						.finally(() => setTimeout(() => (update.inprogress = false), 200));
 				}}
 			>
