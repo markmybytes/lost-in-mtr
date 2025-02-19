@@ -116,6 +116,7 @@
 
 		<div
 			class="flex h-34 w-full flex-col justify-between rounded border-y-2 px-2 py-1"
+			class:flex-col-reverse={flip}
 			class:border-s-2={props.position == 1}
 			class:border-e-2={props.position == props.formation.length}
 			style:border-color={lineColor}
