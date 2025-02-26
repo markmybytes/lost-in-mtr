@@ -48,13 +48,13 @@
 </script>
 
 <div class="flex h-full flex-col gap-y-4 sm:flex-col-reverse">
-	<div class="flex h-0 grow flex-col gap-y-4 overflow-y-auto rounded-lg bg-white/70 p-2">
+	<div class="flex h-0 grow flex-col gap-y-4 overflow-y-auto rounded-lg bg-white/90 p-2">
 		{#each results as result}
 			<Line {...result} codes={{ ...inputs }}></Line>
 		{/each}
 	</div>
 
-	<form class="flex h-34 flex-col justify-center gap-y-4 rounded-lg bg-white/70 p-3">
+	<form class="flex h-34 flex-col justify-center gap-y-4 rounded-lg bg-white/90 p-3">
 		<div class="grid grid-cols-11">
 			<label class="col-span-5 content-center font-medium text-gray-900">
 				<i class="inline-block">

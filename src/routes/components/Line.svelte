@@ -79,7 +79,7 @@
 	}
 </script>
 
-<div class="flex flex-col gap-y-2 rounded border border-gray-200 p-2" transition:fade>
+<div class="border-parchment-600 flex flex-col gap-y-2 rounded border p-2" transition:fade>
 	<div class="flex items-center justify-between gap-x-3">
 		<div class="flex min-w-0 gap-x-2">
 			<span
