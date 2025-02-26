@@ -7,8 +7,11 @@
 	import { onMount } from 'svelte';
 	import CarriageInput from './components/CarriageInput.svelte';
 	import { fleetData } from '$lib/utils';
+	import { assets } from '$app/paths';
 
 	let fleets: { [key: string]: any } = $state({});
+
+	console.log(`${assets}/`);
 
 	const inputs: {
 		carriage: string;
