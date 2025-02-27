@@ -6,9 +6,9 @@
 	import Line from './components/Line.svelte';
 	import { onMount } from 'svelte';
 	import CarriageInput from './components/CarriageInput.svelte';
-	import { fleetData } from '$lib/utils';
+	import { Fleet } from '$lib/data';
 
-	let fleets: { [key: string]: any } = $state({});
+	let fleets: { [key: string]: Array<string> } = $state({});
 
 	const inputs: {
 		carriage: string;
@@ -43,7 +43,11 @@
 	});
 
 	onMount(() => {
-		fleetData(false).then((data) => (fleets = data));
+		Fleet.get(false).then((data) => {
+			if (data) {
+				fleets = data;
+			}
+		});
 	});
 </script>
 

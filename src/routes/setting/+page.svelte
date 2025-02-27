@@ -4,8 +4,9 @@
 	import IosShareIcon from '$lib/icons/IosShareIcon.svelte';
 	import Spinner from '$lib/icons/Spinner.svelte';
 	import ThreeDotsVerticalIcon from '$lib/icons/ThreeDotsVerticalIcon.svelte';
-	import { fleetLastUpdate, fleetData, os } from '$lib/utils';
+	import { Fleet } from '$lib/data';
 	import { slide } from 'svelte/transition';
+	import { os } from '$lib/utils';
 
 	let pwaGuideShow = $state({
 		ios: os() == 'iOS',
@@ -13,18 +14,16 @@
 	});
 
 	let update = $state({
-		time: fleetLastUpdate()?.toLocaleString(locale.get()),
+		time: Fleet.lastUpdateTime()?.toLocaleString(locale.get()),
 		inprogress: false,
-		auto: (localStorage.getItem('fleetsAutoUpdate') ?? 'false') == 'true'
+		auto: Fleet.isAutoUpdate()
 	});
 
 	locale.subscribe((lc) => {
-		update.time = fleetLastUpdate()?.toLocaleString(lc);
+		update.time = Fleet.lastUpdateTime()?.toLocaleString(lc);
 	});
 
-	$effect(() => {
-		localStorage.setItem('fleetsAutoUpdate', update.auto ? 'true' : 'false');
-	});
+	$effect(() => Fleet.setAutoUpdate(update.auto));
 </script>
 
 <div class="flex flex-col gap-y-4">
@@ -58,8 +57,8 @@
 				disabled={update.inprogress}
 				onclick={() => {
 					update.inprogress = true;
-					fleetData(true)
-						.then(() => (update.time = fleetLastUpdate()?.toLocaleString(locale.get())))
+					Fleet.get(true)
+						.then(() => (update.time = Fleet.lastUpdateTime()?.toLocaleString(locale.get())))
 						.finally(() => setTimeout(() => (update.inprogress = false), 200));
 				}}
 			>

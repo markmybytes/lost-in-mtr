@@ -2,9 +2,11 @@
 const userAgent: string = navigator.userAgent || navigator.vendor || window.opera;
 
 /**
- * reference: https://stackoverflow.com/a/5624139
+ * Converts a hex color string to its RGB representation.
+ *
+ * Reference: https://stackoverflow.com/a/5624139
  */
-export function hex2rgb(hex: string) {
+export function hex2rgb(hex: string): { r: number; g: number; b: number } | null {
 	const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
 	hex = hex.replace(shorthandRegex, function (_, r, g, b) {
 		return r + r + g + g + b + b;
@@ -21,13 +23,22 @@ export function hex2rgb(hex: string) {
 }
 
 /**
- * reference: https://stackoverflow.com/a/36888120
+ * Calculates the relative luminance of an RGB color.
+ *
+ * Reference: https://stackoverflow.com/a/36888120
+ *
+ * @returns The relative luminance of the color, ranging from 0 (dark) to 1 (bright).
  */
-export function rgb2lum(r: number, g: number, b: number) {
+export function rgb2lum(r: number, g: number, b: number): number {
 	return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 }
 
-export function textColor(hexcolor: string) {
+/**
+ * Determines the appropriate text color (black or white) based on the luminance of a given hex color.
+ *
+ * @param {string} hexcolor - The hex color string (e.g., '#ff5733').
+ */
+export function textColor(hexcolor: string): string {
 	const rgb = hex2rgb(hexcolor);
 	const lum = rgb === null ? 1 : rgb2lum(rgb.r, rgb.g, rgb.b);
 
@@ -35,9 +46,13 @@ export function textColor(hexcolor: string) {
 }
 
 /**
- * reference: https://stackoverflow.com/a/11381730
+ * Determines whether the current user agent corresponds to a mobile device.
+ *
+ * Reference: https://stackoverflow.com/a/11381730
+ *
+ * @returns Returns true if the user agent indicates a mobile device, and false otherwise.
  */
-export function isMobileUA() {
+export function isMobileUA(): boolean {
 	// @ts-ignore;
 	return (
 		/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(
@@ -50,9 +65,13 @@ export function isMobileUA() {
 }
 
 /**
- * reference: https://stackoverflow.com/a/38241481
+ * Determines the operating system of the user's device based on the user agent string.
+ *
+ * Reference: https://stackoverflow.com/a/38241481
+ *
+ * @returns The name of the operating system or null if the OS cannot be identified.
  */
-export function os() {
+export function os(): string | null {
 	// @ts-ignore;
 	const platform = window.navigator?.userAgentData?.platform || window.navigator.platform;
 
@@ -69,42 +88,4 @@ export function os() {
 	}
 
 	return null;
-}
-
-export async function fleetData(nocache: boolean) {
-	let data = localStorage.getItem('fleets');
-
-	if (nocache || data === null || localStorage.getItem('fleetsAutoUpdate') == 'true') {
-		await fetch(
-			'https://raw.githubusercontent.com/SuperDumbTM/lost-in-mtr/refs/heads/data/fleet.min.json.md5',
-			{ cache: 'no-cache' }
-		)
-			.then((response) => response.text())
-			.then((hash) => {
-				if (nocache || hash != localStorage.getItem('fleetsHash')) {
-					localStorage.setItem('fleetsHash', hash);
-
-					return fetch(
-						'https://raw.githubusercontent.com/SuperDumbTM/lost-in-mtr/refs/heads/data/fleet.min.json',
-						{ cache: 'no-store' }
-					)
-						.then((response) => response.text())
-						.then((raw) => {
-							localStorage.setItem('fleets', raw);
-							localStorage.setItem('fleetsTimestamp', Date.now().toString());
-							data = raw;
-						});
-				}
-			});
-	}
-
-	if (data === null) {
-		return null;
-	}
-	return JSON.parse(data);
-}
-
-export function fleetLastUpdate() {
-	const timestamp = localStorage.getItem('fleetsTimestamp');
-	return timestamp === null ? null : new Date(parseInt(timestamp));
 }
