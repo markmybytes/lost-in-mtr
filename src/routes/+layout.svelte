@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base, assets } from '$app/paths';
+	import { base } from '$app/paths';
 	import HomeIcon from '$lib/icons/HomeIcon.svelte';
 	import TranslateIcon from '$lib/icons/TranslateIcon.svelte';
 	import '../app.css';
@@ -12,10 +12,10 @@
 </script>
 
 <div class="m-auto flex h-svh max-w-xl flex-col">
-	<div class="bg-parchment-700 flex justify-between px-3 py-5">
+	<div class="bg-apple-blossom-600/40 flex justify-between px-3 py-5">
 		<div class="flex items-center space-x-3 rtl:space-x-reverse">
 			<!-- <img src={`${assets}/favicon.svg`} class="h-7" alt="Logo" /> -->
-			<span class="text-new-orleans-100 self-center text-lg font-semibold whitespace-nowrap">
+			<span class="text-new-orleans-400 self-center text-lg font-semibold whitespace-nowrap">
 				迷失港鐵
 			</span>
 		</div>
