@@ -1,7 +1,7 @@
 {
 	"name": "Lost In MTR",
 	"short_name": "迷失港鐵",
-	"description": "以車廂及車門編號來尋找你在港鐵列車上的位置。",
+	"description": "港鐵列車車廂位置搜尋器。透過車廂及車門編號來尋找你在列車上的位置。",
 	"start_url": ".",
 	"icons": [
 		{

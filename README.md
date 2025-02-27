@@ -45,7 +45,7 @@
   <img src="https://github.com/user-attachments/assets/d6e60a13-ae36-4568-ba48-62a04025b3cd" alt="project screenshot">
 <p align="right">
 
-迷失港鐵是一個車廂位置定位工具，透過車廂編號及車門編號來尋找你所在的位置。而搜尋結果亦能方便地分享至 Whatsapp 或 Telegram。
+迷失港鐵是一個車廂位置搜尋工具，透過車廂編號及車門編號來尋找你所在的位置。搜尋結果更可以方便地分享至 Whatsapp 或 Telegram。
 
 而迷失港鐵所利用到的列車編組資料並非來自港鐵官方，因此有可能會出錯或未能尋找新投入服務的列車資訊。
 
