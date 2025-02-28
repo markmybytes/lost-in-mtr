@@ -10,6 +10,8 @@
 
 	let fleets: { [key: string]: Array<string> } = $state({});
 
+	let hasUpdate: boolean = $state(false);
+
 	const inputs: {
 		carriage: string;
 		sides: null | 'U' | 'D' | 'A' | 'B';
@@ -47,11 +49,23 @@
 			if (data) {
 				fleets = data;
 			}
+
+			if (Fleet.shouldCheckUpdate()) {
+				Fleet.hasUpdate().then((result) => {
+					hasUpdate = result.has;
+				});
+			}
 		});
 	});
 </script>
 
 <div class="flex h-full flex-col gap-y-4 sm:flex-col-reverse">
+	{#if hasUpdate}
+		<div class="rounded-lg bg-white/90 p-2">
+			<p class="text-new-orleans-800">🔔有新的編組資料可供更新</p>
+		</div>
+	{/if}
+
 	<div class="flex h-0 grow flex-col gap-y-4 overflow-y-auto rounded-lg bg-white/90 p-2">
 		{#each results as result}
 			<Line {...result} codes={{ ...inputs }}></Line>
