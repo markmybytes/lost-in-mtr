@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import HomeIcon from '$lib/icons/HomeIcon.svelte';
 	import TranslateIcon from '$lib/icons/TranslateIcon.svelte';
 	import '../app.css';
 	import { locale } from '$lib/i18n/translations';
 	import GearIcon from '$lib/icons/GearIcon.svelte';
+	import SearchIcon from '$lib/icons/SearchIcon.svelte';
 
 	let { children } = $props();
 
@@ -22,12 +22,20 @@
 
 		<ul class="flex items-center gap-x-4">
 			<li>
-				<a href={`${base}/`} class="flex h-6 w-8 items-center justify-center">
-					<HomeIcon></HomeIcon>
+				<a
+					href={`${base}/`}
+					class="flex h-6 w-8 items-center justify-center"
+					data-sveltekit-replacestate
+				>
+					<SearchIcon></SearchIcon>
 				</a>
 			</li>
 			<li>
-				<a href={`${base}/setting`} class="flex h-6 w-8 items-center justify-center">
+				<a
+					href={`${base}/setting`}
+					class="flex h-6 w-8 items-center justify-center"
+					data-sveltekit-replacestate
+				>
 					<GearIcon></GearIcon>
 				</a>
 			</li>
