@@ -1,12 +1,10 @@
 <script lang="ts">
 	import lines from '$lib/data/lines.json';
-	import DoorColsedIcon from '$lib/icons/DoorColsedIcon.svelte';
-	import TrainLightrailFrontIcon from '$lib/icons/TrainLightrailFrontIcon.svelte';
 	import { t } from '$lib/i18n/translations';
-	import Line from './components/Line.svelte';
 	import { onMount } from 'svelte';
-	import CarriageInput from './components/CarriageInput.svelte';
 	import { Fleet } from '$lib/data';
+	import { textColor } from '$lib/utils';
+	import CaretRightFillIcon from '$lib/icons/CaretRightFillIcon.svelte';
 
 	let fleets: { [key: string]: Array<string> } = $state({});
 
@@ -44,6 +42,18 @@
 		return matches;
 	});
 
+	const alphabetChoices = $derived.by(() => {
+		return Array.from(
+			new Set(
+				Object.values(fleets).flatMap((lines) =>
+					lines.flatMap((stock) => {
+						return stock.split('-').map((code) => code.charAt(0));
+					})
+				)
+			)
+		).sort();
+	});
+
 	onMount(() => {
 		Fleet.get(false).then((data) => {
 			if (data) {
@@ -59,77 +69,118 @@
 	});
 </script>
 
-<div class="flex h-full flex-col gap-y-4 sm:flex-col-reverse">
+<div class="flex h-full flex-col gap-y-2">
 	{#if hasUpdate}
 		<div class="rounded-lg bg-white/90 p-2">
 			<p class="text-new-orleans-800">🔔有新的編組資料可供更新</p>
 		</div>
 	{/if}
 
-	<div class="flex h-0 grow flex-col gap-y-4 overflow-y-auto rounded-lg bg-white/90 p-2">
+	<div class="flex h-0 grow flex-col overflow-y-auto rounded-lg bg-white/90 p-2">
 		{#each results as result}
-			<Line {...result} codes={{ ...inputs }}></Line>
+			<a
+				href={`/result/${result.line}/${inputs.carriage}`}
+				class="border-new-orleans-900 flex justify-between gap-x-2 py-4 not-first:border-t last:border-b"
+			>
+				<div class="flex flex-col gap-y-2">
+					<div>
+						<button
+							class="h-6.5 rounded-sm bg-blue-100 px-2 text-nowrap"
+							style:background-color={lines[result.line].color}
+							style:color={textColor(lines[result.line].color)}
+						>
+							{$t(`line.${result.line}`)}
+						</button>
+					</div>
+
+					<p>
+						{lines[result.line]['terminals']['UP']
+							.map((s) => $t(`station.${s}`))
+							.join($t('common./'))} ⇄ {lines[result.line]['terminals']['DOWN']
+							.map((s) => $t(`station.${s}`))
+							.join($t('common./'))}
+					</p>
+				</div>
+
+				<button class="w-6">
+					<CaretRightFillIcon></CaretRightFillIcon>
+				</button>
+			</a>
 		{/each}
 	</div>
 
-	<form class="flex h-34 flex-col justify-center gap-y-4 rounded-lg bg-white/90 p-3">
-		<div class="grid grid-cols-11">
-			<label class="col-span-5 content-center font-medium text-gray-900">
-				<i class="inline-block">
-					<TrainLightrailFrontIcon></TrainLightrailFrontIcon>
-				</i>
-				{$t('common.carNo')}
-			</label>
-
-			<CarriageInput
+	<div class="flex flex-col gap-y-2 p-2">
+		<div>
+			<input
+				type="text"
+				class="h-8 w-full bg-white px-2"
+				placeholder="🔎 車廂編號"
 				bind:value={inputs.carriage}
-				options={new Set(
-					Object.values(fleets).flatMap((l: Array<string>) => l.flatMap((s) => s.split('-')))
-				)}
-			></CarriageInput>
+			/>
 		</div>
 
-		<div class="grid grid-cols-11">
-			<label class="col-span-5 content-center font-medium text-gray-900">
-				<i class="inline-block">
-					<DoorColsedIcon></DoorColsedIcon>
-				</i>
-				{$t('common.doorNo')}
-			</label>
+		<div class="flex h-54 gap-x-2">
+			<div class="flex h-full w-2/3 flex-col gap-y-2 text-xl lg:h-36">
+				{#each [['7', '8', '9'], ['4', '5', '6'], ['1', '2', '3']] as numbers}
+					<div class="flex grow gap-x-2">
+						{#each numbers as number}
+							<button
+								class="flex-1 rounded-xs bg-white"
+								onclick={() => {
+									inputs.carriage = inputs.carriage.concat(number);
+								}}
+							>
+								{number}
+							</button>
+						{/each}
+					</div>
+				{/each}
 
-			<div class="col-span-6 flex flex-col gap-2 text-start">
-				<div class="flex gap-x-2">
-					{#each ['U', 'D', 'A', 'B'] as side}
-						<button
-							type="button"
-							class="w-7 rounded border"
-							class:bg-new-orleans-700={inputs.sides == side}
-							class:text-white={inputs.sides == side}
-							onclick={() => {
-								inputs.sides = inputs.sides == side ? null : (side as typeof inputs.sides);
-							}}
-						>
-							{side}
-						</button>
-					{/each}
+				<div class="flex grow gap-x-2">
+					<button
+						class="flex-1 rounded-xs bg-white"
+						onclick={() => {
+							inputs.carriage = '';
+						}}
+					>
+						🧹
+					</button>
+					<button
+						class="flex-1 rounded-xs bg-white"
+						onclick={() => {
+							inputs.carriage = inputs.carriage.concat('0');
+						}}
+					>
+						0
+					</button>
+					<button
+						class="flex-1 rounded-xs bg-white"
+						onclick={() => {
+							inputs.carriage = inputs.carriage.slice(0, -1);
+						}}
+					>
+						⌫
+					</button>
 				</div>
+			</div>
 
-				<div class="flex gap-x-2">
-					{#each [1, 2, 3, 4, 5] as i}
-						<button
-							type="button"
-							class="w-7 rounded border"
-							class:bg-new-orleans-700={inputs.door === i}
-							class:text-white={inputs.door === i}
-							onclick={() => {
-								inputs.door = inputs.door == i ? null : (i as typeof inputs.door);
-							}}
-						>
-							{i}
-						</button>
+			<div class="grow overflow-y-scroll">
+				<div class="grid grow grid-cols-2 gap-1">
+					{#each alphabetChoices as alphabet}
+						<div>
+							<button
+								class="h-12 w-full rounded bg-white disabled:bg-gray-200"
+								onclick={() => {
+									inputs.carriage = inputs.carriage.concat(alphabet);
+								}}
+								disabled={/[a-zA-Z]/i.test(inputs.carriage)}
+							>
+								{alphabet}
+							</button>
+						</div>
 					{/each}
 				</div>
 			</div>
 		</div>
-	</form>
+	</div>
 </div>
