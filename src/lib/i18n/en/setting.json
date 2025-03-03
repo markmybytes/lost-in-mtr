@@ -1,4 +1,5 @@
 {
+	"autoUpdate": "Auto Update",
 	"fleetData": "Fleet Data",
 	"fleetDataSource": "Source of Fleet Data",
 	"pwaGuideTitle": "Offline mode/Install",

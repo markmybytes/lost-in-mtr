@@ -1,4 +1,5 @@
 {
+	"autoUpdate": "自動更新",
 	"fleetData": "編組資料",
 	"fleetDataSource": "編組資料來源",
 	"pwaGuideTitle": "離線模式／安裝",

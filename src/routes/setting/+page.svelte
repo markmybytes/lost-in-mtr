@@ -31,7 +31,7 @@
 		<h1 class="font-bold">{$t('setting.fleetData')}</h1>
 
 		<div class="flex">
-			<p class="w-1/2">自動更新</p>
+			<p class="w-1/2">{$t('setting.autoUpdate')}</p>
 			<div class="w-1/2 text-end text-gray-400">
 				<label class="inline-flex cursor-pointer items-center">
 					<input type="checkbox" class="peer sr-only" bind:checked={update.auto} />
