@@ -12,17 +12,17 @@
 	let hasUpdate: boolean = $state(false);
 
 	const inputs: {
-		carriage: string;
-		sides: null | 'U' | 'D' | 'A' | 'B';
-		door: null | 1 | 2 | 3 | 4 | 5;
+		stockNumber: string;
+		doorSide: null | 'U' | 'D' | 'A' | 'B';
+		doorNumber: null | 1 | 2 | 3 | 4 | 5;
 	} = $state({
-		carriage: '',
-		sides: null,
-		door: null
+		stockNumber: '',
+		doorSide: null,
+		doorNumber: null
 	});
 
 	const results = $derived.by(() => {
-		if (inputs.carriage.length < 4) {
+		if (inputs.stockNumber.length < 4) {
 			return [];
 		}
 
@@ -30,10 +30,10 @@
 		for (const [line, stocks] of Object.entries(fleets)) {
 			for (const stock of stocks) {
 				const stockArr = stock.split(/[-\+]+/);
-				if (stockArr.includes(inputs.carriage)) {
+				if (stockArr.includes(inputs.stockNumber)) {
 					matches.push({
 						line: line as keyof typeof lines,
-						position: stockArr.indexOf(inputs.carriage) + 1,
+						position: stockArr.indexOf(inputs.stockNumber) + 1,
 						formation: stockArr
 					});
 				}
@@ -80,7 +80,7 @@
 	<div class="flex h-0 grow flex-col overflow-y-auto rounded-lg bg-white/90 p-2">
 		{#each results as result}
 			<a
-				href={`${base}/result?line=${result.line}&stockNumber=${inputs.carriage}`}
+				href={`${base}/result?line=${result.line}&stockNumber=${inputs.stockNumber}`}
 				class="border-new-orleans-900 flex justify-between gap-x-2 py-4 not-first:border-t last:border-b"
 			>
 				<div class="flex flex-col gap-y-2">
@@ -116,7 +116,7 @@
 				type="text"
 				class="h-8 w-full bg-white px-2"
 				placeholder="🔎 車廂編號"
-				bind:value={inputs.carriage}
+				bind:value={inputs.stockNumber}
 			/>
 		</div>
 
@@ -128,7 +128,7 @@
 							<button
 								class="flex-1 rounded-xs bg-white"
 								onclick={() => {
-									inputs.carriage = inputs.carriage.concat(number);
+									inputs.stockNumber = inputs.stockNumber.concat(number);
 								}}
 							>
 								{number}
@@ -141,7 +141,7 @@
 					<button
 						class="flex-1 rounded-xs bg-white"
 						onclick={() => {
-							inputs.carriage = '';
+							inputs.stockNumber = '';
 						}}
 					>
 						🧹
@@ -149,7 +149,7 @@
 					<button
 						class="flex-1 rounded-xs bg-white"
 						onclick={() => {
-							inputs.carriage = inputs.carriage.concat('0');
+							inputs.stockNumber = inputs.stockNumber.concat('0');
 						}}
 					>
 						0
@@ -157,7 +157,7 @@
 					<button
 						class="flex-1 rounded-xs bg-white"
 						onclick={() => {
-							inputs.carriage = inputs.carriage.slice(0, -1);
+							inputs.stockNumber = inputs.stockNumber.slice(0, -1);
 						}}
 					>
 						⌫
@@ -172,9 +172,9 @@
 							<button
 								class="h-12 w-full rounded bg-white disabled:bg-gray-200"
 								onclick={() => {
-									inputs.carriage = inputs.carriage.concat(alphabet);
+									inputs.stockNumber = inputs.stockNumber.concat(alphabet);
 								}}
-								disabled={/[a-zA-Z]/i.test(inputs.carriage)}
+								disabled={/[a-zA-Z]/i.test(inputs.stockNumber)}
 							>
 								{alphabet}
 							</button>
