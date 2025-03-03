@@ -3,8 +3,10 @@ import lines from '$lib/data/lines.json';
 import { error } from '@sveltejs/kit';
 import { Fleet } from '$lib/data';
 
-export const load: PageLoad = async ({ params }) => {
-	if (!(params.line in lines)) {
+export const load: PageLoad = async ({ url }) => {
+	if (url.searchParams.get('line') === null || url.searchParams.get('stockNumber') === null) {
+		error(404);
+	} else if (!(url.searchParams.get('line')! in lines)) {
 		error(404);
 	}
 
@@ -12,6 +14,11 @@ export const load: PageLoad = async ({ params }) => {
 	if (fleets === null) {
 		error(500);
 	}
+
+	const params = {
+		line: url.searchParams.get('line') as keyof typeof lines,
+		stockNumber: url.searchParams.get('stockNumber')!
+	};
 
 	for (const stock of fleets[params.line]) {
 		const cars = stock.split(/[-\+]+/);

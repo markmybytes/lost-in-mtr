@@ -5,6 +5,7 @@
 	import { Fleet } from '$lib/data';
 	import { textColor } from '$lib/utils';
 	import CaretRightFillIcon from '$lib/icons/CaretRightFillIcon.svelte';
+	import { base } from '$app/paths';
 
 	let fleets: { [key: string]: Array<string> } = $state({});
 
@@ -79,7 +80,7 @@
 	<div class="flex h-0 grow flex-col overflow-y-auto rounded-lg bg-white/90 p-2">
 		{#each results as result}
 			<a
-				href={`/result/${result.line}/${inputs.carriage}`}
+				href={`${base}/result?line=${result.line}&stockNumber=${inputs.carriage}`}
 				class="border-new-orleans-900 flex justify-between gap-x-2 py-4 not-first:border-t last:border-b"
 			>
 				<div class="flex flex-col gap-y-2">
