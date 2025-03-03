@@ -119,8 +119,8 @@
 			/>
 		</div>
 
-		<div class="flex h-54 gap-x-2">
-			<div class="flex h-full w-2/3 flex-col gap-y-2 text-xl lg:h-36">
+		<div class="flex h-54 gap-x-2 lg:h-44">
+			<div class="flex h-full w-2/3 flex-col gap-y-2 text-xl">
 				{#each [['7', '8', '9'], ['4', '5', '6'], ['1', '2', '3']] as numbers}
 					<div class="flex grow gap-x-2">
 						{#each numbers as number}
