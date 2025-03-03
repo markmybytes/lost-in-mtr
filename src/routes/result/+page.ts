@@ -6,7 +6,7 @@ import { Fleet } from '$lib/data';
 export const load: PageLoad = async ({ url }) => {
 	if (url.searchParams.get('line') === null || url.searchParams.get('stockNumber') === null) {
 		error(404);
-	} else if (!(url.searchParams.get('line')! in lines)) {
+	} else if (!(url.searchParams.get('line')!.toUpperCase() in lines)) {
 		error(404);
 	}
 
@@ -16,8 +16,8 @@ export const load: PageLoad = async ({ url }) => {
 	}
 
 	const params = {
-		line: url.searchParams.get('line') as keyof typeof lines,
-		stockNumber: url.searchParams.get('stockNumber')!
+		line: url.searchParams.get('line')!.toUpperCase() as keyof typeof lines,
+		stockNumber: url.searchParams.get('stockNumber')!.toUpperCase()
 	};
 
 	for (const stock of fleets[params.line]) {
