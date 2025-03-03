@@ -1,7 +1,7 @@
 <script lang="ts">
 	import lines from '$lib/data/lines.json';
 	import { t } from '$lib/i18n/translations';
-	import ArrowLeftRight from '$lib/icons/ArrowLeftRight.svelte';
+	import ArrowLeftRightIcon from '$lib/icons/ArrowLeftRightIcon.svelte';
 	import ClipboardIcon from '$lib/icons/ClipboardIcon.svelte';
 	import DoorColsedIcon from '$lib/icons/DoorColsedIcon.svelte';
 	import SymmetryVerticalIcon from '$lib/icons/SymmetryVerticalIcon.svelte';
@@ -80,7 +80,7 @@
 						class="me-1 h-5 rounded bg-gray-300 px-1 text-center text-gray-600"
 						onclick={() => (inbound = !inbound)}
 					>
-						<ArrowLeftRight width={13} height={13}></ArrowLeftRight>
+						<ArrowLeftRightIcon width={13} height={13}></ArrowLeftRightIcon>
 					</button>
 
 					<p class="truncate">
