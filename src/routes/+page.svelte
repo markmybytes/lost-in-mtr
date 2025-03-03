@@ -64,6 +64,10 @@
 			}
 		});
 	});
+
+	$effect(() => {
+		inputs.stockNumber = inputs.stockNumber.toUpperCase();
+	});
 </script>
 
 <div class="flex h-full flex-col gap-y-2">
