@@ -93,6 +93,7 @@
 
 	button {
 		border-color: var(--color-new-orleans-700);
+		touch-action: manipulation;
 	}
 
 	input:focus,
