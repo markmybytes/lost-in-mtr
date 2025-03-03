@@ -118,11 +118,16 @@
 					</div>
 
 					<!-- direction marker -->
-					<div class="text-battleship-gray-700 flex justify-between gap-x-1 text-sm">
+					<div class="text-battleship-gray-700 flex items-center justify-between gap-x-2">
 						<span>←</span>
 
-						<div class="flex grow justify-between" class:flex-row-reverse={flip}>
+						<div
+							class="flex grow justify-between"
+							class:flex-row-reverse={flip}
+							class:text-end={flip}
+						>
 							<div class="col-span-2">
+								<p class="text-xs">{$t('common.upDirection')}</p>
 								<p>
 									<span class=" font-semibold">
 										{lines[data.params.line as keyof typeof lines]['terminals']['UP']
@@ -132,7 +137,8 @@
 								</p>
 							</div>
 
-							<div class="col-span-2 text-end">
+							<div class="col-span-2 text-end" class:text-start={flip}>
+								<p class="text-xs">{$t('common.downDirection')}</p>
 								<p>
 									<span class="font-semibold">
 										{lines[data.params.line as keyof typeof lines]['terminals']['DOWN']
