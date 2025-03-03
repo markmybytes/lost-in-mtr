@@ -26,16 +26,12 @@
 			return [];
 		}
 
-		const matches = [];
+		const matches: Array<keyof typeof lines> = [];
 		for (const [line, stocks] of Object.entries(fleets)) {
 			for (const stock of stocks) {
 				const stockArr = stock.split(/[-\+]+/);
 				if (stockArr.includes(inputs.stockNumber)) {
-					matches.push({
-						line: line as keyof typeof lines,
-						position: stockArr.indexOf(inputs.stockNumber) + 1,
-						formation: stockArr
-					});
+					matches.push(line as keyof typeof lines);
 				}
 			}
 		}
@@ -78,28 +74,25 @@
 	{/if}
 
 	<div class="flex h-0 grow flex-col overflow-y-auto rounded-lg bg-white/90 p-2">
-		{#each results as result}
+		{#each results as line}
 			<a
-				href={`${base}/result?line=${result.line}&stockNumber=${inputs.stockNumber}`}
+				href={`${base}/result?line=${line}&stockNumber=${inputs.stockNumber}`}
 				class="border-new-orleans-900 flex justify-between gap-x-2 py-4 not-first:border-t last:border-b"
 			>
 				<div class="flex flex-col gap-y-2">
 					<div>
 						<button
 							class="h-6.5 rounded-sm bg-blue-100 px-2 text-nowrap"
-							style:background-color={lines[result.line].color}
-							style:color={textColor(lines[result.line].color)}
+							style:background-color={lines[line].color}
+							style:color={textColor(lines[line].color)}
 						>
-							{$t(`line.${result.line}`)}
+							{$t(`line.${line}`)}
 						</button>
 					</div>
 
 					<p>
-						{lines[result.line]['terminals']['UP']
-							.map((s) => $t(`station.${s}`))
-							.join($t('common./'))} ⇄ {lines[result.line]['terminals']['DOWN']
-							.map((s) => $t(`station.${s}`))
-							.join($t('common./'))}
+						{lines[line]['terminals']['UP'].map((s) => $t(`station.${s}`)).join($t('common./'))} ⇄
+						{lines[line]['terminals']['DOWN'].map((s) => $t(`station.${s}`)).join($t('common./'))}
 					</p>
 				</div>
 
