@@ -64,7 +64,7 @@
 </script>
 
 <div class="flex h-full flex-col gap-y-3">
-	<div class="flex grow flex-col gap-y-5 rounded bg-white p-2">
+	<div class="flex h-0 grow flex-col gap-y-5 overflow-y-auto rounded bg-white p-2">
 		<div class="flex items-center justify-between gap-x-3">
 			<div class="flex min-w-0 gap-x-2">
 				<span
