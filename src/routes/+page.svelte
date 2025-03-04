@@ -70,7 +70,7 @@
 	});
 </script>
 
-<div class="flex h-full flex-col gap-y-2">
+<div class="flex h-full flex-col gap-y-3">
 	{#if hasUpdate}
 		<div class="rounded-lg bg-white/90 p-2">
 			<p class="text-new-orleans-800">🔔有新的編組資料可供更新</p>
@@ -107,7 +107,7 @@
 		{/each}
 	</div>
 
-	<div class="flex flex-col gap-y-2 p-2">
+	<div class="flex flex-col gap-y-2 rounded">
 		<div>
 			<input
 				type="text"
