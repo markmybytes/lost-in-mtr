@@ -4,11 +4,12 @@
 	"carNumber": "Car {{number}}",
 	"direction": "Direction",
 	"doorNo": "Door No.",
+	"downDirection": "Down Direction",
+	"fleetUpdateAvailable": "Fleet data update is available",
 	"flipDirection": "Flip Direction",
 	"inbound": "Inbound",
 	"outbound": "Outbound",
 	"positionDescrTxt": "{{name}} Direction | Car {{car}}{{door:gte; 1:, {{door}}ˢᵗ Door; 2:, {{door}}ⁿᵈ Door; 3:, {{door}}ʳᵈ Door; 4:, {{door}}ᵗʰ Door; default:}}",
 	"to": "To",
-	"downDirection": "Down Direction",
 	"upDirection": "Up Direction"
 }

@@ -73,7 +73,7 @@
 <div class="flex h-full flex-col gap-y-3">
 	{#if hasUpdate}
 		<div class="rounded-lg bg-white/90 p-2">
-			<p class="text-new-orleans-800">🔔有新的編組資料可供更新</p>
+			<p class="text-new-orleans-800">🔔 {$t('common.fleetUpdateAvailable')}</p>
 		</div>
 	{/if}
 
@@ -112,7 +112,7 @@
 			<input
 				type="text"
 				class="h-8 w-full bg-white px-2"
-				placeholder="🔎 車廂編號"
+				placeholder={`🔎 ${$t('common.carNo')}`}
 				bind:value={inputs.stockNumber}
 			/>
 		</div>

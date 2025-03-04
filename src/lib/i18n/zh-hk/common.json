@@ -5,6 +5,7 @@
 	"direction": "方向",
 	"doorNo": "車門編號",
 	"downDirection": "下行方向",
+	"fleetUpdateAvailable": "有新的編組資料可供更新",
 	"flipDirection": "調轉行車方向",
 	"positionDescrTxt": "{{name}}方向 | {{car}}卡{{door:gt; 0:{{door}}門; default:}}",
 	"to": "往",
