@@ -8,6 +8,11 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+
+	type TrainDoor = {
+		side: null | 'U' | 'D' | 'A' | 'B';
+		number: null | 1 | 2 | 3 | 4 | 5;
+	};
 }
 
 export {};

@@ -13,17 +13,13 @@
 
 	let { data }: PageProps = $props();
 
-	/** Train driection, `true` means up/inbound direction otherwise down/outbound direction */
-	let inbound: boolean = $state(false);
+	let inbound: boolean = $state(data.params.inbound);
 
 	let flip: boolean = $state(false);
 
-	const door: { side: null | 'U' | 'D' | 'A' | 'B'; number: null | 1 | 2 | 3 | 4 | 5 } = $state({
-		side: null,
-		number: null
-	});
+	const door: TrainDoor = $state(data.params.door);
 
-	const lineColor = lines[data.params.line as keyof typeof lines]['color'];
+	const lineColor = lines[data.params.line]['color'];
 
 	const doors = $derived.by(() => {
 		if (
@@ -46,14 +42,14 @@
 		return inbound ? ((5 - door.number) % 5) + 1 : door.number;
 	});
 
-	const position = data.formation.indexOf(data.params.stockNumber) + 1;
-
 	const carNumber = $derived.by(() => {
+		const position = data.formation.indexOf(data.params.stockNumber) + 1;
+
 		return inbound ? position : ((data.formation.length - position) % data.formation.length) + 1;
 	});
 
 	const destination = $derived.by(() => {
-		return lines[data.params.line as keyof typeof lines]['terminals'][inbound ? 'UP' : 'DOWN']
+		return lines[data.params.line]['terminals'][inbound ? 'UP' : 'DOWN']
 			.map((s) => $t(`station.${s}`))
 			.join($t('common./'));
 	});
@@ -103,8 +99,8 @@
 				<div
 					class="flex h-50 w-full flex-col justify-between rounded border-y-2 px-2 py-1"
 					class:flex-col-reverse={flip}
-					class:border-s-2={position == 1}
-					class:border-e-2={position == data.formation.length}
+					class:border-s-2={carNumber == 1}
+					class:border-e-2={carNumber == data.formation.length}
 					style:border-color={lineColor}
 				>
 					<div class="flex justify-around" class:flex-row-reverse={flip}>
@@ -130,7 +126,7 @@
 								<p class="text-xs">{$t('common.upDirection')}</p>
 								<p>
 									<span class=" font-semibold">
-										{lines[data.params.line as keyof typeof lines]['terminals']['UP']
+										{lines[data.params.line]['terminals']['UP']
 											.map((s) => $t(`station.${s}`))
 											.join($t('common./'))}
 									</span>
@@ -141,7 +137,7 @@
 								<p class="text-xs">{$t('common.downDirection')}</p>
 								<p>
 									<span class="font-semibold">
-										{lines[data.params.line as keyof typeof lines]['terminals']['DOWN']
+										{lines[data.params.line]['terminals']['DOWN']
 											.map((s) => $t(`station.${s}`))
 											.join($t('common./'))}
 									</span>
