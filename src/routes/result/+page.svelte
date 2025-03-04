@@ -23,7 +23,7 @@
 
 	const doors = $derived.by(() => {
 		if (
-			(data.params.line == 'EAL' && data.params.stockNumber.includes('F')) ||
+			(data.params.line == 'EAL' && data.params.vehicleNumber.includes('F')) ||
 			data.params.line == 'AEL'
 		) {
 			return [2, 1];
@@ -42,8 +42,8 @@
 		return inbound ? ((5 - door.number) % 5) + 1 : door.number;
 	});
 
-	/** The absolute car number of the target stock */
-	const carNumberAbs = data.formation.indexOf(data.params.stockNumber) + 1;
+	/** The absolute car number of the target vehicle (start from up to down) */
+	const carNumberAbs = data.formation.indexOf(data.params.vehicleNumber) + 1;
 
 	const carNumber = $derived.by(() => {
 		return inbound
@@ -171,8 +171,8 @@
 				{#each data.formation as stock}
 					<button
 						class="rounded-xs border px-0.5 font-mono text-[0.7rem]"
-						style:background-color={data.params.stockNumber == stock ? lineColor : ''}
-						style:color={data.params.stockNumber == stock ? textColor(lineColor) : ''}
+						style:background-color={data.params.vehicleNumber == stock ? lineColor : ''}
+						style:color={data.params.vehicleNumber == stock ? textColor(lineColor) : ''}
 						style:border-color={lineColor}
 					>
 						{stock}

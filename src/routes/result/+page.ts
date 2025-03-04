@@ -18,7 +18,7 @@ function parseDoorParams(params: URLSearchParams): TrainDoor {
 }
 
 export const load: PageLoad = async ({ url }) => {
-	if (url.searchParams.get('l') === null || url.searchParams.get('sn') === null) {
+	if (url.searchParams.get('l') === null || url.searchParams.get('vn') === null) {
 		error(404);
 	} else if (!(url.searchParams.get('l')!.toUpperCase() in lines)) {
 		error(404);
@@ -31,7 +31,7 @@ export const load: PageLoad = async ({ url }) => {
 
 	const params = {
 		line: url.searchParams.get('l')!.toUpperCase() as keyof typeof lines,
-		stockNumber: url.searchParams.get('sn')!.toUpperCase(),
+		vehicleNumber: url.searchParams.get('vn')!.toUpperCase(),
 		door: parseDoorParams(url.searchParams),
 		/** Train driection, `true` means up/inbound direction otherwise down/outbound direction */
 		inbound: url.searchParams.get('u')?.toLocaleLowerCase() === 'true'
@@ -39,7 +39,7 @@ export const load: PageLoad = async ({ url }) => {
 
 	for (const stock of fleets[params.line]) {
 		const cars = stock.split(/[-\+]+/);
-		if (cars.includes(params.stockNumber)) {
+		if (cars.includes(params.vehicleNumber)) {
 			return {
 				fleets: fleets,
 				formation: cars,
