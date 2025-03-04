@@ -71,7 +71,7 @@ target = {
             'table': 8
         },
         {
-            'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫中國長春製列車',
+            'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫．東涌綫韓製列車',
             'table': 1
         },
     ],
