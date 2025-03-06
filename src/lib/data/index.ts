@@ -1,3 +1,5 @@
+import lines from '$lib/data/lines.json';
+
 /**
  * The `Fleet` namespace provides utility functions for managing fleet data,
  * including auto-update settings and data retrieval from local storage or a remote source.
@@ -102,5 +104,20 @@ export namespace Fleet {
 					oldHash: currentHash
 				};
 			});
+	}
+
+	/**
+	 * Determines the number of doors for a given vehicle based on the specified line and vehicle number.
+	 *
+	 * @returns {number} The number of doors for the specified vehicle.
+	 */
+	export function doorCount(line: keyof typeof lines, vehicleNumber: string) {
+		if ((line == 'EAL' && vehicleNumber.includes('F')) || line == 'AEL') {
+			return 2;
+		} else if (line == 'DRL') {
+			return 3;
+		} else {
+			return 5;
+		}
 	}
 }

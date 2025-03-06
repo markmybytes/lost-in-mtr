@@ -10,6 +10,7 @@
 	import { textColor } from '$lib/utils';
 	import Door from './Door.svelte';
 	import type { PageProps } from './$types';
+	import { Fleet } from '$lib/data';
 
 	let { data }: PageProps = $props();
 
@@ -21,30 +22,20 @@
 
 	const lineColor = lines[data.params.line]['color'];
 
-	const doors = $derived.by(() => {
-		if (
-			(data.params.line == 'EAL' && data.params.vehicleNumber.includes('F')) ||
-			data.params.line == 'AEL'
-		) {
-			return [2, 1];
-		} else if (data.params.line == 'DRL') {
-			return [3, 2, 1];
-		} else {
-			return [5, 4, 3, 2, 1];
-		}
-	});
+	const doorCount = Fleet.doorCount(data.params.line, data.params.vehicleNumber);
 
 	const doorNumber = $derived.by(() => {
-		if (!door.number || door.number > doors.length) {
+		if (!door.number || door.number > doorCount) {
 			return null;
 		}
 
 		return inbound ? ((5 - door.number) % 5) + 1 : door.number;
 	});
 
-	/** The absolute car number of the target vehicle (start from up to down) */
+	/** The absolute car number of the target vehicle, starting from 1 at the "up" side. */
 	const carNumberAbs = data.formation.indexOf(data.params.vehicleNumber) + 1;
 
+	/** A derived value representing the adjusted car number based on the vehicle's direction (inbound or outbound). */
 	const carNumber = $derived.by(() => {
 		return inbound
 			? carNumberAbs
@@ -60,6 +51,35 @@
 	const description = $derived(
 		`${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: doorNumber || -1 } as any)}`
 	);
+
+	const doorPosition = $derived.by(() => {
+		if (door.number === null || door.side === null) {
+			return null;
+		}
+
+		if (['AEL', 'EAL', 'TCL', 'TML'].includes(data.params.line)) {
+			return {
+				side: ['U', 'A'].includes(door.side) ? 'R' : 'L',
+				position: doorCount - door.number
+			};
+		}
+
+		if (
+			(data.stockName == '現代化列車' && [2, 3, 5, 6, 8].includes(carNumberAbs)) ||
+			(data.stockName == '南港島綫中國長春製列車' && [2, 3].includes(carNumberAbs)) ||
+			(data.stockName != '現代化列車' && [3, 5, 7, 8].includes(carNumberAbs))
+		) {
+			return {
+				side: 'A' == door.side ? 'R' : 'L',
+				position: doorCount - door.number
+			};
+		} else {
+			return {
+				side: 'B' == door.side ? 'R' : 'L',
+				position: door.number - 1
+			};
+		}
+	});
 </script>
 
 <div class="flex h-full flex-col gap-y-3">
@@ -111,10 +131,10 @@
 						: 'transparent'}
 				>
 					<div class="flex justify-around" class:flex-row-reverse={flip}>
-						{#each doors as i}
+						{#each Array(doorCount).keys() as i}
 							<Door
-								active={(['D', 'B'].includes(door.side ?? '') && door.number === i) ||
-									(!door.side && door.number === i)}
+								active={(doorPosition?.side == 'L' && doorPosition.position == i) ||
+									(doorPosition?.side == null && doorPosition?.position == i)}
 								color={lineColor}
 							></Door>
 						{/each}
@@ -156,10 +176,10 @@
 					</div>
 
 					<div class="flex justify-around" class:flex-row-reverse={flip}>
-						{#each doors as i}
+						{#each Array(doorCount).keys() as i}
 							<Door
-								active={(['U', 'A'].includes(door.side ?? '') && door.number === i) ||
-									(!door.side && door.number === i)}
+								active={(doorPosition?.side == 'R' && doorPosition.position == i) ||
+									(doorPosition?.side == null && doorPosition?.position == i)}
 								color={lineColor}
 							></Door>
 						{/each}
@@ -223,7 +243,7 @@
 
 		<div class="flex min-w-44 flex-col gap-y-3 text-start">
 			<div class="flex gap-x-2">
-				{#each ['U', 'D', 'A', 'B'] as side}
+				{#each ['EAL', 'TML'].includes(data.params.line) ? ['U', 'D'] : ['A', 'B'] as side}
 					<button
 						type="button"
 						class="w-7 rounded border"
