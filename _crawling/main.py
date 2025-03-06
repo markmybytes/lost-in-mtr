@@ -90,12 +90,14 @@ def clean(text: str, reverse: bool) -> str:
     return text if not reverse else '-'.join(text.split('-')[::-1])
 
 
-def fetch(driver: webdriver.Remote, targets: dict[str, list]) -> dict[str, list]:
-    fleets: dict[str, list] = {}
+def fetch(driver: webdriver.Remote, targets: dict[str, list]):
+    fleets: dict[str, dict[str, list[str]]] = {}
     for line, configs in targets.items():
-        fleets[line] = []
+        fleets[line] = {}
 
         for config in configs:
+            stock_name = config['url'].split('/')[-1].replace('港鐵', '')
+
             driver.get(config['url'])
 
             time.sleep(1)
@@ -110,18 +112,16 @@ def fetch(driver: webdriver.Remote, targets: dict[str, list]) -> dict[str, list]
                 print(f'✗ ...... {line} ({config['url'].split('/')[-1]})')
                 raise RuntimeError('incorrect table')
 
-            formations = [
+            fleets[line][stock_name] = [
                 clean(l.get_attribute('textContent'), '下行' in left_dest)
                 for l in rows[-1].find_elements(By.CSS_SELECTOR, 'td > ol > li')
             ]
 
-            if (len(formations) == 0):
+            if (len(fleets[line][stock_name]) == 0):
                 print(f'✗ ...... {line} ({config['url'].split('/')[-1]})')
                 raise RuntimeError(f'empty formation list {config['table']}')
 
-            fleets[line].extend(formations)
-
-            print(f'✓ ...... {line} ({config['url'].split('/')[-1]})')
+            print(f'✓ ...... {line} ({stock_name})')
 
     return fleets
 
@@ -137,7 +137,7 @@ if __name__ == '__main__':
         fleets = fetch(driver, crawl_targets)
 
         with open('fleet.json', 'w', encoding='utf-8') as f:
-            json.dump(fleets, f, indent=4)
+            json.dump(fleets, f, indent=4, ensure_ascii=False)
 
         with open('fleet.min.json', 'w', encoding='utf-8') as f:
             json.dump(fleets, f, separators=(',', ':'))

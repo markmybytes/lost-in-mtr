@@ -3,6 +3,8 @@
  * including auto-update settings and data retrieval from local storage or a remote source.
  */
 export namespace Fleet {
+	export type Fleets = { [key: string]: { [key: string]: Array<string> } };
+
 	/**
 	 * Checks if auto-update is enabled.
 	 *
@@ -27,7 +29,7 @@ export namespace Fleet {
 	 * @param {boolean} nocache - A flag indicating whether to bypass the cache and fetch fresh data.
 	 * @returns A promise that resolves to an object representing the fleet data or null if no data is available.
 	 */
-	export async function get(nocache: boolean): Promise<{ [key: string]: Array<string> } | null> {
+	export async function get(nocache: boolean): Promise<Fleets | null> {
 		let data = localStorage.getItem('fleets');
 
 		if (nocache || data === null || shouldCheckUpdate()) {

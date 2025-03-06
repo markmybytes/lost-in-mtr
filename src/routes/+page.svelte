@@ -7,7 +7,7 @@
 	import CaretRightFillIcon from '$lib/icons/CaretRightFillIcon.svelte';
 	import { base } from '$app/paths';
 
-	let fleets: { [key: string]: Array<string> } = $state({});
+	let fleets: Fleet.Fleets = $state({});
 
 	let hasUpdate: boolean = $state(false);
 
@@ -28,7 +28,7 @@
 
 		const matches: Array<keyof typeof lines> = [];
 		for (const [line, stocks] of Object.entries(fleets)) {
-			for (const stock of stocks) {
+			for (const stock of Object.values(stocks).flat()) {
 				const stockArr = stock.split(/[-\+]+/);
 				if (stockArr.includes(inputs.stockNumber)) {
 					matches.push(line as keyof typeof lines);
@@ -42,10 +42,12 @@
 	const alphabetChoices = $derived.by(() => {
 		return Array.from(
 			new Set(
-				Object.values(fleets).flatMap((lines) =>
-					lines.flatMap((stock) => {
-						return stock.split('-').map((code) => code.charAt(0));
-					})
+				Object.values(fleets).flatMap((stocks) =>
+					Object.values(stocks)
+						.flat()
+						.flatMap((stock) => {
+							return stock.split('-').map((code) => code.charAt(0));
+						})
 				)
 			)
 		).sort();

@@ -37,14 +37,17 @@ export const load: PageLoad = async ({ url }) => {
 		inbound: url.searchParams.get('u')?.toLocaleLowerCase() === 'true'
 	};
 
-	for (const stock of fleets[params.line]) {
-		const cars = stock.split(/[-\+]+/);
-		if (cars.includes(params.vehicleNumber)) {
-			return {
-				fleets: fleets,
-				formation: cars,
-				params: params
-			};
+	for (const [stockName, stocks] of Object.entries(fleets[params.line])) {
+		for (const stock of stocks) {
+			const cars = stock.split(/[-\+]+/);
+			if (cars.includes(params.vehicleNumber)) {
+				return {
+					stockName: stockName,
+					fleets: fleets,
+					formation: cars,
+					params: params
+				};
+			}
 		}
 	}
 
