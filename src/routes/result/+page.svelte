@@ -237,7 +237,7 @@
 		</div>
 	</div>
 
-	<div class="flex min-h-24 items-center justify-between gap-x-2 rounded bg-white p-2">
+	<div class="flex min-h-28 items-center justify-between gap-x-2 rounded bg-white p-2">
 		<label class="font-medium text-gray-900">
 			<i class="inline-block">
 				<DoorColsedIcon></DoorColsedIcon>
@@ -245,12 +245,12 @@
 			{$t('common.doorNo')}
 		</label>
 
-		<div class="flex min-w-44 flex-col gap-y-3 text-start">
+		<div class="flex min-w-48 flex-col gap-y-3 text-start">
 			<div class="flex gap-x-2">
 				{#each ['EAL', 'TML'].includes(data.params.line) ? ['U', 'D'] : ['A', 'B'] as side}
 					<button
 						type="button"
-						class="w-7 rounded border"
+						class="h-7.5 w-8 rounded border"
 						class:bg-new-orleans-700={door.side == side}
 						class:text-white={door.side == side}
 						onclick={() => {
@@ -268,7 +268,7 @@
 					.map((c) => c + 1) as i}
 					<button
 						type="button"
-						class="w-7 rounded border"
+						class="h-7.5 w-8 rounded border"
 						class:bg-new-orleans-700={door.number === i}
 						class:text-white={door.number === i}
 						onclick={() => {
