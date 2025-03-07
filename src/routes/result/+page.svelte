@@ -137,8 +137,7 @@
 					<div class="flex justify-around" class:flex-row-reverse={flip}>
 						{#each Array(doorCount).keys() as i}
 							<Door
-								active={(doorPosition?.side == 'L' && doorPosition.position == i) ||
-									(doorPosition?.side == null && doorPosition?.position == i)}
+								active={doorPosition?.side == 'L' && doorPosition.position == i}
 								color={lineColor}
 							></Door>
 						{/each}
@@ -182,8 +181,7 @@
 					<div class="flex justify-around" class:flex-row-reverse={flip}>
 						{#each Array(doorCount).keys() as i}
 							<Door
-								active={(doorPosition?.side == 'R' && doorPosition.position == i) ||
-									(doorPosition?.side == null && doorPosition?.position == i)}
+								active={doorPosition?.side == 'R' && doorPosition.position == i}
 								color={lineColor}
 							></Door>
 						{/each}
