@@ -48,12 +48,8 @@
 			.join($t('common./'));
 	});
 
-	const description = $derived(
-		`${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: doorNumber || -1 } as any)}`
-	);
-
 	const doorPosition = $derived.by(() => {
-		if (door.number === null || door.side === null) {
+		if (door.number === null || door.side === null || door.number > doorCount) {
 			return null;
 		}
 
@@ -79,6 +75,14 @@
 				position: door.number - 1
 			};
 		}
+	});
+
+	const description = $derived.by(() => {
+		let d = -1;
+		if (doorPosition !== null) {
+			d = inbound ? doorPosition.position + 1 : doorCount - doorPosition.position;
+		}
+		return `${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: d } as any)}`;
 	});
 </script>
 
@@ -259,7 +263,9 @@
 			</div>
 
 			<div class="flex gap-x-2">
-				{#each [1, 2, 3, 4, 5] as i}
+				{#each Array(doorCount)
+					.keys()
+					.map((c) => c + 1) as i}
 					<button
 						type="button"
 						class="w-7 rounded border"
