@@ -24,14 +24,6 @@
 
 	const doorCount = Fleet.doorCount(data.params.line, data.params.vehicleNumber);
 
-	const doorNumber = $derived.by(() => {
-		if (!door.number || door.number > doorCount) {
-			return null;
-		}
-
-		return inbound ? ((5 - door.number) % 5) + 1 : door.number;
-	});
-
 	/** The absolute car number of the target vehicle, starting from 1 at the "up" side. */
 	const carNumberAbs = data.formation.indexOf(data.params.vehicleNumber) + 1;
 
@@ -48,37 +40,35 @@
 			.join($t('common./'));
 	});
 
-	const description = $derived(
-		`${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: doorNumber || -1 } as any)}`
-	);
-
 	const doorPosition = $derived.by(() => {
-		if (door.number === null || door.side === null) {
+		const flipped =
+			(data.stockName == '現代化列車' && [1, 3, 4, 6, 7].includes(carNumberAbs)) ||
+			(data.stockName == '南港島綫中國長春製列車' && carNumberAbs == 3) ||
+			(data.stockName != '現代化列車' && [1, 2, 4, 6].includes(carNumberAbs));
+
+		if (door.number === null || door.side === null || door.number > doorCount) {
 			return null;
 		}
 
-		if (['AEL', 'EAL', 'TCL', 'TML'].includes(data.params.line)) {
+		if (flipped) {
 			return {
-				side: ['U', 'A'].includes(door.side) ? 'R' : 'L',
-				position: doorCount - door.number
-			};
-		}
-
-		if (
-			(data.stockName == '現代化列車' && [2, 3, 5, 6, 8].includes(carNumberAbs)) ||
-			(data.stockName == '南港島綫中國長春製列車' && [2, 3].includes(carNumberAbs)) ||
-			(data.stockName != '現代化列車' && [3, 5, 7, 8].includes(carNumberAbs))
-		) {
-			return {
-				side: 'A' == door.side ? 'R' : 'L',
-				position: doorCount - door.number
+				side: ['U', 'A'].includes(door.side) ? 'L' : 'R',
+				index: door.number - 1
 			};
 		} else {
 			return {
-				side: 'B' == door.side ? 'R' : 'L',
-				position: door.number - 1
+				side: ['U', 'A'].includes(door.side) ? 'R' : 'L',
+				index: doorCount - door.number
 			};
 		}
+	});
+
+	const description = $derived.by(() => {
+		let d = -1;
+		if (doorPosition !== null) {
+			d = inbound ? doorPosition.index + 1 : doorCount - doorPosition.index;
+		}
+		return `${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: d } as any)}`;
 	});
 </script>
 
@@ -132,10 +122,7 @@
 				>
 					<div class="flex justify-around" class:flex-row-reverse={flip}>
 						{#each Array(doorCount).keys() as i}
-							<Door
-								active={(doorPosition?.side == 'L' && doorPosition.position == i) ||
-									(doorPosition?.side == null && doorPosition?.position == i)}
-								color={lineColor}
+							<Door active={doorPosition?.side == 'L' && doorPosition.index == i} color={lineColor}
 							></Door>
 						{/each}
 					</div>
@@ -177,10 +164,7 @@
 
 					<div class="flex justify-around" class:flex-row-reverse={flip}>
 						{#each Array(doorCount).keys() as i}
-							<Door
-								active={(doorPosition?.side == 'R' && doorPosition.position == i) ||
-									(doorPosition?.side == null && doorPosition?.position == i)}
-								color={lineColor}
+							<Door active={doorPosition?.side == 'R' && doorPosition.index == i} color={lineColor}
 							></Door>
 						{/each}
 					</div>
@@ -205,7 +189,7 @@
 
 		<div class="flex flex-col gap-x-3">
 			<p class="text-battleship-gray-600">
-				<span class="font-bold">㊢&nbsp;</span>
+				<span class="me-1 font-bold select-none">㊢</span>
 				<span>
 					{description}
 				</span>
@@ -233,7 +217,7 @@
 		</div>
 	</div>
 
-	<div class="flex min-h-24 items-center justify-between gap-x-2 rounded bg-white p-2">
+	<div class="flex min-h-28 items-center justify-between gap-x-2 rounded bg-white p-2">
 		<label class="font-medium text-gray-900">
 			<i class="inline-block">
 				<DoorColsedIcon></DoorColsedIcon>
@@ -241,12 +225,12 @@
 			{$t('common.doorNo')}
 		</label>
 
-		<div class="flex min-w-44 flex-col gap-y-3 text-start">
+		<div class="flex min-w-48 flex-col gap-y-3 text-start">
 			<div class="flex gap-x-2">
 				{#each ['EAL', 'TML'].includes(data.params.line) ? ['U', 'D'] : ['A', 'B'] as side}
 					<button
 						type="button"
-						class="w-7 rounded border"
+						class="h-7.5 w-8 rounded border"
 						class:bg-new-orleans-700={door.side == side}
 						class:text-white={door.side == side}
 						onclick={() => {
@@ -259,10 +243,12 @@
 			</div>
 
 			<div class="flex gap-x-2">
-				{#each [1, 2, 3, 4, 5] as i}
+				{#each Array(doorCount)
+					.keys()
+					.map((c) => c + 1) as i}
 					<button
 						type="button"
-						class="w-7 rounded border"
+						class="h-7.5 w-8 rounded border"
 						class:bg-new-orleans-700={door.number === i}
 						class:text-white={door.number === i}
 						onclick={() => {
