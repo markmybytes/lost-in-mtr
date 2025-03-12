@@ -13,7 +13,7 @@ export namespace Fleet {
 	 * @returns Returns true if auto-update is enabled, false otherwise.
 	 */
 	export function isAutoUpdate(): boolean {
-		return localStorage.getItem('fleetsAutoUpdate') || 'false' ? true : false;
+		return (localStorage.getItem('fleetsAutoUpdate') || 'false') === 'true' ? true : false;
 	}
 
 	/**
