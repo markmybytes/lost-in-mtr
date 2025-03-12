@@ -42,9 +42,10 @@
 
 	const doorPosition = $derived.by(() => {
 		const flipped =
-			(data.stockName == '現代化列車' && [1, 3, 4, 6, 7].includes(carNumberAbs)) ||
-			(data.stockName == '南港島綫中國長春製列車' && carNumberAbs == 3) ||
-			(data.stockName != '現代化列車' && [1, 2, 4, 6].includes(carNumberAbs));
+			!['EAL', 'TML', 'TCL'].includes(data.params.line) &&
+			((data.stockName == '現代化列車' && [1, 3, 4, 6, 7].includes(carNumberAbs)) ||
+				(data.stockName == '南港島綫中國長春製列車' && carNumberAbs == 3) ||
+				(data.stockName != '現代化列車' && [1, 2, 4, 6].includes(carNumberAbs)));
 
 		if (door.number === null || door.side === null || door.number > doorCount) {
 			return null;
