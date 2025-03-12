@@ -7,6 +7,9 @@
 	import { Fleet } from '$lib/data';
 	import { slide } from 'svelte/transition';
 	import { os } from '$lib/utils';
+	import type { PageProps } from './$types';
+
+	let { data }: PageProps = $props();
 
 	let pwaGuideShow = $state({
 		ios: os() == 'iOS',
@@ -27,6 +30,16 @@
 </script>
 
 <div class="flex flex-col gap-y-4">
+	<div class="flex items-center justify-between rounded bg-white p-2">
+		<div class="flex gap-x-2">
+			<h1 class="font-bold">版本</h1>
+
+			<p>
+				{data.version ?? data.commitHash.slice(0, 8)}
+			</p>
+		</div>
+	</div>
+
 	<div class="flex flex-col gap-y-2 rounded bg-white p-2">
 		<h1 class="font-bold">{$t('setting.fleetData')}</h1>
 
