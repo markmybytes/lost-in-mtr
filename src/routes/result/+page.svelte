@@ -243,9 +243,8 @@
 			</div>
 
 			<div class="flex gap-x-2">
-				{#each Array(doorCount)
-					.keys()
-					.map((c) => c + 1) as i}
+				<!-- Safari does not support .map calls on ArrayIterator -->
+				{#each Array.from(Array(doorCount).keys()).map((c) => c + 1) as i}
 					<button
 						type="button"
 						class="h-7.5 w-8 rounded border"
