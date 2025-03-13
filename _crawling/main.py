@@ -22,17 +22,17 @@ crawl_targets = {
     }],
     'ISL': [
         {
-            'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車',
+            'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車#港島綫',
             'table': 10
         },
         {
-            'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫中國青島四方製列車',
+            'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫中國青島四方製列車#港島綫',
             'table': 2
         },
     ],
     'KTL': [
         {
-            'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車',
+            'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車#觀塘綫及將軍澳綫',
             'table': 8
         },
         {
@@ -40,7 +40,7 @@ crawl_targets = {
             'table': 1
         },
         {
-            'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫中國青島四方製列車',
+            'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫中國青島四方製列車#觀塘綫',
             'table': 1
         },
     ],
@@ -60,7 +60,7 @@ crawl_targets = {
     ],
     'TKL': [
         {
-            'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車',
+            'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車#觀塘綫及將軍澳綫',
             'table': 8
         },
         {
@@ -79,7 +79,7 @@ crawl_targets = {
         },
     ],
     'TWL': [{
-        'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車',
+        'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車#荃灣綫',
         'table': 9
     }],
 }
