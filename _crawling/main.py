@@ -100,7 +100,7 @@ def fetch(driver: webdriver.Remote, targets: dict[str, list]):
 
             driver.get(config['url'])
 
-            time.sleep(1)
+            time.sleep(3)
 
             rows = driver.find_elements(
                 By.XPATH, f'(//table)[{config['table'] + 1}]//tr')
