@@ -35,7 +35,7 @@ export namespace Fleet {
 		let data = localStorage.getItem('fleets');
 
 		if (nocache || data === null || shouldCheckUpdate()) {
-			hasUpdate().then((result) => {
+			await hasUpdate().then((result) => {
 				if (!nocache && !result.has && data !== null) {
 					return;
 				}
