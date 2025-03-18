@@ -35,9 +35,7 @@
 	});
 
 	const destination = $derived.by(() => {
-		return lines[data.params.line]['terminals'][inbound ? 'UP' : 'DOWN']
-			.map((s) => $t(`station.${s}`))
-			.join($t('common./'));
+		return terminal(inbound ? 'UP' : 'DOWN');
 	});
 
 	const doorPosition = $derived.by(() => {
@@ -65,194 +63,243 @@
 		}
 		return `${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: d } as any)}`;
 	});
+
+	function terminal(direction: 'UP' | 'DOWN') {
+		return lines[data.params.line]['terminals'][direction]
+			.map((s) => $t(`station.${s}`))
+			.join($t('common./'));
+	}
 </script>
 
 <div class="flex h-full flex-col gap-y-3">
-	<div class="flex h-0 grow flex-col gap-y-5 overflow-y-auto rounded bg-white p-2">
-		<div class="flex items-center justify-between gap-x-3">
-			<div class="flex min-w-0 gap-x-2">
-				<span
-					class="h-6 rounded-sm bg-blue-100 px-2 text-nowrap"
-					style:background-color={lineColor}
-					style:color={textColor(lineColor)}
-				>
-					{$t(`line.${data.params.line}`)}
-				</span>
-
-				<div class="flex min-w-0 items-center">
-					<button
-						class="me-1 h-5 rounded bg-gray-300 px-1 text-center text-gray-600"
-						onclick={() => (inbound = !inbound)}
+	<div class="flex h-full flex-col gap-y-3 rounded bg-white p-2">
+		<div class="flex h-0 grow flex-col gap-y-5 overflow-y-auto">
+			<div class="flex items-center justify-between gap-x-3">
+				<div class="flex min-w-0 gap-x-2">
+					<span
+						class="h-6 rounded-sm bg-blue-100 px-2 text-nowrap"
+						style:background-color={lineColor}
+						style:color={textColor(lineColor)}
 					>
-						<ArrowLeftRightIcon width={13} height={13}></ArrowLeftRightIcon>
-					</button>
+						{$t(`line.${data.params.line}`)}
+					</span>
 
-					<p class="truncate">
+					<p class=" min-w-0 items-center truncate">
 						{`${$t('common.to')} ${destination}`}
 					</p>
 				</div>
 			</div>
 
-			<button type="button" onclick={() => (flip = !flip)}>
-				<SymmetryVerticalIcon></SymmetryVerticalIcon>
-			</button>
-		</div>
-
-		<div>
 			<div>
-				<p class="content-center text-center">
-					{$t('common.carNumber', { number: carNumber } as any)}
-				</p>
+				<div>
+					<p class="content-center text-center">
+						{$t('common.carNumber', { number: carNumber } as any)}
+					</p>
 
-				<div
-					class="flex h-50 w-full flex-col justify-between rounded border-2 px-2 py-1"
-					class:flex-col-reverse={flip}
-					style:border-color={lineColor}
-					style:border-left-color={carNumberAbs == (flip ? data.formation.length : 0)
-						? lineColor
-						: 'transparent'}
-					style:border-right-color={carNumberAbs == (flip ? 0 : data.formation.length)
-						? lineColor
-						: 'transparent'}
-				>
-					<div class="flex justify-around" class:flex-row-reverse={flip}>
-						{#each Array(doorCount).keys() as i}
-							<Door active={doorPosition?.side == 'L' && doorPosition.index == i} color={lineColor}
-							></Door>
-						{/each}
-					</div>
-
-					<!-- direction marker -->
-					<div class="text-battleship-gray-700 flex items-center justify-between gap-x-2">
-						<span>←</span>
-
-						<div
-							class="flex grow justify-between"
-							class:flex-row-reverse={flip}
-							class:text-end={flip}
-						>
-							<div class="col-span-2">
-								<p class="text-xs">{$t('common.upDirection')}</p>
-								<p>
-									<span class=" font-semibold">
-										{lines[data.params.line]['terminals']['UP']
-											.map((s) => $t(`station.${s}`))
-											.join($t('common./'))}
-									</span>
-								</p>
-							</div>
-
-							<div class="col-span-2 text-end" class:text-start={flip}>
-								<p class="text-xs">{$t('common.downDirection')}</p>
-								<p>
-									<span class="font-semibold">
-										{lines[data.params.line]['terminals']['DOWN']
-											.map((s) => $t(`station.${s}`))
-											.join($t('common./'))}
-									</span>
-								</p>
-							</div>
+					<div
+						class="flex h-50 w-full flex-col justify-between rounded border-2 px-2 py-1"
+						class:flex-col-reverse={flip}
+						style:border-color={lineColor}
+						style:border-left-color={carNumberAbs == (flip ? data.formation.length : 0)
+							? lineColor
+							: 'transparent'}
+						style:border-right-color={carNumberAbs == (flip ? 0 : data.formation.length)
+							? lineColor
+							: 'transparent'}
+					>
+						<div class="flex justify-around" class:flex-row-reverse={flip}>
+							{#each Array(doorCount).keys() as i}
+								<Door
+									active={doorPosition?.side == 'L' && doorPosition.index == i}
+									color={lineColor}
+								></Door>
+							{/each}
 						</div>
 
-						<span>→</span>
-					</div>
+						<!-- direction marker -->
+						<div class="text-battleship-gray-700 flex items-center justify-between gap-x-2">
+							<span>←</span>
 
-					<div class="flex justify-around" class:flex-row-reverse={flip}>
-						{#each Array(doorCount).keys() as i}
-							<Door active={doorPosition?.side == 'R' && doorPosition.index == i} color={lineColor}
-							></Door>
-						{/each}
+							<div
+								class="flex grow justify-between"
+								class:flex-row-reverse={flip}
+								class:text-end={flip}
+							>
+								<div class="col-span-2">
+									<p class="text-xs">{$t('common.upDirection')}</p>
+									<p>
+										<span class=" font-semibold">
+											{terminal('UP')}
+										</span>
+									</p>
+								</div>
+
+								<div class="col-span-2 text-end" class:text-start={flip}>
+									<p class="text-xs">{$t('common.downDirection')}</p>
+									<p>
+										<span class="font-semibold">
+											{terminal('DOWN')}
+										</span>
+									</p>
+								</div>
+							</div>
+
+							<span>→</span>
+						</div>
+
+						<div class="flex justify-around" class:flex-row-reverse={flip}>
+							{#each Array(doorCount).keys() as i}
+								<Door
+									active={doorPosition?.side == 'R' && doorPosition.index == i}
+									color={lineColor}
+								></Door>
+							{/each}
+						</div>
 					</div>
+				</div>
+
+				<div
+					class="mt-2 flex justify-around gap-x-0.5 overflow-y-auto"
+					class:flex-row-reverse={flip}
+				>
+					{#each data.formation as stock}
+						<button
+							class="rounded-xs border px-0.5 font-mono text-[0.7rem]"
+							style:background-color={data.params.vehicleNumber == stock ? lineColor : ''}
+							style:color={data.params.vehicleNumber == stock ? textColor(lineColor) : ''}
+							style:border-color={lineColor}
+						>
+							{stock}
+						</button>
+					{/each}
 				</div>
 			</div>
 
-			<div class="mt-2 flex justify-around gap-x-0.5 overflow-y-auto" class:flex-row-reverse={flip}>
-				{#each data.formation as stock}
+			<hr class="border-new-orleans-300" />
+
+			<div class="flex flex-col gap-x-3">
+				<p class="text-battleship-gray-600">
+					<span class="me-1 font-bold select-none">㊢</span>
+					<span>
+						{description}
+					</span>
+				</p>
+
+				<div class="flex justify-end gap-x-5 p-1">
+					<a href={`whatsapp://send?text=${encodeURIComponent(description)}`}>
+						<WhatsappIcon></WhatsappIcon>
+					</a>
+
+					<a href={`tg://msg?text=${encodeURIComponent(description)}`}>
+						<TelegramIcon></TelegramIcon>
+					</a>
+
 					<button
-						class="rounded-xs border px-0.5 font-mono text-[0.7rem]"
-						style:background-color={data.params.vehicleNumber == stock ? lineColor : ''}
-						style:color={data.params.vehicleNumber == stock ? textColor(lineColor) : ''}
-						style:border-color={lineColor}
+						type="button"
+						class="cursor-pointer"
+						onclick={() => {
+							navigator.clipboard.writeText(description);
+						}}
 					>
-						{stock}
+						<ClipboardIcon></ClipboardIcon>
 					</button>
-				{/each}
+				</div>
 			</div>
 		</div>
 
-		<hr class="border-new-orleans-300" />
-
-		<div class="flex flex-col gap-x-3">
-			<p class="text-battleship-gray-600">
-				<span class="me-1 font-bold select-none">㊢</span>
-				<span>
-					{description}
-				</span>
-			</p>
-
-			<div class="flex justify-end gap-x-5 p-1">
-				<a href={`whatsapp://send?text=${encodeURIComponent(description)}`}>
-					<WhatsappIcon></WhatsappIcon>
-				</a>
-
-				<a href={`tg://msg?text=${encodeURIComponent(description)}`}>
-					<TelegramIcon></TelegramIcon>
-				</a>
+		<div class="border-t border-gray-200 pt-3 pb-1">
+			<div class="flex flex-wrap justify-end gap-x-4 text-sm">
+				<button
+					class="bg-new-orleans-300 flex h-6 items-center gap-x-2 rounded px-1 text-center text-gray-700"
+					onclick={() => (inbound = !inbound)}
+				>
+					<ArrowLeftRightIcon width={13} height={13}></ArrowLeftRightIcon> 調頭
+				</button>
 
 				<button
-					type="button"
-					class="cursor-pointer"
-					onclick={() => {
-						navigator.clipboard.writeText(description);
-					}}
+					class="bg-new-orleans-300 flex h-6 items-center gap-x-2 rounded px-1.5 text-center text-gray-700"
+					onclick={() => (flip = !flip)}
 				>
-					<ClipboardIcon></ClipboardIcon>
+					<SymmetryVerticalIcon width={13} height={13}></SymmetryVerticalIcon>
 				</button>
 			</div>
 		</div>
 	</div>
 
-	<div class="flex min-h-28 items-center justify-between gap-x-2 rounded bg-white p-2">
-		<label class="font-medium text-gray-900">
-			<i class="inline-block">
-				<DoorColsedIcon></DoorColsedIcon>
-			</i>
-			{$t('common.doorNo')}
-		</label>
-
-		<div class="flex min-w-48 flex-col gap-y-3 text-start">
-			<div class="flex gap-x-2">
-				{#each ['EAL', 'TML'].includes(data.params.line) ? ['U', 'D'] : ['A', 'B'] as side}
-					<button
-						type="button"
-						class="h-7.5 w-8 rounded border"
-						class:bg-new-orleans-700={door.side == side}
-						class:text-white={door.side == side}
-						onclick={() => {
-							door.side = door.side == side ? null : (side as typeof door.side);
-						}}
-					>
-						{side}
-					</button>
-				{/each}
+	<div class="flex min-h-24 flex-col justify-center gap-y-3 rounded bg-white p-2">
+		<div class="grid grid-cols-10 items-center gap-2">
+			<div class="col-span-4 flex">
+				<p class="flex items-center gap-x-2 font-medium text-gray-900">
+					{$t('common.doorNo')}
+				</p>
 			</div>
 
-			<div class="flex gap-x-2">
-				<!-- Safari does not support .map calls on ArrayIterator -->
-				{#each Array.from(Array(doorCount).keys()).map((c) => c + 1) as i}
-					<button
-						type="button"
-						class="h-7.5 w-8 rounded border"
-						class:bg-new-orleans-700={door.number === i}
-						class:text-white={door.number === i}
-						onclick={() => {
-							door.number = door.number == i ? null : (i as typeof door.number);
-						}}
-					>
-						{i}
-					</button>
-				{/each}
+			<div class="col-span-6 flex flex-col gap-y-2">
+				<div class="flex gap-x-2">
+					{#each ['EAL', 'TML'].includes(data.params.line) ? ['U', 'D'] : ['A', 'B'] as side}
+						<button
+							type="button"
+							class="h-6.5 w-7 rounded border"
+							class:bg-new-orleans-700={door.side == side}
+							class:text-white={door.side == side}
+							onclick={() => {
+								door.side = door.side == side ? null : (side as typeof door.side);
+							}}
+						>
+							{side}
+						</button>
+					{/each}
+				</div>
+
+				<div class="flex gap-x-2">
+					<!-- Safari does not support .map calls on ArrayIterator -->
+					{#each Array.from(Array(doorCount).keys()).map((c) => c + 1) as i}
+						<button
+							type="button"
+							class="h-6.5 w-7 rounded border"
+							class:bg-new-orleans-700={door.number === i}
+							class:text-white={door.number === i}
+							onclick={() => {
+								door.number = door.number == i ? null : (i as typeof door.number);
+							}}
+						>
+							{i}
+						</button>
+					{/each}
+				</div>
 			</div>
 		</div>
+
+		<!-- <div class="grid grid-cols-10 items-center gap-2">
+			<div class="col-span-4 flex">
+				<p class="flex items-center gap-x-2 font-medium text-gray-900">行車方向</p>
+			</div>
+
+			<div class="col-span-6 flex flex-col gap-y-2">
+				<div class="flex flex-wrap gap-2">
+					<button
+						class="rounded border px-2 text-nowrap"
+						class:bg-new-orleans-700={!inbound}
+						class:text-white={!inbound}
+						onclick={() => {
+							inbound = false;
+						}}
+					>
+						{terminal('UP')}
+					</button>
+
+					<button
+						class="rounded border px-2 text-nowrap"
+						class:bg-new-orleans-700={inbound}
+						class:text-white={inbound}
+						onclick={() => {
+							inbound = true;
+						}}
+					>
+						{terminal('DOWN')}
+					</button>
+				</div>
+			</div>
+		</div> -->
 	</div>
 </div>
