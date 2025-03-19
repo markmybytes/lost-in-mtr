@@ -43,7 +43,12 @@
 			return null;
 		}
 
-		if (['AEL', 'DRL', 'EAL', 'TCL', 'TML'].includes(data.params.line)) {
+		if (
+			!['AEL', 'DRL', 'EAL', 'TCL', 'TML'].includes(data.params.line) &&
+			((data.stockName == '現代化列車' && [1, 4, 7].includes(carNumberAbs)) ||
+				(data.stockName == '南港島綫中國長春製列車' && carNumberAbs == 3) ||
+				(data.stockName != '現代化列車' && [1, 2, 4, 6].includes(carNumberAbs)))
+		) {
 			return {
 				side: ['U', 'A'].includes(door.side) ? 'L' : 'R',
 				index: door.number - 1
