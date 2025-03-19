@@ -94,9 +94,10 @@ def fetch(driver: webdriver.Remote, targets: dict[str, list]):
     fleets: dict[str, dict[str, list[str]]] = {}
     for line, configs in targets.items():
         fleets[line] = {}
-
+        re.sub
         for config in configs:
-            stock_name = config['url'].split('/')[-1].replace('港鐵', '')
+            re.match(r'\/wiki\/港鐵([^#]*)', config['url'])
+            stock_name = config['url'].split('/')[-1].replace('港鐵', '').split('#')[0]
 
             driver.get(config['url'])
 
