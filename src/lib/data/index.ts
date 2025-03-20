@@ -62,9 +62,10 @@ export namespace Fleet {
 	}
 
 	/**
-	 * Retrieves the last update time of the fleet data from localStorage.
+	 * Retrieves the last update time from local storage.
+	 * If the value is not found, it defaults to the epoch time (0).
 	 *
-	 * @returns Returns a Date object representing the last update time, or null if no timestamp is available.
+	 * @returns Returns a Date object representing the last update time.
 	 */
 	export function lastUpdateTime(): Date {
 		return new Date(localStorage.getItem('fleetsTimestamp') ?? 0);
@@ -126,6 +127,12 @@ export namespace Fleet {
 		}
 	}
 
+	/**
+	 * Retrieves the last update check time from local storage.
+	 * If the value is not found, it defaults to the epoch time (0).
+	 *
+	 * @returns {Date} Returns a Date object representing the last update check time.
+	 */
 	function lastUpdateCheckTime() {
 		return new Date(localStorage.getItem('fleetsLastCheck') ?? 0);
 	}
