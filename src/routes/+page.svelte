@@ -55,16 +55,24 @@
 
 	onMount(() => {
 		Fleet.get(false).then((data) => {
-			if (data) {
-				fleets = data;
-			}
-
-			if (Fleet.shouldCheckUpdate()) {
-				Fleet.hasUpdate().then((result) => {
-					hasUpdate = result.has;
-				});
-			}
+			fleets = data ?? {};
 		});
+
+		if (Fleet.shouldCheckUpdate()) {
+			Fleet.hasUpdate().then((result) => {
+				if (!result.has) {
+					return;
+				}
+
+				if (Fleet.isAutoUpdate()) {
+					Fleet.get(true).then((data) => {
+						fleets = data ?? {};
+					});
+				} else {
+					hasUpdate = true;
+				}
+			});
+		}
 	});
 
 	$effect(() => {

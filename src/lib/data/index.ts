@@ -77,7 +77,11 @@ export namespace Fleet {
 	 * @returns Returns true if an update check should be performed, false otherwise.
 	 */
 	export function shouldCheckUpdate(): boolean {
-		return isAutoUpdate() && (lastUpdateTime()?.getTime() || -1) - Date.now() >= 60 * 60 * 24;
+		return (
+			(isAutoUpdate() && lastUpdateCheckTime() - Date.now() >= 1000 * 60 * 60 * 24) ||
+			(!isAutoUpdate() &&
+				(lastUpdateTime()?.getTime() || -1) - Date.now() >= 1000 * 60 * 60 * 24 * 7)
+		);
 	}
 
 	/**
@@ -97,6 +101,8 @@ export namespace Fleet {
 		)
 			.then((response) => response.text())
 			.then((hash) => {
+				localStorage.setItem('fleetsLastCheck', new Date().toString());
+
 				const currentHash = localStorage.getItem('fleetsHash');
 				return {
 					has: hash !== currentHash,
@@ -119,5 +125,9 @@ export namespace Fleet {
 		} else {
 			return 5;
 		}
+	}
+
+	function lastUpdateCheckTime() {
+		return new Date(localStorage.getItem('fleetsLastCheck') ?? 0).getTime();
 	}
 }
