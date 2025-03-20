@@ -3,7 +3,7 @@ name: Deploy the project to Pages
 on:
   push:
     tags:
-      - "*"
+      - '*'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -17,7 +17,7 @@ permissions:
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: false
 
 jobs:
@@ -34,13 +34,24 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'  # Specify the Node.js version you want to use
+          node-version: '20' # Specify the Node.js version you want to use
+
+      - name: Extract version number from tag name
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            echo "VERSION_NUMBER=${GITHUB_REF##*/}" >> $GITHUB_ENV
+          fi
 
       - name: Install dependencies
         run: npm install
 
       - name: Build the project
-        run: npm run build  # Make sure your package.json has a build script
+        run: |
+          if [[ -n "${VERSION_NUMBER}" ]]; then
+            VITE_BUILD_VERSION=${{ github.ref_name }}; npm run build
+          else
+            npm run build
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
