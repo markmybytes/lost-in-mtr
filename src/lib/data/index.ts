@@ -68,7 +68,8 @@ export namespace Fleet {
 	 * @returns Returns a Date object representing the last update time.
 	 */
 	export function lastUpdateTime(): Date {
-		return new Date(localStorage.getItem('fleetsTimestamp') ?? 0);
+		console.log(localStorage.getItem('fleetsTimestamp'));
+		return new Date(parseInt(localStorage.getItem('fleetsTimestamp') ?? '0'));
 	}
 
 	/**
@@ -134,6 +135,6 @@ export namespace Fleet {
 	 * @returns {Date} Returns a Date object representing the last update check time.
 	 */
 	function lastUpdateCheckTime() {
-		return new Date(localStorage.getItem('fleetsLastCheck') ?? 0);
+		return new Date(parseInt(localStorage.getItem('fleetsLastCheck') ?? '0'));
 	}
 }
