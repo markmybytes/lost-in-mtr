@@ -66,9 +66,8 @@ export namespace Fleet {
 	 *
 	 * @returns Returns a Date object representing the last update time, or null if no timestamp is available.
 	 */
-	export function lastUpdateTime(): Date | null {
-		const timestamp = localStorage.getItem('fleetsTimestamp');
-		return timestamp === null ? null : new Date(parseInt(timestamp));
+	export function lastUpdateTime(): Date {
+		return new Date(localStorage.getItem('fleetsTimestamp') ?? 0);
 	}
 
 	/**
@@ -78,9 +77,9 @@ export namespace Fleet {
 	 */
 	export function shouldCheckUpdate(): boolean {
 		return (
-			(isAutoUpdate() && lastUpdateCheckTime() - Date.now() >= 1000 * 60 * 60 * 24) ||
+			(isAutoUpdate() && lastUpdateCheckTime().getTime() - Date.now() >= 1000 * 60 * 60 * 24) ||
 			(!isAutoUpdate() &&
-				(lastUpdateTime()?.getTime() || -1) - Date.now() >= 1000 * 60 * 60 * 24 * 7)
+				(lastUpdateTime().getTime() || -1) - Date.now() >= 1000 * 60 * 60 * 24 * 7)
 		);
 	}
 
@@ -128,6 +127,6 @@ export namespace Fleet {
 	}
 
 	function lastUpdateCheckTime() {
-		return new Date(localStorage.getItem('fleetsLastCheck') ?? 0).getTime();
+		return new Date(localStorage.getItem('fleetsLastCheck') ?? 0);
 	}
 }
