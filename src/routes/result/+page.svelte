@@ -105,10 +105,10 @@
 						class="flex h-50 w-full flex-col justify-between rounded border-2 px-2 py-1"
 						class:flex-col-reverse={flip}
 						style:border-color={lineColor}
-						style:border-left-color={carNumberAbs == (flip ? data.formation.length : 0)
+						style:border-left-color={carNumberAbs == (flip ? data.formation.length : 1)
 							? lineColor
 							: 'transparent'}
-						style:border-right-color={carNumberAbs == (flip ? 0 : data.formation.length)
+						style:border-right-color={carNumberAbs == (flip ? 1 : data.formation.length)
 							? lineColor
 							: 'transparent'}
 					>
