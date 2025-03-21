@@ -20,7 +20,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/markmybytes/driver-box">
+  <a href="https://github.com/markmybytes/lost-in-mtr">
     <img src="https://github.com/user-attachments/assets/43b3154a-968a-499b-bf7a-a6ec325429b5" alt="Logo" width="80" height="80">
   </a>
 
