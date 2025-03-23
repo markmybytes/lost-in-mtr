@@ -42,7 +42,7 @@
 ## 簡介
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/d6e60a13-ae36-4568-ba48-62a04025b3cd" alt="project screenshot">
+  <img src="https://github.com/user-attachments/assets/1a65f3f7-3a34-4147-98c4-97dd527849fc" alt="project screenshot">
 <p align="right">
 
 [迷失港鐵](https://markmybytes.github.io/lost-in-mtr/)是一個車廂位置搜尋工具，透過車廂編號及車門編號來尋找你所在的位置。搜尋結果更可以方便地分享至 Whatsapp 或 Telegram。
@@ -94,9 +94,9 @@ npm install
 
 ### 搜尋
 
-在主頁的搜尋器內，輸入車門側上的車廂編號及車門編號資料。<br>
+在主頁的搜尋器內，輸入車門側上的車廂編號。<br>
 因為同一個車廂編號可能會被分配至多個車卡，所吻合的結果將會被顯示出來。<br>
-<img src="https://github.com/user-attachments/assets/79252875-bbf1-493d-892e-4a7971aa9b5f" alt="search result screenshot">
+<img src="https://github.com/user-attachments/assets/5be14e50-52e6-45f1-a272-94dc0d90f4f1" alt="search result screenshot">
 
 ### 切換方向
 
