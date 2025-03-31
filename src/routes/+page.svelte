@@ -15,10 +15,12 @@
 		stockNumber: string;
 		doorSide: null | 'U' | 'D' | 'A' | 'B';
 		doorNumber: null | 1 | 2 | 3 | 4 | 5;
+		allUrbanLines: boolean;
 	} = $state({
 		stockNumber: '',
 		doorSide: null,
-		doorNumber: null
+		doorNumber: null,
+		allUrbanLines: false
 	});
 
 	const results = $derived.by(() => {
@@ -37,6 +39,16 @@
 		}
 
 		return matches;
+	});
+
+	const extendedResults = $derived.by(() => {
+		if (inputs.allUrbanLines && results.some((l) => Fleet.ubranLines.includes(l))) {
+			return {
+				reference: results.filter((l) => Fleet.ubranLines.includes(l))[0],
+				lines: Fleet.ubranLines.filter((l) => !results.includes(l))
+			};
+		}
+		return null;
 	});
 
 	const alphabetChoices = $derived.by(() => {
@@ -76,6 +88,7 @@
 	});
 
 	$effect(() => {
+		inputs.allUrbanLines = false;
 		inputs.stockNumber = inputs.stockNumber.toUpperCase();
 	});
 </script>
@@ -88,9 +101,11 @@
 	{/if}
 
 	<div class="flex h-0 grow flex-col overflow-y-auto rounded-lg bg-white/90 p-2">
-		{#each results as line}
+		{#each [...results, ...(extendedResults?.lines ?? [])] as line}
 			<a
-				href={`${base}/result?l=${line}&vn=${inputs.stockNumber}`}
+				href={results.includes(line)
+					? `${base}/result?l=${line}&vn=${inputs.stockNumber}`
+					: `${base}/result?l=${line}&rl=${extendedResults!.reference}&vn=${inputs.stockNumber}`}
 				class="border-new-orleans-900 flex justify-between gap-x-2 py-4 not-first:border-t last:border-b"
 			>
 				<div class="flex flex-col gap-y-2">
@@ -115,6 +130,19 @@
 				</button>
 			</a>
 		{/each}
+
+		{#if results.some((l) => Fleet.ubranLines.includes(l)) && !inputs.allUrbanLines}
+			<div class="border-new-orleans-900 flex justify-end border-t py-4 text-xs md:text-sm">
+				<button
+					class="bg-new-orleans-400 cursor-pointer rounded p-1"
+					onclick={() => {
+						inputs.allUrbanLines = true;
+					}}
+				>
+					顯示其他市區線
+				</button>
+			</div>
+		{/if}
 	</div>
 
 	<div class="flex flex-col gap-y-2 rounded">

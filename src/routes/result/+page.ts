@@ -31,13 +31,14 @@ export const load: PageLoad = async ({ url }) => {
 
 	const params = {
 		line: url.searchParams.get('l')!.toUpperCase() as keyof typeof lines,
+		referenceLine: url.searchParams.get('rl')?.toUpperCase() as null | keyof typeof lines,
 		vehicleNumber: url.searchParams.get('vn')!.toUpperCase(),
 		door: parseDoorParams(url.searchParams),
 		/** Train driection, `true` means up/inbound direction otherwise down/outbound direction */
 		inbound: url.searchParams.get('u')?.toLocaleLowerCase() === 'true'
 	};
 
-	for (const [stockName, stocks] of Object.entries(fleets[params.line])) {
+	for (const [stockName, stocks] of Object.entries(fleets[params.referenceLine ?? params.line])) {
 		for (const stock of stocks) {
 			const cars = stock.split(/[-\+]+/);
 			if (cars.includes(params.vehicleNumber)) {

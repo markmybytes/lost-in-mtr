@@ -5,6 +5,8 @@ import lines from '$lib/data/lines.json';
  * including auto-update settings and data retrieval from local storage or a remote source.
  */
 export namespace Fleet {
+	export const ubranLines = ['KTL', 'TKL', 'TWL', 'ISL'] as Readonly<Array<keyof typeof lines>>;
+
 	export type Fleets = { [key: string]: { [key: string]: Array<string> } };
 
 	/**

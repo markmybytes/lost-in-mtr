@@ -32,10 +32,6 @@ crawl_targets = {
     ],
     'KTL': [
         {
-            'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車#觀塘綫及將軍澳綫',
-            'table': 8
-        },
-        {
             'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫中國長春製列車',
             'table': 1
         },
@@ -97,7 +93,8 @@ def fetch(driver: webdriver.Remote, targets: dict[str, list]):
         re.sub
         for config in configs:
             re.match(r'\/wiki\/港鐵([^#]*)', config['url'])
-            stock_name = config['url'].split('/')[-1].replace('港鐵', '').split('#')[0]
+            stock_name = config['url'].split(
+                '/')[-1].replace('港鐵', '').split('#')[0]
 
             driver.get(config['url'])
 
