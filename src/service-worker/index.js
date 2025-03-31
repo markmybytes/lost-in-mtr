@@ -15,6 +15,19 @@ const ASSETS = [
 	...files // everything in `static`
 ];
 
+self.addEventListener('message', (event) => {
+	if (event.data === 'SKIP_WAITING') {
+		caches
+			.keys()
+			.then(async (keys) => {
+				for (const key of keys) {
+					await caches.delete(key);
+				}
+			})
+			.then(() => self.skipWaiting());
+	}
+});
+
 self.addEventListener('install', (event) => {
 	// Create a new cache and add all files to it
 	async function addFilesToCache() {
