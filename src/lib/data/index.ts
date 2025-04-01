@@ -1,5 +1,4 @@
 import lines from '$lib/data/lines.json';
-import { writable } from 'svelte/store';
 
 /**
  * The `Fleet` namespace provides utility functions for managing fleet data,
@@ -115,6 +114,16 @@ export namespace Fleet {
 	}
 
 	/**
+	 * Clears the fleet data from the browser's local storage.
+	 */
+	export function clear() {
+		localStorage.removeItem('fleets');
+		localStorage.removeItem('fleetsTimestamp');
+		localStorage.removeItem('fleetsHash');
+		localStorage.removeItem('fleetsLastCheck');
+	}
+
+	/**
 	 * Determines the number of doors for a given vehicle based on the specified line and vehicle number.
 	 *
 	 * @returns {number} The number of doors for the specified vehicle.
@@ -139,5 +148,3 @@ export namespace Fleet {
 		return new Date(parseInt(localStorage.getItem('fleetsLastCheck') ?? '0'));
 	}
 }
-
-export const hasUpdate = writable(false);
