@@ -3,7 +3,6 @@
 	import { t } from '$lib/i18n/translations';
 	import ArrowLeftRightIcon from '$lib/icons/ArrowLeftRightIcon.svelte';
 	import ClipboardIcon from '$lib/icons/ClipboardIcon.svelte';
-	import DoorColsedIcon from '$lib/icons/DoorColsedIcon.svelte';
 	import SymmetryVerticalIcon from '$lib/icons/SymmetryVerticalIcon.svelte';
 	import TelegramIcon from '$lib/icons/TelegramIcon.svelte';
 	import WhatsappIcon from '$lib/icons/WhatsappIcon.svelte';
@@ -11,12 +10,15 @@
 	import Door from './Door.svelte';
 	import type { PageProps } from './$types';
 	import { Fleet } from '$lib/data';
+	import { slide, fly } from 'svelte/transition';
 
 	let { data }: PageProps = $props();
 
 	let inbound: boolean = $state(data.params.inbound);
 
 	let flip: boolean = $state(false);
+
+	let showSticker: boolean = $state(false);
 
 	const door: TrainDoor = $state(data.params.door);
 
@@ -77,7 +79,7 @@
 </script>
 
 <div class="flex h-full flex-col gap-y-3">
-	<div class="flex h-full flex-col gap-y-3 rounded bg-white p-2">
+	<div class="flex h-full min-h-72 flex-col gap-y-3 rounded bg-white p-2">
 		<div class="flex h-0 grow flex-col gap-y-5 overflow-y-auto">
 			<div class="flex items-center justify-between gap-x-3">
 				<div class="flex min-w-0 gap-x-2">
@@ -94,139 +96,194 @@
 					</p>
 				</div>
 			</div>
+			{#if !showSticker}
+				<div in:slide>
+					<div>
+						<p class="content-center text-center">
+							{$t('common.carNumber', { number: carNumber } as any)}
+						</p>
 
-			<div>
-				<div>
-					<p class="content-center text-center">
-						{$t('common.carNumber', { number: carNumber } as any)}
-					</p>
-
-					<div
-						class="flex h-50 w-full flex-col justify-between rounded border-2 px-2 py-1"
-						class:flex-col-reverse={flip}
-						style:border-color={lineColor}
-						style:border-left-color={carNumberAbs == (flip ? data.formation.length : 1)
-							? lineColor
-							: 'transparent'}
-						style:border-right-color={carNumberAbs == (flip ? 1 : data.formation.length)
-							? lineColor
-							: 'transparent'}
-					>
-						<div class="flex justify-around" class:flex-row-reverse={flip}>
-							{#each Array(doorCount).keys() as i}
-								<Door
-									active={doorPosition?.side == 'L' && doorPosition.index == i}
-									color={lineColor}
-								></Door>
-							{/each}
-						</div>
-
-						<!-- direction marker -->
-						<div class="text-battleship-gray-700 flex items-center justify-between gap-x-2">
-							<span>←</span>
-
-							<div
-								class="flex grow justify-between"
-								class:flex-row-reverse={flip}
-								class:text-end={flip}
-							>
-								<div class="col-span-2">
-									<p class="text-xs">{$t('common.upDirection')}</p>
-									<p>
-										<span class=" font-semibold">
-											{terminal('UP')}
-										</span>
-									</p>
-								</div>
-
-								<div class="col-span-2 text-end" class:text-start={flip}>
-									<p class="text-xs">{$t('common.downDirection')}</p>
-									<p>
-										<span class="font-semibold">
-											{terminal('DOWN')}
-										</span>
-									</p>
-								</div>
+						<div
+							class="flex h-50 w-full flex-col justify-between rounded border-2 px-2 py-1"
+							class:flex-col-reverse={flip}
+							style:border-color={lineColor}
+							style:border-left-color={carNumberAbs == (flip ? data.formation.length : 1)
+								? lineColor
+								: 'transparent'}
+							style:border-right-color={carNumberAbs == (flip ? 1 : data.formation.length)
+								? lineColor
+								: 'transparent'}
+						>
+							<div class="flex justify-around" class:flex-row-reverse={flip}>
+								{#each Array(doorCount).keys() as i}
+									<Door
+										active={doorPosition?.side == 'L' && doorPosition.index == i}
+										color={lineColor}
+									></Door>
+								{/each}
 							</div>
 
-							<span>→</span>
-						</div>
+							<!-- direction marker -->
+							<div class="text-battleship-gray-700 flex items-center justify-between gap-x-2">
+								<span>←</span>
 
-						<div class="flex justify-around" class:flex-row-reverse={flip}>
-							{#each Array(doorCount).keys() as i}
-								<Door
-									active={doorPosition?.side == 'R' && doorPosition.index == i}
-									color={lineColor}
-								></Door>
-							{/each}
+								<div
+									class="flex grow justify-between"
+									class:flex-row-reverse={flip}
+									class:text-end={flip}
+								>
+									<div class="col-span-2">
+										<p class="text-xs">{$t('common.upDirection')}</p>
+										<p>
+											<span class=" font-semibold">
+												{terminal('UP')}
+											</span>
+										</p>
+									</div>
+
+									<div class="col-span-2 text-end" class:text-start={flip}>
+										<p class="text-xs">{$t('common.downDirection')}</p>
+										<p>
+											<span class="font-semibold">
+												{terminal('DOWN')}
+											</span>
+										</p>
+									</div>
+								</div>
+
+								<span>→</span>
+							</div>
+
+							<div class="flex justify-around" class:flex-row-reverse={flip}>
+								{#each Array(doorCount).keys() as i}
+									<Door
+										active={doorPosition?.side == 'R' && doorPosition.index == i}
+										color={lineColor}
+									></Door>
+								{/each}
+							</div>
 						</div>
+					</div>
+
+					<div
+						class="mt-2 flex justify-around gap-x-0.5 overflow-y-auto"
+						class:flex-row-reverse={flip}
+					>
+						{#each data.formation as stock}
+							<button
+								class="rounded-xs border px-0.5 font-mono text-[0.7rem]"
+								style:background-color={data.params.vehicleNumber == stock ? lineColor : ''}
+								style:color={data.params.vehicleNumber == stock ? textColor(lineColor) : ''}
+								style:border-color={lineColor}
+							>
+								{stock}
+							</button>
+						{/each}
 					</div>
 				</div>
 
-				<div
-					class="mt-2 flex justify-around gap-x-0.5 overflow-y-auto"
-					class:flex-row-reverse={flip}
-				>
-					{#each data.formation as stock}
+				<hr class="border-new-orleans-300" />
+
+				<div class="flex flex-col gap-x-3">
+					<p class="text-battleship-gray-600">
+						<span class="me-1 font-bold select-none">㊢</span>
+						<span>
+							{description}
+						</span>
+					</p>
+
+					<div class="flex justify-end gap-x-5 p-1">
+						<a href={`whatsapp://send?text=${encodeURIComponent(description)}`}>
+							<WhatsappIcon></WhatsappIcon>
+						</a>
+
+						<a href={`tg://msg?text=${encodeURIComponent(description)}`}>
+							<TelegramIcon></TelegramIcon>
+						</a>
+
 						<button
-							class="rounded-xs border px-0.5 font-mono text-[0.7rem]"
-							style:background-color={data.params.vehicleNumber == stock ? lineColor : ''}
-							style:color={data.params.vehicleNumber == stock ? textColor(lineColor) : ''}
-							style:border-color={lineColor}
+							type="button"
+							class="cursor-pointer"
+							onclick={() => {
+								navigator.clipboard.writeText(description);
+							}}
 						>
-							{stock}
+							<ClipboardIcon></ClipboardIcon>
 						</button>
-					{/each}
+					</div>
 				</div>
-			</div>
-
-			<hr class="border-new-orleans-300" />
-
-			<div class="flex flex-col gap-x-3">
-				<p class="text-battleship-gray-600">
-					<span class="me-1 font-bold select-none">㊢</span>
-					<span>
-						{description}
-					</span>
-				</p>
-
-				<div class="flex justify-end gap-x-5 p-1">
-					<a href={`whatsapp://send?text=${encodeURIComponent(description)}`}>
-						<WhatsappIcon></WhatsappIcon>
-					</a>
-
-					<a href={`tg://msg?text=${encodeURIComponent(description)}`}>
-						<TelegramIcon></TelegramIcon>
-					</a>
-
-					<button
-						type="button"
-						class="cursor-pointer"
-						onclick={() => {
-							navigator.clipboard.writeText(description);
-						}}
+			{:else}
+				<div class="w-full max-w-sm self-center" in:fly>
+					<div
+						class="relative flex h-72 items-center justify-center rounded-t-xl bg-[#e8e8e8] font-bold text-[#0e253a]"
 					>
-						<ClipboardIcon></ClipboardIcon>
-					</button>
+						<p>
+							<span class="text-[198px]">{carNumber}</span>
+							<span class="text-[168px]">-</span>
+							<span class="text-[148px]">{doorPosition ? doorPosition.index + 1 : 'x'}</span>
+						</p>
+					</div>
+					<div
+						class="flex flex-col items-center justify-center rounded-b-xl bg-[#0e253a] py-3 text-[#e8e8e8]"
+					>
+						<p class="flex w-full text-5xl">
+							<span class="w-2/5 text-end">車廂</span>
+							<span class="w-1/5 text-center">—</span>
+							<span class="w-2/5">車門</span>
+						</p>
+						<p class="flex w-full justify-center text-4xl">
+							<span class="w-2/5 text-end">Car</span>
+							<span class="w-1/5 text-center">—</span>
+							<span class="w-2/5">Door</span>
+						</p>
+					</div>
 				</div>
-			</div>
+			{/if}
 		</div>
 
 		<div class="border-t border-gray-200 pt-3 pb-1">
-			<div class="flex flex-wrap justify-end gap-x-4 text-sm">
-				<button
-					class="bg-new-orleans-300 flex h-6 items-center gap-x-2 rounded px-1 text-center text-gray-700"
-					onclick={() => (inbound = !inbound)}
-				>
-					<ArrowLeftRightIcon width={13} height={13}></ArrowLeftRightIcon> 調頭
-				</button>
+			<div class="flex flex-wrap justify-between text-sm">
+				<div>
+					<div class="inline-flex items-center gap-2">
+						<label for="switch-component-on" class="cursor-pointer text-sm text-slate-600">
+							{$t('common.carriage')}
+						</label>
 
-				<button
-					class="bg-new-orleans-300 flex h-6 items-center gap-x-2 rounded px-1.5 text-center text-gray-700"
-					onclick={() => (flip = !flip)}
-				>
-					<SymmetryVerticalIcon width={13} height={13}></SymmetryVerticalIcon>
-				</button>
+						<div class="relative inline-block h-5 w-11">
+							<input
+								id="switch-component-on"
+								type="checkbox"
+								class="peer checked:bg-new-orleans-300 h-5 w-11 cursor-pointer appearance-none rounded-full bg-slate-100 transition-colors duration-500"
+								onchange={() => (showSticker = !showSticker)}
+							/>
+							<label
+								for="switch-component-on"
+								class="absolute top-0 left-0 h-5 w-5 cursor-pointer rounded-full border border-slate-300 bg-white shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-slate-800"
+							>
+							</label>
+						</div>
+
+						<label for="switch-component-on" class="cursor-pointer text-sm text-slate-600">
+							{$t('common.platformDoorSticker')}
+						</label>
+					</div>
+				</div>
+
+				<div class="flex gap-x-4">
+					<button
+						class="bg-new-orleans-300 flex h-6 items-center gap-x-2 rounded px-1 text-center text-gray-800"
+						onclick={() => (inbound = !inbound)}
+					>
+						<ArrowLeftRightIcon width={13} height={13}></ArrowLeftRightIcon> 調頭
+					</button>
+
+					<button
+						class="bg-new-orleans-300 flex h-6 items-center gap-x-2 rounded px-1.5 text-center text-gray-800"
+						onclick={() => (flip = !flip)}
+					>
+						<SymmetryVerticalIcon width={13} height={13}></SymmetryVerticalIcon>
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -274,37 +331,5 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- <div class="grid grid-cols-10 items-center gap-2">
-			<div class="col-span-4 flex">
-				<p class="flex items-center gap-x-2 font-medium text-gray-900">行車方向</p>
-			</div>
-
-			<div class="col-span-6 flex flex-col gap-y-2">
-				<div class="flex flex-wrap gap-2">
-					<button
-						class="rounded border px-2 text-nowrap"
-						class:bg-new-orleans-700={!inbound}
-						class:text-white={!inbound}
-						onclick={() => {
-							inbound = false;
-						}}
-					>
-						{terminal('UP')}
-					</button>
-
-					<button
-						class="rounded border px-2 text-nowrap"
-						class:bg-new-orleans-700={inbound}
-						class:text-white={inbound}
-						onclick={() => {
-							inbound = true;
-						}}
-					>
-						{terminal('DOWN')}
-					</button>
-				</div>
-			</div>
-		</div> -->
 	</div>
 </div>
