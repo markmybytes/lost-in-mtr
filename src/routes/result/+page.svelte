@@ -7,7 +7,7 @@
 	import TelegramIcon from '$lib/icons/TelegramIcon.svelte';
 	import WhatsappIcon from '$lib/icons/WhatsappIcon.svelte';
 	import { textColor } from '$lib/utils';
-	import Door from './Door.svelte';
+	import Door from '$lib/components/result/Door.svelte';
 	import type { PageProps } from './$types';
 	import { Fleet } from '$lib/data';
 	import { slide, fly } from 'svelte/transition';
