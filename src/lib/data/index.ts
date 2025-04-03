@@ -21,7 +21,7 @@ export namespace Fleet {
 	/**
 	 * Sets the auto-update preference.
 	 *
-	 * @param {boolean} val - A boolean value indicating whether auto-update should be enabled or disabled.
+	 * @param val - A boolean value indicating whether auto-update should be enabled or disabled.
 	 */
 	export function setAutoUpdate(val: boolean) {
 		localStorage.setItem('fleetsAutoUpdate', val.toString());
@@ -30,7 +30,7 @@ export namespace Fleet {
 	/**
 	 * Retrieves fleet data from localStorage or fetches it from a remote source if necessary.
 	 *
-	 * @param {boolean} nocache - A flag indicating whether to bypass the cache and fetch fresh data.
+	 * @param nocache - A flag indicating whether to bypass the cache and fetch fresh data.
 	 * @returns A promise that resolves to an object representing the fleet data or null if no data is available.
 	 */
 	export async function get(nocache: boolean): Promise<Fleets | null> {
@@ -116,9 +116,9 @@ export namespace Fleet {
 	/**
 	 * Determines the number of doors for a given vehicle based on the specified line and vehicle number.
 	 *
-	 * @returns {number} The number of doors for the specified vehicle.
+	 * @returns The number of doors for the specified vehicle.
 	 */
-	export function doorCount(line: keyof typeof lines, vehicleNumber: string) {
+	export function doorCount(line: keyof typeof lines, vehicleNumber: string): number {
 		if ((line == 'EAL' && vehicleNumber.includes('F')) || line == 'AEL') {
 			return 2;
 		} else if (line == 'DRL') {
@@ -132,9 +132,9 @@ export namespace Fleet {
 	 * Retrieves the last update check time from local storage.
 	 * If the value is not found, it defaults to the epoch time (0).
 	 *
-	 * @returns {Date} Returns a Date object representing the last update check time.
+	 * @returns Returns a Date object representing the last update check time.
 	 */
-	function lastUpdateCheckTime() {
+	function lastUpdateCheckTime(): Date {
 		return new Date(parseInt(localStorage.getItem('fleetsLastCheck') ?? '0'));
 	}
 }
