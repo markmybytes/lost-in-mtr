@@ -36,7 +36,7 @@ export namespace Fleet {
 	export async function get(nocache: boolean): Promise<Fleets | null> {
 		let data = localStorage.getItem('fleets');
 
-		if (nocache || data === null || shouldCheckUpdate()) {
+		if (nocache || data === null || (isAutoUpdate() && shouldCheckUpdate())) {
 			await hasUpdate().then((result) => {
 				if (!nocache && !result.has && data !== null) {
 					return;
@@ -70,7 +70,6 @@ export namespace Fleet {
 	 * @returns Returns a Date object representing the last update time.
 	 */
 	export function lastUpdateTime(): Date {
-		console.log(localStorage.getItem('fleetsTimestamp'));
 		return new Date(parseInt(localStorage.getItem('fleetsTimestamp') ?? '0'));
 	}
 
@@ -81,9 +80,8 @@ export namespace Fleet {
 	 */
 	export function shouldCheckUpdate(): boolean {
 		return (
-			(isAutoUpdate() && lastUpdateCheckTime().getTime() - Date.now() >= 1000 * 60 * 60 * 24) ||
-			(!isAutoUpdate() &&
-				(lastUpdateTime().getTime() || -1) - Date.now() >= 1000 * 60 * 60 * 24 * 7)
+			Date.now() - lastUpdateCheckTime().getTime() >=
+			(isAutoUpdate() ? 1000 * 60 * 60 * 24 * 2 : 1000 * 60 * 60 * 24 * 7)
 		);
 	}
 
@@ -104,7 +102,7 @@ export namespace Fleet {
 		)
 			.then((response) => response.text())
 			.then((hash) => {
-				localStorage.setItem('fleetsLastCheck', new Date().toString());
+				localStorage.setItem('fleetsLastCheck', new Date().getTime().toString());
 
 				const currentHash = localStorage.getItem('fleetsHash');
 				return {

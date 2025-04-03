@@ -95,9 +95,9 @@
 
 <div class="flex h-full flex-col gap-y-3">
 	{#if hasUpdate}
-		<div class="rounded-lg bg-white/90 p-2">
-			<p class="text-new-orleans-800">🔔 {$t('common.fleetUpdateAvailable')}</p>
-		</div>
+		<a href={`${base}/setting`} class="rounded-lg bg-white/90 p-2">
+			<p class="text-new-orleans-900">🔔 {$t('common.fleetUpdateAvailable')}</p>
+		</a>
 	{/if}
 
 	<div class="flex h-0 grow flex-col overflow-y-auto rounded-lg bg-white/90 p-2">
