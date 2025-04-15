@@ -6,10 +6,59 @@
 	import GearIcon from '$lib/icons/GearIcon.svelte';
 	import SearchIcon from '$lib/icons/SearchIcon.svelte';
 	import QuestionLgIcon from '$lib/icons/QuestionLgIcon.svelte';
+	import { dev } from '$app/environment';
+	import { onMount } from 'svelte';
+	import { hasUpdate } from '$lib/data';
 
 	let { children } = $props();
 
 	let showLocalDropdown = $state(false);
+
+	let showUpdate = $state(false);
+
+	hasUpdate.subscribe((yes) => {
+		showUpdate = yes;
+	});
+
+	onMount(() => {
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker
+				.register('./service-worker.js', { type: dev ? 'module' : 'classic' })
+				.then((registration) => {
+					if (registration.waiting) {
+						hasUpdate.set(true);
+					}
+
+					// detect Service Worker update available and wait for it to become installed
+					registration.addEventListener('updatefound', () => {
+						if (registration.installing) {
+							// wait until the new Service worker is actually installed (ready to take over)
+							registration.installing.addEventListener('statechange', () => {
+								if (registration.waiting) {
+									// if there's an existing controller (previous Service Worker), show the prompt
+									if (navigator.serviceWorker.controller) {
+										hasUpdate.set(true);
+									} else {
+										// otherwise it's the first install, nothing to do
+										console.log('Service Worker initialized for the first time');
+									}
+								}
+							});
+						}
+					});
+
+					let refreshing = false;
+
+					// detect controller change and refresh the page
+					navigator.serviceWorker.addEventListener('controllerchange', () => {
+						if (!refreshing) {
+							window.location.reload();
+							refreshing = true;
+						}
+					});
+				});
+		}
+	});
 </script>
 
 <div class="m-auto flex h-svh max-w-xl flex-col">
@@ -83,6 +132,22 @@
 		class="5 h-full px-2 pt-5"
 		style="padding-bottom: max(env(safe-area-inset-bottom), calc(var(--spacing)* 5));"
 	>
+		<div class="flex">
+			<button
+				class="rounded bg-yellow-500"
+				class:hidden={!showUpdate}
+				onclick={() => {
+					if ('serviceWorker' in navigator) {
+						navigator.serviceWorker.getRegistration().then((registration) => {
+							console.log(registration);
+							registration?.waiting?.postMessage('SKIP_WAITING');
+						});
+					}
+				}}
+			>
+				Update
+			</button>
+		</div>
 		{@render children()}
 	</main>
 </div>

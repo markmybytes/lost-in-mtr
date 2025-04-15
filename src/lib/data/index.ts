@@ -1,4 +1,5 @@
 import lines from '$lib/data/lines.json';
+import { writable } from 'svelte/store';
 
 /**
  * The `Fleet` namespace provides utility functions for managing fleet data,
@@ -135,3 +136,5 @@ export namespace Fleet {
 		return new Date(parseInt(localStorage.getItem('fleetsLastCheck') ?? '0'));
 	}
 }
+
+export const hasUpdate = writable(false);
