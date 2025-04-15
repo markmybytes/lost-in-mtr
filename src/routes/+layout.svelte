@@ -20,7 +20,7 @@
 		// reference: https://whatwebcando.today/articles/handling-service-worker-updates/
 		if ('serviceWorker' in navigator) {
 			navigator.serviceWorker
-				.register('./service-worker.js', { type: dev ? 'module' : 'classic' })
+				.register(`${base}/service-worker.js`, { type: dev ? 'module' : 'classic' })
 				.then((registration) => {
 					if (registration.waiting) {
 						hasUpdate = true;
@@ -43,8 +43,8 @@
 					navigator.serviceWorker.addEventListener('controllerchange', () => {
 						if (!refreshing) {
 							Fleet.clear();
-							window.location.reload();
 							refreshing = true;
+							window.location.reload();
 						}
 					});
 				});
