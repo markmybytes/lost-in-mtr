@@ -79,10 +79,7 @@ export namespace Fleet {
 	 * @returns Returns true if an update check should be performed, false otherwise.
 	 */
 	export function shouldCheckUpdate(): boolean {
-		return (
-			Date.now() - lastUpdateCheckTime().getTime() >=
-			(isAutoUpdate() ? 1000 * 60 * 60 * 24 * 2 : 1000 * 60 * 60 * 24 * 7)
-		);
+		return Date.now() - lastUpdateCheckTime().getTime() >= 1000 * 60 * 60 * 24 * 2;
 	}
 
 	/**
