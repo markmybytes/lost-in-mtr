@@ -8,50 +8,41 @@
 	import QuestionLgIcon from '$lib/icons/QuestionLgIcon.svelte';
 	import { dev } from '$app/environment';
 	import { onMount } from 'svelte';
-	import { hasUpdate } from '$lib/data';
+	import { Fleet } from '$lib/data';
 
 	let { children } = $props();
 
 	let showLocalDropdown = $state(false);
 
-	let showUpdate = $state(false);
-
-	hasUpdate.subscribe((yes) => {
-		showUpdate = yes;
-	});
+	let hasUpdate = $state(false);
 
 	onMount(() => {
+		// reference: https://whatwebcando.today/articles/handling-service-worker-updates/
 		if ('serviceWorker' in navigator) {
 			navigator.serviceWorker
 				.register('./service-worker.js', { type: dev ? 'module' : 'classic' })
 				.then((registration) => {
 					if (registration.waiting) {
-						hasUpdate.set(true);
+						hasUpdate = true;
 					}
 
-					// detect Service Worker update available and wait for it to become installed
 					registration.addEventListener('updatefound', () => {
-						if (registration.installing) {
-							// wait until the new Service worker is actually installed (ready to take over)
-							registration.installing.addEventListener('statechange', () => {
-								if (registration.waiting) {
-									// if there's an existing controller (previous Service Worker), show the prompt
-									if (navigator.serviceWorker.controller) {
-										hasUpdate.set(true);
-									} else {
-										// otherwise it's the first install, nothing to do
-										console.log('Service Worker initialized for the first time');
-									}
-								}
-							});
+						if (!registration.installing) {
+							return;
 						}
+
+						registration.installing.addEventListener('statechange', () => {
+							if (registration.waiting && navigator.serviceWorker.controller) {
+								hasUpdate = true;
+							}
+						});
 					});
 
 					let refreshing = false;
 
-					// detect controller change and refresh the page
 					navigator.serviceWorker.addEventListener('controllerchange', () => {
 						if (!refreshing) {
+							Fleet.clear();
 							window.location.reload();
 							refreshing = true;
 						}
@@ -129,25 +120,25 @@
 	</div>
 
 	<main
-		class="5 h-full px-2 pt-5"
+		class="h-full px-2 pt-5"
 		style="padding-bottom: max(env(safe-area-inset-bottom), calc(var(--spacing)* 5));"
 	>
-		<div class="flex">
+		<div class="-mt-2 mb-2 flex">
 			<button
-				class="rounded bg-yellow-500"
-				class:hidden={!showUpdate}
+				class="bg-new-orleans-700 w-full cursor-pointer rounded py-1"
+				class:hidden={!hasUpdate}
 				onclick={() => {
 					if ('serviceWorker' in navigator) {
 						navigator.serviceWorker.getRegistration().then((registration) => {
-							console.log(registration);
 							registration?.waiting?.postMessage('SKIP_WAITING');
 						});
 					}
 				}}
 			>
-				Update
+				有新的版本可供更新，按此更新。
 			</button>
 		</div>
+
 		{@render children()}
 	</main>
 </div>
