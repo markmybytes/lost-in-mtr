@@ -8,6 +8,7 @@
 	import { slide } from 'svelte/transition';
 	import { os } from '$lib/utils';
 	import type { PageProps } from './$types';
+	import { base } from '$app/paths';
 
 	let { data }: PageProps = $props();
 
@@ -38,6 +39,21 @@
 				{data.version ?? data.commitHash.slice(0, 8)}
 			</p>
 		</div>
+
+		<button
+			class="bg-new-orleans-500 rounded px-5 py-1"
+			onclick={() => {
+				if ('serviceWorker' in navigator) {
+					navigator.serviceWorker.getRegistration().then((registration) => {
+						registration?.update().then(() => {
+							location.href = base;
+						});
+					});
+				}
+			}}
+		>
+			{$t('setting.update')}
+		</button>
 	</div>
 
 	<div class="flex flex-col gap-y-2 rounded bg-white p-2">

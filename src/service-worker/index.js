@@ -53,8 +53,11 @@ self.addEventListener('fetch', (event) => {
 			}
 		}
 
-		// for everything else, try the network first, but
-		// fall back to the cache if we're offline
+		const cacheResponse = await cache.match(event.request);
+		if (cacheResponse) {
+			return cacheResponse;
+		}
+
 		try {
 			const response = await fetch(event.request);
 
@@ -70,15 +73,7 @@ self.addEventListener('fetch', (event) => {
 
 			return response;
 		} catch (err) {
-			const response = await cache.match(event.request);
-
-			if (response) {
-				return response;
-			}
-
-			// if there's no cache, then just error out
-			// as there is nothing we can do to respond to this request
-			throw err;
+			return Response.error();
 		}
 	}
 
