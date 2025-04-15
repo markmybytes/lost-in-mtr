@@ -1,0 +1,12 @@
+{
+	"carDoorNumberQ": "What is Car Number and Door Number?",
+	"carDoorNumberA": "Each of the train car has its own ID in the format of an alphabet + 3 digits number. Notice that same car numbers may appear in different trains on different lines.<br />Similarly, every doors has its own ID in the format of U, D, A, B + 1 digit number.",
+	"findCarDoorNumberQ": "Where can I find the car number and door number?",
+	"stickerNextToDoor": "Sticker next to doors",
+	"routeMap": "Route Maps",
+	"endAndLcd": "Equipment Cabinets, Ceiling and LCD screens near train car joints",
+	"lcdNumberHint": "The number after the \"-\" character near the small LCD screens are not door number but screen number. However, its numbering logic is similar to door number, you can still use it to identify your position.",
+	"tv": "TVs",
+	"noResultWrongResultQ": "No Results/Incorrect Results?",
+	"noResultWrongResultA": "The data source of this tool is not came from officals and train cars could be rearranged due to operation needs. Therefore, we cannot guarantee the accuracy of the data."
+}

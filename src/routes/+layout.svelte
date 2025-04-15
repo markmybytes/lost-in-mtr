@@ -5,6 +5,7 @@
 	import { locale } from '$lib/i18n/translations';
 	import GearIcon from '$lib/icons/GearIcon.svelte';
 	import SearchIcon from '$lib/icons/SearchIcon.svelte';
+	import QuestionLgIcon from '$lib/icons/QuestionLgIcon.svelte';
 
 	let { children } = $props();
 
@@ -37,6 +38,15 @@
 					data-sveltekit-replacestate
 				>
 					<GearIcon></GearIcon>
+				</a>
+			</li>
+			<li>
+				<a
+					href={`${base}/guide`}
+					class="flex h-6 w-8 items-center justify-center"
+					data-sveltekit-replacestate
+				>
+					<QuestionLgIcon></QuestionLgIcon>
 				</a>
 			</li>
 			<li class="border-s ps-3">
