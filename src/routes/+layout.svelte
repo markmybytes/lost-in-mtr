@@ -6,51 +6,18 @@
 	import GearIcon from '$lib/icons/GearIcon.svelte';
 	import SearchIcon from '$lib/icons/SearchIcon.svelte';
 	import QuestionLgIcon from '$lib/icons/QuestionLgIcon.svelte';
-	import { dev } from '$app/environment';
-	import { onMount } from 'svelte';
-	import { Fleet } from '$lib/data';
+	import { pwaInfo } from 'virtual:pwa-info';
 
 	let { children } = $props();
 
 	let showLocalDropdown = $state(false);
 
-	let hasUpdate = $state(false);
-
-	onMount(() => {
-		// reference: https://whatwebcando.today/articles/handling-service-worker-updates/
-		if ('serviceWorker' in navigator) {
-			navigator.serviceWorker
-				.register(`${base}/service-worker.js`, { type: dev ? 'module' : 'classic' })
-				.then((registration) => {
-					if (registration.waiting) {
-						hasUpdate = true;
-					}
-
-					registration.addEventListener('updatefound', () => {
-						if (!registration.installing) {
-							return;
-						}
-
-						registration.installing.addEventListener('statechange', () => {
-							if (registration.waiting && navigator.serviceWorker.controller) {
-								hasUpdate = true;
-							}
-						});
-					});
-
-					let refreshing = false;
-
-					navigator.serviceWorker.addEventListener('controllerchange', () => {
-						if (!refreshing) {
-							Fleet.clear();
-							refreshing = true;
-							window.location.reload();
-						}
-					});
-				});
-		}
-	});
+	let webManifestLink = $derived(pwaInfo ? pwaInfo.webManifest.linkTag : '');
 </script>
+
+<svelte:head>
+	{@html webManifestLink}
+</svelte:head>
 
 <div class="m-auto flex h-svh max-w-xl flex-col">
 	<div class="bg-apple-blossom-600/40 flex justify-between px-3 py-5">
@@ -123,21 +90,9 @@
 		class="h-full px-2 pt-5"
 		style="padding-bottom: max(env(safe-area-inset-bottom), calc(var(--spacing)* 5));"
 	>
-		<div class="-mt-2 mb-2 flex">
-			<button
-				class="bg-new-orleans-700 w-full cursor-pointer rounded py-1"
-				class:hidden={!hasUpdate}
-				onclick={() => {
-					if ('serviceWorker' in navigator) {
-						navigator.serviceWorker.getRegistration().then((registration) => {
-							registration?.waiting?.postMessage('SKIP_WAITING');
-						});
-					}
-				}}
-			>
-				有新的版本可供更新，按此更新。
-			</button>
-		</div>
+		{#await import('$lib/components/UpdateNotification.svelte') then { default: UpdateNotification }}
+			<UpdateNotification />
+		{/await}
 
 		{@render children()}
 	</main>

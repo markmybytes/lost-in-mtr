@@ -114,10 +114,11 @@ export namespace Fleet {
 	 * Clears the fleet data from the browser's local storage.
 	 */
 	export function clear() {
-		localStorage.removeItem('fleets');
-		localStorage.removeItem('fleetsTimestamp');
-		localStorage.removeItem('fleetsHash');
-		localStorage.removeItem('fleetsLastCheck');
+		for (const key of Object.keys(localStorage)) {
+			if (key.startsWith('fleets')) {
+				localStorage.removeItem(key);
+			}
+		}
 	}
 
 	/**
