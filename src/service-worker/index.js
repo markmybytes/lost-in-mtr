@@ -22,35 +22,37 @@ self.addEventListener('message', (event) => {
 });
 
 self.addEventListener('install', (event) => {
-	event.waitUntil(async () => {
-		const cache = await caches.open(CACHE);
-		await cache.addAll(ASSETS);
-	});
+	event.waitUntil(
+		(async () => {
+			console.log(`Adding assets to cache ${CACHE}`);
+			const cache = await caches.open(CACHE);
+			await cache.addAll(ASSETS);
+		})()
+	);
 });
 
 self.addEventListener('activate', (event) => {
-	event.waitUntil(async () => {
-		for (const key of await caches.keys()) {
-			if (key !== CACHE) await caches.delete(key);
-		}
-	});
+	event.waitUntil(
+		(async () => {
+			for (const key of await caches.keys()) {
+				if (key !== CACHE) await caches.delete(key);
+			}
+		})()
+	);
 });
 
 self.addEventListener('fetch', (event) => {
 	if (!event.request.url.startsWith('http') || event.request.method !== 'GET') return;
 
 	event.respondWith(
-		caches.open(CACHE).then((cache) => {
-			return cache.match(event.request.url).then((cachedResponse) => {
-				if (cachedResponse) {
-					return cachedResponse;
-				}
-
-				return fetch(event.request).then((fetchedResponse) => {
-					cache.put(event.request, fetchedResponse.clone());
-					return fetchedResponse;
-				});
-			});
+		caches.open(CACHE).then(async (cache) => {
+			const cachedResponse = await cache.match(event.request.url);
+			if (cachedResponse) {
+				return cachedResponse;
+			}
+			const fetchedResponse = await fetch(event.request);
+			cache.put(event.request, fetchedResponse.clone());
+			return fetchedResponse;
 		})
 	);
 });
