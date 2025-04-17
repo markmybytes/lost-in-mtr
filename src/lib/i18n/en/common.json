@@ -8,10 +8,9 @@
 	"downDirection": "Down Direction",
 	"fleetUpdateAvailable": "Fleet data update is available",
 	"flipDirection": "Flip Direction",
-	"inbound": "Inbound",
-	"outbound": "Outbound",
 	"platformDoorSticker": "Sticker",
 	"positionDescrTxt": "{{name}} Direction | Car {{car}}{{door:gte; 1:, {{door}}ˢᵗ Door; 2:, {{door}}ⁿᵈ Door; 3:, {{door}}ʳᵈ Door; 4:, {{door}}ᵗʰ Door; default:}}",
+	"showUrbanLine": "Show Other Urban Lines",
 	"to": "To",
 	"upDirection": "Up Direction"
 }

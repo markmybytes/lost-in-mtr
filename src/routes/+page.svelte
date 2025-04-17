@@ -139,7 +139,7 @@
 						inputs.allUrbanLines = true;
 					}}
 				>
-					顯示其他市區線
+					{$t('common.showUrbanLine')}
 				</button>
 			</div>
 		{/if}

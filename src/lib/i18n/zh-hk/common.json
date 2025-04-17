@@ -10,6 +10,7 @@
 	"flipDirection": "調轉行車方向",
 	"platformDoorSticker": "幕門貼紙",
 	"positionDescrTxt": "{{name}}方向 | {{car}}卡{{door:gt; 0:{{door}}門; default:}}",
+	"showUrbanLine": "顯示其他市區綫",
 	"to": "往",
 	"upDirection": "上行方向"
 }

@@ -8,5 +8,5 @@
 	"lcdNumberHint": "The number after the \"-\" character near the small LCD screens are not door number but screen number. However, its numbering logic is similar to door number, you can still use it to identify your position.",
 	"tv": "TVs",
 	"noResultWrongResultQ": "No Results/Incorrect Results?",
-	"noResultWrongResultA": "The data source of this tool is not came from officals and train cars could be rearranged due to operation needs. Therefore, we cannot guarantee the accuracy of the data."
+	"noResultWrongResultA": "The data source of this tool is not came from officals and train cars could be rearranged due to operation needs. Therefore, we cannot guarantee the accuracy of the data. If you have a result but it does not match your route, you can try to press the \"Show Other MTR Lines\" (if available) button to show other lines' matching results."
 }
