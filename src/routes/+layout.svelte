@@ -6,10 +6,48 @@
 	import GearIcon from '$lib/icons/GearIcon.svelte';
 	import SearchIcon from '$lib/icons/SearchIcon.svelte';
 	import QuestionLgIcon from '$lib/icons/QuestionLgIcon.svelte';
+	import { onMount } from 'svelte';
+	import { dev } from '$app/environment';
+	import { Fleet } from '$lib/data';
 
 	let { children } = $props();
 
 	let showLocalDropdown = $state(false);
+
+	onMount(() => {
+		console.log(import.meta.env);
+
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker
+				.register(`${base}/service-worker.js`, { type: dev ? 'module' : 'classic' })
+				.then((registration) => {
+					registration.addEventListener('updatefound', () => {
+						console.log('updatefound');
+
+						if (registration.installing === null) {
+							return;
+						}
+
+						registration.installing.addEventListener('statechange', () => {
+							if (registration.waiting && navigator.serviceWorker.controller) {
+								// hasUpdate.set(true);
+								console.log('has update');
+								registration.waiting.postMessage('SKIP_WAITING');
+							}
+						});
+					});
+
+					navigator.serviceWorker.addEventListener('controllerchange', () => {
+						console.log('controllerchange');
+						Fleet.clear();
+						window.location.reload();
+					});
+				})
+				.catch((error) => {
+					console.error('Service worker registration failed: ', error);
+				});
+		}
+	});
 </script>
 
 <div class="m-auto flex h-svh max-w-xl flex-col">

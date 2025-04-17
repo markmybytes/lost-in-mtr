@@ -15,6 +15,12 @@ const ASSETS = [
 	...files // everything in `static`
 ];
 
+self.addEventListener('message', (event) => {
+	if (event.data === 'SKIP_WAITING') {
+		self.skipWaiting();
+	}
+});
+
 self.addEventListener('install', (event) => {
 	// Create a new cache and add all files to it
 	async function addFilesToCache() {
@@ -38,7 +44,7 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
 	// ignore POST requests etc
-	if (event.request.method !== 'GET') return;
+	if (!event.request.url.startsWith('http') || event.request.method !== 'GET') return;
 
 	async function respond() {
 		const url = new URL(event.request.url);

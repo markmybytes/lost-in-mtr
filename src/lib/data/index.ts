@@ -126,6 +126,17 @@ export namespace Fleet {
 	}
 
 	/**
+	 * Clears all fleet data from local storage.
+	 */
+	export function clear() {
+		for (const key of Object.keys(localStorage)) {
+			if (key.startsWith('fleets')) {
+				localStorage.removeItem(key);
+			}
+		}
+	}
+
+	/**
 	 * Retrieves the last update check time from local storage.
 	 * If the value is not found, it defaults to the epoch time (0).
 	 *
