@@ -45,7 +45,7 @@ export namespace Fleet {
 				localStorage.setItem('fleetsHash', result.newHash);
 
 				return fetch(
-					'https://raw.githubusercontent.com/SuperDumbTM/lost-in-mtr/refs/heads/data/fleet.min.json',
+					'https://raw.githubusercontent.com/markmybytes/lost-in-mtr/refs/heads/data/fleet.min.json',
 					{ cache: 'no-store' }
 				)
 					.then((response) => response.text())
@@ -94,7 +94,7 @@ export namespace Fleet {
 	 */
 	export function hasUpdate() {
 		return fetch(
-			'https://raw.githubusercontent.com/SuperDumbTM/lost-in-mtr/refs/heads/data/fleet.min.json.md5',
+			'https://raw.githubusercontent.com/markmybytes/lost-in-mtr/refs/heads/data/fleet.min.json.md5',
 			{ cache: 'no-cache' }
 		)
 			.then((response) => response.text())
