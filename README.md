@@ -95,15 +95,18 @@ npm install
 ### 搜尋
 
 在主頁的搜尋器內，輸入車門側上的車廂編號。<br>
-因為同一個車廂編號可能會被分配至多個車卡，所吻合的結果將會被顯示出來。<br>
-<img src="https://github.com/user-attachments/assets/5be14e50-52e6-45f1-a272-94dc0d90f4f1" alt="search result screenshot">
+因為同一個車廂編號可能會被分配至多個車卡，所吻合的結果將會被顯示出來。
 
-### 切換方向
+<img src="https://github.com/user-attachments/assets/4c507e6a-66bf-4c92-83b9-a15de364c5ca" alt="search result screenshot">
 
-每個搜尋結果上均設有
-  1. 行車方向切換按鈕（用作選擇列車的行車方向）
-  2. 列車方向切換按鈕（用作調轉列車頭尾在屏幕上的顯示方向）
-<img src="https://github.com/user-attachments/assets/10b319fb-abd4-4b69-b2d9-18b5b0c5fd5c" alt="buttons demo">
+### 搜尋結果
+
+搜尋結果設有兩種顯示模式
+
+| 車廂佈局 | 幕門貼紙 |
+|---|---|
+| <img src="https://github.com/user-attachments/assets/905b735f-cc96-44a7-bdb8-878ef422d809" alt="Layout Mode"> | <img src="https://github.com/user-attachments/assets/18fd5b37-4b6a-4917-bcd9-7a93812af27b" alt="PSD Label Mode"> |
+
 
 <p align="right">(<a href="#readme-top">回到最頂</a>)</p>
 
