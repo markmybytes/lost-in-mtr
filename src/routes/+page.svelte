@@ -66,25 +66,29 @@
 	});
 
 	onMount(() => {
-		Fleet.get(false).then((data) => {
-			fleets = data ?? {};
-		});
-
-		if (Fleet.shouldCheckUpdate()) {
-			Fleet.hasUpdate().then((result) => {
-				if (!result.has) {
+		Fleet.get(false)
+			.then((data) => {
+				fleets = data ?? {};
+			})
+			.finally(() => {
+				if (!Fleet.shouldCheckUpdate()) {
 					return;
 				}
 
-				if (Fleet.isAutoUpdate()) {
-					Fleet.get(true).then((data) => {
-						fleets = data ?? {};
-					});
-				} else {
-					hasUpdate = true;
-				}
+				Fleet.hasUpdate().then((result) => {
+					if (!result.has) {
+						return;
+					}
+
+					if (Fleet.isAutoUpdate()) {
+						Fleet.get(true).then((data) => {
+							fleets = data ?? {};
+						});
+					} else {
+						hasUpdate = true;
+					}
+				});
 			});
-		}
 	});
 
 	$effect(() => {
