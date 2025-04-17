@@ -181,37 +181,6 @@
 						{/each}
 					</div>
 				</div>
-
-				<hr class="border-new-orleans-300" />
-
-				<div class="flex flex-col gap-x-3">
-					<p class="text-battleship-gray-600">
-						<span class="me-1 font-bold select-none">㊢</span>
-						<span>
-							{description}
-						</span>
-					</p>
-
-					<div class="flex justify-end gap-x-5 p-1">
-						<a href={`whatsapp://send?text=${encodeURIComponent(description)}`}>
-							<WhatsappIcon></WhatsappIcon>
-						</a>
-
-						<a href={`tg://msg?text=${encodeURIComponent(description)}`}>
-							<TelegramIcon></TelegramIcon>
-						</a>
-
-						<button
-							type="button"
-							class="cursor-pointer"
-							onclick={() => {
-								navigator.clipboard.writeText(description);
-							}}
-						>
-							<ClipboardIcon></ClipboardIcon>
-						</button>
-					</div>
-				</div>
 			{:else}
 				<div class="w-full max-w-sm self-center" in:fly>
 					<div
@@ -239,6 +208,37 @@
 					</div>
 				</div>
 			{/if}
+
+			<hr class="border-new-orleans-300" />
+
+			<div class="flex flex-col gap-x-3">
+				<p class="text-battleship-gray-600">
+					<span class="me-1 font-bold select-none">㊢</span>
+					<span>
+						{description}
+					</span>
+				</p>
+
+				<div class="flex justify-end gap-x-5 p-1">
+					<a href={`whatsapp://send?text=${encodeURIComponent(description)}`}>
+						<WhatsappIcon></WhatsappIcon>
+					</a>
+
+					<a href={`tg://msg?text=${encodeURIComponent(description)}`}>
+						<TelegramIcon></TelegramIcon>
+					</a>
+
+					<button
+						type="button"
+						class="cursor-pointer"
+						onclick={() => {
+							navigator.clipboard.writeText(description);
+						}}
+					>
+						<ClipboardIcon></ClipboardIcon>
+					</button>
+				</div>
+			</div>
 		</div>
 
 		<div class="border-t border-gray-200 pt-3 pb-1">
