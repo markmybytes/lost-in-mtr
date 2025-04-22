@@ -45,7 +45,7 @@
   <img src="https://github.com/user-attachments/assets/1a65f3f7-3a34-4147-98c4-97dd527849fc" alt="project screenshot">
 <p align="right">
 
-[迷失港鐵](https://markmybytes.github.io/lost-in-mtr/)是一個車廂位置搜尋工具，透過車廂編號及車門編號來尋找你所在的位置。搜尋結果更可以方便地分享至 Whatsapp 或 Telegram。
+[迷失港鐵](https://markmybytes.github.io/lost-in-mtr/)是一個車廂位置搜尋工具，透過車廂編號及車門編號來尋找你所在的車卡。搜尋結果更可以方便地分享至 Whatsapp 或 Telegram。
 
 而迷失港鐵所利用到的列車編組資料並非來自港鐵官方，因此有可能會出錯或未能尋找新投入服務的列車資訊。
 
