@@ -274,7 +274,8 @@
 						class="bg-new-orleans-300 flex h-6 items-center gap-x-2 rounded px-1 text-center text-gray-800"
 						onclick={() => (inbound = !inbound)}
 					>
-						<ArrowLeftRightIcon width={13} height={13}></ArrowLeftRightIcon> 調頭
+						<ArrowLeftRightIcon width={13} height={13}></ArrowLeftRightIcon>
+						{$t('common.oppositeDirection')}
 					</button>
 
 					<button

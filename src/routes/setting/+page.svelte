@@ -32,7 +32,7 @@
 <div class="flex flex-col gap-y-4">
 	<div class="flex items-center justify-between rounded bg-white p-2">
 		<div class="flex gap-x-2">
-			<h1 class="font-bold">版本</h1>
+			<h1 class="font-bold">{$t('common.version')}</h1>
 
 			<p>
 				{data.version ?? data.commitHash.slice(0, 8)}

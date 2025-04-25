@@ -8,9 +8,11 @@
 	"downDirection": "下行方向",
 	"fleetUpdateAvailable": "有新的編組資料可供更新",
 	"flipDirection": "調轉行車方向",
+	"oppositeDirection": "調頭",
 	"platformDoorSticker": "幕門貼紙",
 	"positionDescrTxt": "{{name}}方向 | {{car}}卡{{door:gt; 0:{{door}}門; default:}}",
 	"showUrbanLine": "顯示其他市區綫",
 	"to": "往",
-	"upDirection": "上行方向"
+	"upDirection": "上行方向",
+	"version": "版本"
 }
