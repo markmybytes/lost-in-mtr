@@ -34,8 +34,10 @@ export const load: PageLoad = async ({ url }) => {
 		referenceLine: url.searchParams.get('rl')?.toUpperCase() as null | keyof typeof lines,
 		vehicleNumber: url.searchParams.get('vn')!.toUpperCase(),
 		door: parseDoorParams(url.searchParams),
-		/** Train driection, `true` means up/inbound direction otherwise down/outbound direction */
-		inbound: url.searchParams.get('u')?.toLocaleLowerCase() === 'true'
+		/* Train driection, `true` means up/inbound direction otherwise down/outbound direction */
+		inbound: ['true', '1', 'y', 'yes'].includes(
+			url.searchParams.get('u')?.toLocaleLowerCase() ?? ''
+		)
 	};
 
 	for (const [stockName, stocks] of Object.entries(fleets[params.referenceLine ?? params.line])) {

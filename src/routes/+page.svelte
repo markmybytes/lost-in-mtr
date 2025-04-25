@@ -106,33 +106,34 @@
 
 	<div class="flex h-0 grow flex-col overflow-y-auto rounded-lg bg-white/90 p-2">
 		{#each [...results, ...(extendedResults?.lines ?? [])] as line}
-			<a
-				href={results.includes(line)
-					? `${base}/result?l=${line}&vn=${inputs.stockNumber}`
-					: `${base}/result?l=${line}&rl=${extendedResults!.reference}&vn=${inputs.stockNumber}`}
-				class="border-new-orleans-900 flex justify-between gap-x-2 py-4 not-first:border-t last:border-b"
-			>
-				<div class="flex flex-col gap-y-2">
-					<div>
-						<button
-							class="h-6.5 rounded-sm bg-blue-100 px-2 text-nowrap"
-							style:background-color={lines[line].color}
-							style:color={textColor(lines[line].color)}
-						>
-							{$t(`line.${line}`)}
-						</button>
+			{#each ['UP', 'DOWN'] as const as direction}
+				<a
+					href={results.includes(line)
+						? `${base}/result?l=${line}&vn=${inputs.stockNumber}&u=${direction == 'UP'}`
+						: `${base}/result?l=${line}&rl=${extendedResults!.reference}&vn=${inputs.stockNumber}&u=${direction == 'UP'}`}
+					class="border-new-orleans-900 flex justify-between gap-x-2 py-2 not-first:border-t last:border-b"
+				>
+					<div class="flex flex-col gap-1.5">
+						<div>
+							<button
+								class="h-6.5 rounded-sm bg-blue-100 px-2 text-nowrap"
+								style:background-color={lines[line].color}
+								style:color={textColor(lines[line].color)}
+							>
+								{$t(`line.${line}`)}
+							</button>
+						</div>
+
+						<p>
+							{`${$t('common.to')} ${lines[line]['terminals'][direction].map((s) => $t(`station.${s}`)).join($t('common./'))}`}
+						</p>
 					</div>
 
-					<p>
-						{lines[line]['terminals']['UP'].map((s) => $t(`station.${s}`)).join($t('common./'))} ⇄
-						{lines[line]['terminals']['DOWN'].map((s) => $t(`station.${s}`)).join($t('common./'))}
-					</p>
-				</div>
-
-				<button class="w-6">
-					<CaretRightFillIcon></CaretRightFillIcon>
-				</button>
-			</a>
+					<button class="w-6">
+						<CaretRightFillIcon></CaretRightFillIcon>
+					</button>
+				</a>
+			{/each}
 		{/each}
 
 		{#if results.some((l) => Fleet.ubranLines.includes(l)) && !inputs.allUrbanLines}
