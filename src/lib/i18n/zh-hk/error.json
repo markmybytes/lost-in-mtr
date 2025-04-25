@@ -1,0 +1,6 @@
+{
+    "lineRequired": "請輸入路線及車廂編號。",
+    "invalidLine": "路線不存在。",
+    "fleetDataNotAvailable": "無法取得編組資料。",
+    "noMatchingResult": "找不到與 {{vehicleNumber}}@{{line}} 配對的列車。"
+}

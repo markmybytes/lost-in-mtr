@@ -1,0 +1,6 @@
+{
+    "lineRequired": "Line and Vehicle Number is required.",
+    "invalidLine": "Invalid line.",
+    "fleetDataNotAvailable": "Fleet data not available.",
+    "noMatchingResult": "No matching result for {{vehicleNumber}}@{{line}}"
+}

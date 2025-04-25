@@ -19,14 +19,14 @@ function parseDoorParams(params: URLSearchParams): TrainDoor {
 
 export const load: PageLoad = async ({ url }) => {
 	if (url.searchParams.get('l') === null || url.searchParams.get('vn') === null) {
-		error(404);
+		error(400, 'Line and Vehicle Number is required.');
 	} else if (!(url.searchParams.get('l')!.toUpperCase() in lines)) {
-		error(404);
+		error(404, 'Invalid line');
 	}
 
 	const fleets = await Fleet.get(false);
 	if (fleets === null) {
-		error(500);
+		error(500, { message: 'Fleet data not available.' });
 	}
 
 	const params = {
@@ -34,7 +34,9 @@ export const load: PageLoad = async ({ url }) => {
 		referenceLine: url.searchParams.get('rl')?.toUpperCase() as null | keyof typeof lines,
 		vehicleNumber: url.searchParams.get('vn')!.toUpperCase(),
 		door: parseDoorParams(url.searchParams),
-		/* Train driection, `true` means up/inbound direction otherwise down/outbound direction */
+		/**
+		 * Train driection, `true` means up/inbound direction otherwise down/outbound direction
+		 */
 		inbound: ['true', '1', 'y', 'yes'].includes(
 			url.searchParams.get('u')?.toLocaleLowerCase() ?? ''
 		)
@@ -54,5 +56,5 @@ export const load: PageLoad = async ({ url }) => {
 		}
 	}
 
-	error(404);
+	error(404, `No matching result for ${params.vehicleNumber}@${params.line}.`);
 };
