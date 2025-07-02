@@ -14,7 +14,7 @@ crawl_targets = {
     }],
     'DRL': [{
         'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車',
-        'table': 13
+        'table': 14
     }],
     'EAL': [{
         'url': 'https://hkrail.fandom.com/wiki/港鐵東鐵綫現代列車',
@@ -23,7 +23,7 @@ crawl_targets = {
     'ISL': [
         {
             'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車#港島綫',
-            'table': 10
+            'table': 11
         },
         {
             'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫中國青島四方製列車#港島綫',
@@ -57,7 +57,7 @@ crawl_targets = {
     'TKL': [
         {
             'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車#觀塘綫及將軍澳綫',
-            'table': 8
+            'table': 9
         },
         {
             'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫．東涌綫韓製列車',
@@ -76,7 +76,7 @@ crawl_targets = {
     ],
     'TWL': [{
         'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車#荃灣綫',
-        'table': 9
+        'table': 10
     }],
 }
 
@@ -102,7 +102,6 @@ def fetch(driver: webdriver.Remote, targets: dict[str, list]):
 
             rows = driver.find_elements(
                 By.XPATH, f'(//table)[{config['table'] + 1}]//tr')
-
             try:
                 left_dest = driver.find_element(
                     By.XPATH, f'(//table)[{config['table'] + 1}]//tr[contains(string(.), \'往\')]/td').text
