@@ -2,7 +2,6 @@
 <a id="readme-top"></a>
 
 
-
 <!-- PROJECT SHIELDS -->
 <div align="center">
 
@@ -14,7 +13,6 @@
   [![License][license-shield]][license-url]
   
 </div>
-
 
 
 <!-- PROJECT LOGO -->
@@ -29,13 +27,11 @@
   <p align="center">
     港鐵列車車廂位置搜尋器
     <br />
-    <br />
     <a href="https://github.com/markmybytes/lost-in-mtr/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
     <a href="https://github.com/markmybytes/lost-in-mtr/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
-
 
 
 <!-- ABOUT THE PROJECT -->
@@ -59,13 +55,12 @@
 <p align="right">(<a href="#readme-top">回到最頂</a>)</p>
 
 
-
 <!-- GETTING STARTED -->
 ## 開發
 
 ### 所需軟件
 
-- Node.js (≥ 20) https://nodejs.org/en/download/package-manager
+- Node.js 22 https://nodejs.org/en/download/package-manager
 
 ### 安裝 Dependency
 
@@ -88,7 +83,6 @@ npm install
 <p align="right">(<a href="#readme-top">回到最頂</a>)</p>
 
 
-
 <!-- USAGE EXAMPLES -->
 ## 使用
 
@@ -107,9 +101,7 @@ npm install
 |---|---|
 | <img src="https://github.com/user-attachments/assets/905b735f-cc96-44a7-bdb8-878ef422d809" alt="Layout Mode"> | <img src="https://github.com/user-attachments/assets/18fd5b37-4b6a-4917-bcd9-7a93812af27b" alt="PSD Label Mode"> |
 
-
 <p align="right">(<a href="#readme-top">回到最頂</a>)</p>
-
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
