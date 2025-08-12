@@ -14,7 +14,7 @@ crawl_targets = {
     }],
     'DRL': [{
         'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車',
-        'table': 14
+        'table': 13
     }],
     'EAL': [{
         'url': 'https://hkrail.fandom.com/wiki/港鐵東鐵綫現代列車',
