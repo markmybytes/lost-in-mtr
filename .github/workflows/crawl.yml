@@ -1,7 +1,7 @@
 name: Crawl fleet data
 on:
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '0 2 */3 * *'
   workflow_dispatch:
 
 permissions:
