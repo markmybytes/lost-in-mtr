@@ -83,18 +83,20 @@ crawl_targets: dict[str, list[dict[str, str]]] = {
 
 def clean(text: str, reverse: bool) -> str:
     text = re.sub(r'\[.*\]|\（.*\）', '', text.strip().replace('+', '-'))
-    return text if not reverse else '-'.join(text.split('-')[::-1])
+    return (text
+            if not reverse
+            else '-'.join(text.split('-')[::-1]))
 
 
-def fetch(driver: webdriver.Remote, targets: dict[str, list]):
+def fetch(driver: webdriver.Remote, targets: dict[str, list[dict[str, str]]]):
     fleets: dict[str, dict[str, list[str]]] = {}
     for line, configs in targets.items():
         fleets[line] = {}
 
         for config in configs:
             re.match(r'\/wiki\/港鐵([^#]*)', config['url'])
-            stock_name = config['url'].split(
-                '/')[-1].replace('港鐵', '').split('#')[0]
+            stock_name = (config['url'] 
+                          .split('/')[-1].replace('港鐵', '').split('#')[0])
 
             driver.get(config['url'])
             time.sleep(3)
@@ -116,7 +118,6 @@ def fetch(driver: webdriver.Remote, targets: dict[str, list]):
             if (len(fleets[line][stock_name]) == 0):
                 print(f'✗ ...... {line} ({config['url'].split('/')[-1]})')
                 raise RuntimeError(f'empty formation list {config['table']}')
-
             print(f'✓ ...... {line} ({stock_name})')
 
     return fleets
