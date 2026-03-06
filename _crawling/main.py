@@ -1,13 +1,13 @@
+from contextlib import contextmanager
 import json
 import re
 import time
 
 from fake_useragent import UserAgent
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
-crawl_targets: dict[str, list[dict[str, str]]] = {
+scrape_configuration: dict[str, list[dict[str, str]]] = {
     'AEL': [{
         'url': 'https://hkrail.fandom.com/wiki/港鐵機場鐵路ADTranz-CAF列車',
         'keyword': '機場快綫的列車'
@@ -81,64 +81,62 @@ crawl_targets: dict[str, list[dict[str, str]]] = {
 }
 
 
-def clean(text: str, reverse: bool) -> str:
-    text = re.sub(r'\[.*\]|\（.*\）', '', text.strip().replace('+', '-'))
-    return (text
-            if not reverse
-            else '-'.join(text.split('-')[::-1]))
-
-
-def fetch(driver: webdriver.Remote, targets: dict[str, list[dict[str, str]]]):
-    fleets: dict[str, dict[str, list[str]]] = {}
-    for line, configs in targets.items():
-        fleets[line] = {}
-
-        for config in configs:
-            re.match(r'\/wiki\/港鐵([^#]*)', config['url'])
-            stock_name = (config['url'] 
-                          .split('/')[-1].replace('港鐵', '').split('#')[0])
-
-            driver.get(config['url'])
-            time.sleep(3)
-
-            try:
-                table = driver.find_element(By.XPATH, f'//table[.//tr[contains(string(.), "{config['keyword']}")]]')
-            except NoSuchElementException:
-                print(f'✗ ...... {line} ({config['url'].split('/')[-1]})')
-                raise RuntimeError(f'Failed to locate table with keyword "{config['keyword']}"')
-
-            fleets[line][stock_name] = [
-                clean(
-                    l.get_attribute('textContent'), 
-                    '下行' in table.find_element(By.XPATH, './/tr[contains(string(.), "往")]/td').text
-                )
-                for l in table.find_elements(By.XPATH, './/tr[last()]//td/ol/li')
-            ]
-
-            if (len(fleets[line][stock_name]) == 0):
-                print(f'✗ ...... {line} ({config['url'].split('/')[-1]})')
-                raise RuntimeError(f'empty formation list {config['table']}')
-            print(f'✓ ...... {line} ({stock_name})')
-
-    return fleets
-
-
-if __name__ == '__main__':
+@contextmanager
+def get_webdriver():
     option = webdriver.FirefoxOptions()
     option.add_argument('--headless')
     option.add_argument(f'--user-agent="{UserAgent().firefox}"')
 
+    driver = webdriver.Firefox(option)
     try:
-        driver = webdriver.Firefox(option)
-
-        fleets = fetch(driver, crawl_targets)
-
-        with open('fleet.json', 'w', encoding='utf-8') as f:
-            json.dump(fleets, f, indent=4, ensure_ascii=False)
-
-        with open('fleet.min.json', 'w', encoding='utf-8') as f:
-            json.dump(fleets, f, separators=(',', ':'))
-
-        pass
+        yield driver
     finally:
         driver.quit()
+
+
+def parse_formation(text: str, should_reverse: bool) -> str:
+    text = re.sub(r'\[.*\]|\（.*\）', '', text.strip().replace('+', '-'))
+    return (text
+            if not should_reverse
+            else '-'.join(text.split('-')[::-1]))
+
+
+def scrape(url: str, keyword: str) -> list[str]:
+    with get_webdriver() as driver:
+        driver.get(url)
+        time.sleep(10)
+
+        table = driver.find_element(
+            By.XPATH, f'//table[.//tr[contains(string(.), "{keyword}")]]')
+        bound_left = table.find_element(
+            By.XPATH, './/tr[contains(string(.), "往")]/td')
+
+        return [
+            parse_formation(l.get_attribute('textContent'),
+                            '下行' in bound_left.text)
+            for l in table.find_elements(By.XPATH, './/tr[last()]//td/ol/li')
+        ]
+
+
+if __name__ == '__main__':
+    fleets: dict[str, dict[str, list[str]]] = {}
+
+    for line, stocks in scrape_configuration.items():
+        fleets[line] = {}
+
+        for stock in stocks:
+            stock_name = (stock['url']
+                          .split('/')[-1].replace('港鐵', '').split('#')[0])
+
+            fleets[line][stock_name] = scrape(stock['url'], stock['keyword'])
+            if (len(fleets[line][stock_name]) == 0):
+                raise RuntimeError(
+                    f'unable to find any data on {stock['url']}')
+
+            print(f'✓ ...... {line} ({stock_name})')
+
+    with open('fleet.json', 'w', encoding='utf-8') as f:
+        json.dump(fleets, f, indent=4, ensure_ascii=False)
+
+    with open('fleet.min.json', 'w', encoding='utf-8') as f:
+        json.dump(fleets, f, separators=(',', ':'))
