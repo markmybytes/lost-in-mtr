@@ -1,14 +1,14 @@
-name: Crawl fleet data
+name: Scrape fleet data
 on:
   schedule:
-    - cron: '0 2 */3 * *'
+    - cron: '0 2 */7 * *'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  crawl:
+  scrape:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,52 +20,41 @@ jobs:
           python-version: '3.12'
           architecture: 'x64'
           cache: 'pip'
-          cache-dependency-path: _crawling/requirements.txt
+          cache-dependency-path: scraper/requirements.txt
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r ./_crawling/requirements.txt
+          pip install -r ./scraper/requirements.txt
 
       - name: Set up browser
         uses: browser-actions/setup-firefox@v1
 
-      - name: Crawl
+      - name: Scrape
         run: |
-          set -o xtrace
-          python ./_crawling/main.py
+          python ./scraper/main.py
 
-      - name: Upload crawling outputs
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: Crawled Files
-          retention-days: 7
-          path: |
-            fleet.json
-            fleet.min.json
-
-      - name: Create "build" directory
-        run: mkdir -p build
+      - name: Create "_data" directory
+        run: mkdir -p _data
 
       - name: Calculate MD5 checksum
         run: |
           md5sum fleet.json | cut -c -32 | tr -d '\n' > fleet.json.md5
           md5sum  fleet.min.json | cut -c -32 | tr -d '\n' > fleet.min.json.md5
 
-      - name: Copy output to "build" directory
+      - name: Copy results to "_data" directory
         run: |
           cp \
           fleet.json \
           fleet.json.md5 \
           fleet.min.json \
           fleet.min.json.md5 \
-          build/
+          _data/
 
       - name: Update resources
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: build
+          folder: _data
           commit-message: Update resources
           branch: data
           clean: false
