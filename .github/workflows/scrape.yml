@@ -31,6 +31,8 @@ jobs:
         uses: browser-actions/setup-firefox@v1
 
       - name: Scrape
+        env:
+          PYTHONUNBUFFERED: "1"
         run: |
           python ./scraper/main.py
 
