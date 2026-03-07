@@ -1,11 +1,8 @@
-from contextlib import contextmanager
-import json
 import re
-import time
-
-from fake_useragent import UserAgent
-from selenium import webdriver
-from selenium.webdriver.common.by import By
+import json
+import requests
+from bs4 import BeautifulSoup
+from urllib.parse import urlparse, unquote
 
 scrape_configuration: dict[str, list[dict[str, str]]] = {
     'AEL': [{
@@ -81,62 +78,74 @@ scrape_configuration: dict[str, list[dict[str, str]]] = {
 }
 
 
-@contextmanager
-def get_webdriver():
-    option = webdriver.FirefoxOptions()
-    option.add_argument('--headless')
-    option.add_argument(f'--user-agent="{UserAgent().firefox}"')
-
-    driver = webdriver.Firefox(option)
-    try:
-        yield driver
-    finally:
-        driver.quit()
-
-
-def parse_formation(text: str, should_reverse: bool) -> str:
+def parse_formation(text: str, reverse: bool = False) -> str:
     text = re.sub(r'\[.*\]|\（.*\）', '', text.strip().replace('+', '-'))
-    return (text
-            if not should_reverse
-            else '-'.join(text.split('-')[::-1]))
+    return text if not reverse else '-'.join(text.split('-')[::-1])
+
+
+def get_title(url: str) -> str:
+    return unquote(urlparse(url).path.lstrip('/wiki/').split('#')[0])
 
 
 def scrape(url: str, keyword: str) -> list[str]:
-    with get_webdriver() as driver:
-        driver.get(url)
-        time.sleep(10)
+    title = get_title(url)
+    r = requests.get(
+        "https://hkrail.fandom.com/api.php",
+        params={
+            "action": "parse",
+            "page": title,
+            "format": "json",
+            "redirects": "1"
+        },
+    ).json()
 
-        table = driver.find_element(
-            By.XPATH, f'//table[.//tr[contains(string(.), "{keyword}")]]')
-        bound_left = table.find_element(
-            By.XPATH, './/tr[contains(string(.), "往")]/td')
+    html = r.get("parse", {}).get("text", {}).get("*")
+    if not html:
+        raise RuntimeError(f"No parsed content: {title}")
 
-        return [
-            parse_formation(l.get_attribute('textContent'),
-                            '下行' in bound_left.text)
-            for l in table.find_elements(By.XPATH, './/tr[last()]//td/ol/li')
-        ]
+    soup = BeautifulSoup(html, "html.parser")
+    table = next((t for t in soup.find_all("table")
+                 if keyword in t.get_text(strip=True)), None)
+    if not table:
+        raise RuntimeError(f"No table with keyword '{keyword}': {title}")
+
+    bound_cell = next((c for c in table.find_all(
+        ["td", "th"]) if "往" in c.get_text(strip=True)), None)
+    if not bound_cell:
+        raise RuntimeError("Unable to identify formation direction")
+
+    last_row = table.find_all("tr")[-1]
+    if not last_row:
+        raise RuntimeError(f"No rows in table: {title}")
+
+    lis = last_row.select("td ol li")
+    if not lis:
+        raise RuntimeError("No formation data found")
+
+    return [
+        parse_formation(li.get_text(strip=True),
+                        "下行" in bound_cell.get_text(strip=True))
+        for li in lis
+        if li.get_text(strip=True)
+    ]
 
 
-if __name__ == '__main__':
-    fleets: dict[str, dict[str, list[str]]] = {}
+if __name__ == "__main__":
+    fleets = {}
 
-    for line, stocks in scrape_configuration.items():
+    for line, entries in scrape_configuration.items():
         fleets[line] = {}
+        for entry in entries:
+            url, kw = entry["url"], entry["keyword"]
+            name = get_title(url).replace("港鐵", "").strip()
+            try:
+                fleets[line][name] = scrape(url, kw)
+                print(f"✓ {line}  {name}")
+            except Exception as e:
+                print(f"✗ {line}  {name} → {e}")
 
-        for stock in stocks:
-            stock_name = (stock['url']
-                          .split('/')[-1].replace('港鐵', '').split('#')[0])
+    with open("fleet.json", "w", encoding="utf-8") as f:
+        json.dump(fleets, f, indent=2, ensure_ascii=False)
 
-            fleets[line][stock_name] = scrape(stock['url'], stock['keyword'])
-            if (len(fleets[line][stock_name]) == 0):
-                raise RuntimeError(
-                    f'unable to find any data on {stock['url']}')
-
-            print(f'✓ ...... {line} ({stock_name})')
-
-    with open('fleet.json', 'w', encoding='utf-8') as f:
-        json.dump(fleets, f, indent=4, ensure_ascii=False)
-
-    with open('fleet.min.json', 'w', encoding='utf-8') as f:
-        json.dump(fleets, f, separators=(',', ':'))
+    with open("fleet.min.json", "w", encoding="utf-8") as f:
+        json.dump(fleets, f, separators=(",", ":"))
