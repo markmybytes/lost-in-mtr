@@ -23,7 +23,7 @@ scrape_configuration: dict[str, list[dict[str, str]]] = {
             'keyword': '港島綫的列車'
         },
         {
-            'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫中國青島四方製列車#港島綫',
+            'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫中車青島四方列車#港島綫',
             'keyword': '港島綫的列車'
         },
     ],
@@ -33,7 +33,7 @@ scrape_configuration: dict[str, list[dict[str, str]]] = {
             'keyword': '觀塘綫的列車'
         },
         {
-            'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫中國青島四方製列車#觀塘綫',
+            'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫中車青島四方列車#觀塘綫',
             'keyword': '觀塘綫的列車'
         },
     ],
