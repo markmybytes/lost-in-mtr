@@ -71,10 +71,16 @@ scrape_configuration: dict[str, list[dict[str, str]]] = {
             'keyword': '屯馬綫的列車'
         },
     ],
-    'TWL': [{
-        'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車#荃灣綫',
-        'keyword': '荃灣綫的列車'
-    }],
+    'TWL': [
+        {
+            'url': 'https://hkrail.fandom.com/wiki/港鐵現代化列車#荃灣綫',
+            'keyword': '荃灣綫的列車'
+        },
+        {
+            'url': 'https://hkrail.fandom.com/wiki/港鐵市區綫中國青島四方製列車#荃灣綫',
+            'keyword': '荃灣綫的列車'
+        }
+    ],
 }
 
 
