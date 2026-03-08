@@ -20,8 +20,6 @@
 		showSticker: false
 	});
 
-	const lineColor = lines[data.params.line]['color'];
-
 	/** The absolute car number of the target vehicle, starting from 1 at the "up" side. */
 	const carNumberAbs = data.formation.indexOf(data.params.vehicleNumber) + 1;
 
@@ -81,8 +79,8 @@
 				<div class="flex min-w-0 gap-x-2">
 					<span
 						class="h-6 rounded-sm bg-blue-100 px-2 text-nowrap"
-						style:background-color={lineColor}
-						style:color={textColor(lineColor)}
+						style:background-color={data.lineColor}
+						style:color={textColor(data.lineColor)}
 					>
 						{$t(`line.${data.params.line}`)}
 					</span>
@@ -103,19 +101,19 @@
 						<div
 							class="flex h-50 w-full flex-col justify-between rounded border-2 px-2 py-1"
 							class:flex-col-reverse={form.flip}
-							style:border-color={lineColor}
+							style:border-color={data.lineColor}
 							style:border-left-color={carNumberAbs == (form.flip ? data.formation.length : 1)
-								? lineColor
+								? data.lineColor
 								: 'transparent'}
 							style:border-right-color={carNumberAbs == (form.flip ? 1 : data.formation.length)
-								? lineColor
+								? data.lineColor
 								: 'transparent'}
 						>
 							<div class="flex justify-around" class:flex-row-reverse={form.flip}>
 								{#each Array(data.doorCount).keys() as i}
 									<Door
 										active={doorPosition?.side == 'L' && doorPosition.index == i}
-										color={lineColor}
+										color={data.lineColor}
 									/>
 								{/each}
 							</div>
@@ -155,7 +153,7 @@
 								{#each Array(data.doorCount).keys() as i}
 									<Door
 										active={doorPosition?.side == 'R' && doorPosition.index == i}
-										color={lineColor}
+										color={data.lineColor}
 									/>
 								{/each}
 							</div>
@@ -169,9 +167,9 @@
 						{#each data.formation as stock}
 							<button
 								class="rounded-xs border px-0.5 font-mono text-[0.7rem]"
-								style:background-color={data.params.vehicleNumber == stock ? lineColor : ''}
-								style:color={data.params.vehicleNumber == stock ? textColor(lineColor) : ''}
-								style:border-color={lineColor}
+								style:background-color={data.params.vehicleNumber == stock ? data.lineColor : ''}
+								style:color={data.params.vehicleNumber == stock ? textColor(data.lineColor) : ''}
+								style:border-color={data.lineColor}
 							>
 								{stock}
 							</button>

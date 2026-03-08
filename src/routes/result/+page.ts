@@ -51,7 +51,8 @@ export const load: PageLoad = async ({ url }) => {
 					fleets: fleets,
 					formation: cars,
 					params: params,
-					doorCount: Fleet.doorCount(params.line, params.vehicleNumber)
+					doorCount: Fleet.doorCount(params.line, params.vehicleNumber),
+					lineColor: lines[params.line]['color']
 				};
 			}
 		}
