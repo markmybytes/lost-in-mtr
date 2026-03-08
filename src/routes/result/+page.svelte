@@ -49,24 +49,24 @@
 				(data.stockName == '南港島綫中國長春製列車' && carNumberAbs == 3) ||
 				(data.stockName != '現代化列車' && [1, 2, 4, 6].includes(carNumberAbs)))
 		) {
+			const index = form.door.number - 1;
 			return {
 				side: ['U', 'A'].includes(form.door.side) ? 'L' : 'R',
-				index: form.door.number - 1
+				index: index,
+				platform: form.inbound ? index + 1 : data.doorCount - index
 			};
 		} else {
+			const index = data.doorCount - form.door.number;
 			return {
 				side: ['U', 'A'].includes(form.door.side) ? 'R' : 'L',
-				index: data.doorCount - form.door.number
+				index: data.doorCount - form.door.number,
+				platform: form.inbound ? index + 1 : data.doorCount - index
 			};
 		}
 	});
 
 	const description = $derived.by(() => {
-		let d = -1;
-		if (doorPosition !== null) {
-			d = form.inbound ? doorPosition.index + 1 : data.doorCount - doorPosition.index;
-		}
-		return `${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: d } as any)}`;
+		return `${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: doorPosition?.platform ?? -1 } as any)}`;
 	});
 
 	function terminal(direction: 'UP' | 'DOWN') {
@@ -188,7 +188,7 @@
 						<p>
 							<span class="text-[198px]">{carNumber}</span>
 							<span class="text-[168px]">-</span>
-							<span class="text-[148px]">{doorPosition ? doorPosition.index + 1 : 'x'}</span>
+							<span class="text-[148px]">{doorPosition?.platform ?? 'x'}</span>
 						</p>
 					</div>
 					<div
