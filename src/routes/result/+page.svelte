@@ -20,10 +20,14 @@
 		showSticker: false
 	});
 
-	/** The absolute car number of the target vehicle, starting from 1 at the "up" side. */
+	/**
+	 * The absolute car number of the target vehicle, starting from 1 at the "up" side.
+	 */
 	const carNumberAbs = data.formation.indexOf(data.params.vehicleNumber) + 1;
 
-	/** Adjusted car number based on direction */
+	/**
+	 * Adjusted car number based on direction.
+	 */
 	const carNumber = $derived.by(() => {
 		return form.inbound
 			? carNumberAbs
