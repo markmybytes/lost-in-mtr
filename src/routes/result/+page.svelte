@@ -14,13 +14,12 @@
 
 	let { data }: PageProps = $props();
 
-	let inbound: boolean = $state(data.params.inbound);
-
-	let flip: boolean = $state(false);
-
-	let showSticker: boolean = $state(false);
-
-	const door: TrainDoor = $state(data.params.door);
+	const form = $state({
+		inbound: data.params.inbound,
+		door: data.params.door,
+		flip: false,
+		showSticker: false
+	});
 
 	const lineColor = lines[data.params.line]['color'];
 
@@ -29,19 +28,19 @@
 	/** The absolute car number of the target vehicle, starting from 1 at the "up" side. */
 	const carNumberAbs = data.formation.indexOf(data.params.vehicleNumber) + 1;
 
-	/** A derived value representing the adjusted car number based on the vehicle's direction (inbound or outbound). */
+	/** Adjusted car number based on direction */
 	const carNumber = $derived.by(() => {
-		return inbound
+		return form.inbound
 			? carNumberAbs
 			: ((data.formation.length - carNumberAbs) % data.formation.length) + 1;
 	});
 
 	const destination = $derived.by(() => {
-		return terminal(inbound ? 'UP' : 'DOWN');
+		return terminal(form.inbound ? 'UP' : 'DOWN');
 	});
 
 	const doorPosition = $derived.by(() => {
-		if (door.number === null || door.side === null || door.number > doorCount) {
+		if (form.door.number === null || form.door.side === null || form.door.number > doorCount) {
 			return null;
 		}
 
@@ -52,13 +51,13 @@
 				(data.stockName != '現代化列車' && [1, 2, 4, 6].includes(carNumberAbs)))
 		) {
 			return {
-				side: ['U', 'A'].includes(door.side) ? 'L' : 'R',
-				index: door.number - 1
+				side: ['U', 'A'].includes(form.door.side) ? 'L' : 'R',
+				index: form.door.number - 1
 			};
 		} else {
 			return {
-				side: ['U', 'A'].includes(door.side) ? 'R' : 'L',
-				index: doorCount - door.number
+				side: ['U', 'A'].includes(form.door.side) ? 'R' : 'L',
+				index: doorCount - form.door.number
 			};
 		}
 	});
@@ -66,7 +65,7 @@
 	const description = $derived.by(() => {
 		let d = -1;
 		if (doorPosition !== null) {
-			d = inbound ? doorPosition.index + 1 : doorCount - doorPosition.index;
+			d = form.inbound ? doorPosition.index + 1 : doorCount - doorPosition.index;
 		}
 		return `${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: d } as any)}`;
 	});
@@ -96,7 +95,8 @@
 					</p>
 				</div>
 			</div>
-			{#if !showSticker}
+
+			{#if !form.showSticker}
 				<div in:slide>
 					<div>
 						<p class="content-center text-center">
@@ -105,21 +105,21 @@
 
 						<div
 							class="flex h-50 w-full flex-col justify-between rounded border-2 px-2 py-1"
-							class:flex-col-reverse={flip}
+							class:flex-col-reverse={form.flip}
 							style:border-color={lineColor}
-							style:border-left-color={carNumberAbs == (flip ? data.formation.length : 1)
+							style:border-left-color={carNumberAbs == (form.flip ? data.formation.length : 1)
 								? lineColor
 								: 'transparent'}
-							style:border-right-color={carNumberAbs == (flip ? 1 : data.formation.length)
+							style:border-right-color={carNumberAbs == (form.flip ? 1 : data.formation.length)
 								? lineColor
 								: 'transparent'}
 						>
-							<div class="flex justify-around" class:flex-row-reverse={flip}>
+							<div class="flex justify-around" class:flex-row-reverse={form.flip}>
 								{#each Array(doorCount).keys() as i}
 									<Door
 										active={doorPosition?.side == 'L' && doorPosition.index == i}
 										color={lineColor}
-									></Door>
+									/>
 								{/each}
 							</div>
 
@@ -129,19 +129,19 @@
 
 								<div
 									class="flex grow justify-between"
-									class:flex-row-reverse={flip}
-									class:text-end={flip}
+									class:flex-row-reverse={form.flip}
+									class:text-end={form.flip}
 								>
 									<div class="col-span-2">
 										<p class="text-xs">{$t('common.upDirection')}</p>
 										<p>
-											<span class=" font-semibold">
+											<span class="font-semibold">
 												{terminal('UP')}
 											</span>
 										</p>
 									</div>
 
-									<div class="col-span-2 text-end" class:text-start={flip}>
+									<div class="col-span-2 text-end" class:text-start={form.flip}>
 										<p class="text-xs">{$t('common.downDirection')}</p>
 										<p>
 											<span class="font-semibold">
@@ -154,12 +154,12 @@
 								<span>→</span>
 							</div>
 
-							<div class="flex justify-around" class:flex-row-reverse={flip}>
+							<div class="flex justify-around" class:flex-row-reverse={form.flip}>
 								{#each Array(doorCount).keys() as i}
 									<Door
 										active={doorPosition?.side == 'R' && doorPosition.index == i}
 										color={lineColor}
-									></Door>
+									/>
 								{/each}
 							</div>
 						</div>
@@ -167,7 +167,7 @@
 
 					<div
 						class="mt-2 flex justify-around gap-x-0.5 overflow-y-auto"
-						class:flex-row-reverse={flip}
+						class:flex-row-reverse={form.flip}
 					>
 						{#each data.formation as stock}
 							<button
@@ -214,18 +214,16 @@
 			<div class="flex flex-col gap-x-3">
 				<p class="text-battleship-gray-600">
 					<span class="me-1 font-bold select-none">㊢</span>
-					<span>
-						{description}
-					</span>
+					<span>{description}</span>
 				</p>
 
 				<div class="flex justify-end gap-x-5 p-1">
 					<a href={`whatsapp://send?text=${encodeURIComponent(description)}`}>
-						<WhatsappIcon></WhatsappIcon>
+						<WhatsappIcon />
 					</a>
 
 					<a href={`tg://msg?text=${encodeURIComponent(description)}`}>
-						<TelegramIcon></TelegramIcon>
+						<TelegramIcon />
 					</a>
 
 					<button
@@ -235,7 +233,7 @@
 							navigator.clipboard.writeText(description);
 						}}
 					>
-						<ClipboardIcon></ClipboardIcon>
+						<ClipboardIcon />
 					</button>
 				</div>
 			</div>
@@ -254,13 +252,13 @@
 								id="switch-component-on"
 								type="checkbox"
 								class="peer checked:bg-new-orleans-300 h-5 w-11 cursor-pointer appearance-none rounded-full bg-slate-100 transition-colors duration-500"
-								onchange={() => (showSticker = !showSticker)}
+								checked={form.showSticker}
+								onchange={() => (form.showSticker = !form.showSticker)}
 							/>
 							<label
 								for="switch-component-on"
 								class="absolute top-0 left-0 h-5 w-5 cursor-pointer rounded-full border border-slate-300 bg-white shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-slate-800"
-							>
-							</label>
+							></label>
 						</div>
 
 						<label for="switch-component-on" class="cursor-pointer text-sm text-slate-600">
@@ -272,17 +270,17 @@
 				<div class="flex gap-x-4">
 					<button
 						class="bg-new-orleans-300 flex h-6 items-center gap-x-2 rounded px-1 text-center text-gray-800"
-						onclick={() => (inbound = !inbound)}
+						onclick={() => (form.inbound = !form.inbound)}
 					>
-						<ArrowLeftRightIcon width={13} height={13}></ArrowLeftRightIcon>
+						<ArrowLeftRightIcon width={13} height={13} />
 						{$t('common.oppositeDirection')}
 					</button>
 
 					<button
 						class="bg-new-orleans-300 flex h-6 items-center gap-x-2 rounded px-1.5 text-center text-gray-800"
-						onclick={() => (flip = !flip)}
+						onclick={() => (form.flip = !form.flip)}
 					>
-						<SymmetryVerticalIcon width={13} height={13}></SymmetryVerticalIcon>
+						<SymmetryVerticalIcon width={13} height={13} />
 					</button>
 				</div>
 			</div>
@@ -303,10 +301,10 @@
 						<button
 							type="button"
 							class="h-6.5 w-7 rounded border"
-							class:bg-new-orleans-700={door.side == side}
-							class:text-white={door.side == side}
+							class:bg-new-orleans-700={form.door.side == side}
+							class:text-white={form.door.side == side}
 							onclick={() => {
-								door.side = door.side == side ? null : (side as typeof door.side);
+								form.door.side = form.door.side == side ? null : (side as typeof form.door.side);
 							}}
 						>
 							{side}
@@ -315,15 +313,14 @@
 				</div>
 
 				<div class="flex gap-x-2">
-					<!-- Safari does not support .map calls on ArrayIterator -->
 					{#each Array.from(Array(doorCount).keys()).map((c) => c + 1) as i}
 						<button
 							type="button"
 							class="h-6.5 w-7 rounded border"
-							class:bg-new-orleans-700={door.number === i}
-							class:text-white={door.number === i}
+							class:bg-new-orleans-700={form.door.number === i}
+							class:text-white={form.door.number === i}
 							onclick={() => {
-								door.number = door.number == i ? null : (i as typeof door.number);
+								form.door.number = form.door.number == i ? null : (i as typeof form.door.number);
 							}}
 						>
 							{i}
