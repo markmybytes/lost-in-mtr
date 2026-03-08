@@ -9,7 +9,6 @@
 	import { textColor } from '$lib/utils';
 	import Door from '$lib/components/result/Door.svelte';
 	import type { PageProps } from './$types';
-	import { Fleet } from '$lib/data';
 	import { slide, fly } from 'svelte/transition';
 
 	let { data }: PageProps = $props();
@@ -22,8 +21,6 @@
 	});
 
 	const lineColor = lines[data.params.line]['color'];
-
-	const doorCount = Fleet.doorCount(data.params.line, data.params.vehicleNumber);
 
 	/** The absolute car number of the target vehicle, starting from 1 at the "up" side. */
 	const carNumberAbs = data.formation.indexOf(data.params.vehicleNumber) + 1;
@@ -40,7 +37,7 @@
 	});
 
 	const doorPosition = $derived.by(() => {
-		if (form.door.number === null || form.door.side === null || form.door.number > doorCount) {
+		if (form.door.number === null || form.door.side === null || form.door.number > data.doorCount) {
 			return null;
 		}
 
@@ -57,7 +54,7 @@
 		} else {
 			return {
 				side: ['U', 'A'].includes(form.door.side) ? 'R' : 'L',
-				index: doorCount - form.door.number
+				index: data.doorCount - form.door.number
 			};
 		}
 	});
@@ -65,7 +62,7 @@
 	const description = $derived.by(() => {
 		let d = -1;
 		if (doorPosition !== null) {
-			d = form.inbound ? doorPosition.index + 1 : doorCount - doorPosition.index;
+			d = form.inbound ? doorPosition.index + 1 : data.doorCount - doorPosition.index;
 		}
 		return `${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: d } as any)}`;
 	});
@@ -115,7 +112,7 @@
 								: 'transparent'}
 						>
 							<div class="flex justify-around" class:flex-row-reverse={form.flip}>
-								{#each Array(doorCount).keys() as i}
+								{#each Array(data.doorCount).keys() as i}
 									<Door
 										active={doorPosition?.side == 'L' && doorPosition.index == i}
 										color={lineColor}
@@ -155,7 +152,7 @@
 							</div>
 
 							<div class="flex justify-around" class:flex-row-reverse={form.flip}>
-								{#each Array(doorCount).keys() as i}
+								{#each Array(data.doorCount).keys() as i}
 									<Door
 										active={doorPosition?.side == 'R' && doorPosition.index == i}
 										color={lineColor}
@@ -313,7 +310,7 @@
 				</div>
 
 				<div class="flex gap-x-2">
-					{#each Array.from(Array(doorCount).keys()).map((c) => c + 1) as i}
+					{#each Array.from(Array(data.doorCount).keys()).map((c) => c + 1) as i}
 						<button
 							type="button"
 							class="h-6.5 w-7 rounded border"

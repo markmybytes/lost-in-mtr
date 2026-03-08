@@ -50,7 +50,8 @@ export const load: PageLoad = async ({ url }) => {
 					stockName: stockName,
 					fleets: fleets,
 					formation: cars,
-					params: params
+					params: params,
+					doorCount: Fleet.doorCount(params.line, params.vehicleNumber)
 				};
 			}
 		}
