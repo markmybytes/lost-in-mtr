@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import TranslateIcon from '$lib/icons/TranslateIcon.svelte';
-	import '../app.css';
+	import '../layout.css';
 	import { locale } from '$lib/i18n/translations';
 	import GearIcon from '$lib/icons/GearIcon.svelte';
 	import SearchIcon from '$lib/icons/SearchIcon.svelte';
@@ -44,10 +44,10 @@
 </script>
 
 <div class="m-auto flex h-svh max-w-xl flex-col">
-	<div class="bg-apple-blossom-600/40 flex justify-between px-3 py-5">
+	<div class="flex justify-between bg-apple-blossom-600/40 px-3 py-5">
 		<div class="flex items-center space-x-3 rtl:space-x-reverse">
 			<!-- <img src={`${assets}/favicon.svg`} class="h-7" alt="Logo" /> -->
-			<span class="text-new-orleans-400 self-center text-lg font-semibold whitespace-nowrap">
+			<span class="self-center text-lg font-semibold whitespace-nowrap text-new-orleans-400">
 				迷失港鐵
 			</span>
 		</div>
