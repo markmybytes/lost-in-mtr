@@ -11,7 +11,20 @@
 	"flipDirection": "Flip Direction",
 	"oppositeDirection": "Opposite Dir.",
 	"platformDoorSticker": "Sticker",
-	"positionDescrTxt": "{name} Direction | Car {car}{door:gte; 1:, {door}ˢᵗ Door; 2:, {door}ⁿᵈ Door; 3:, {door}ʳᵈ Door; 4:, {door}ᵗʰ Door; default:}",
+	"positionDescrDirection": "{name} Direction",
+	"positionDescrCar": "Car {car}",
+	"positionDescrDoor": [
+		{
+			"declarations": ["input door: number", "local doorOrdinal = door: plural type=ordinal"],
+			"selectors": ["doorOrdinal"],
+			"match": {
+				"doorOrdinal=one": ", {door}ˢᵗ Door",
+				"doorOrdinal=two": ", {door}ⁿᵈ Door",
+				"doorOrdinal=few": ", {door}ʳᵈ Door",
+				"doorOrdinal=*": ", {door}ᵗʰ Door"
+			}
+		}
+	],
 	"showUrbanLine": "Show Other Urban Lines",
 	"to": "To",
 	"upDirection": "Up Direction",

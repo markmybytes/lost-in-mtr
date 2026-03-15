@@ -11,7 +11,17 @@
 	"flipDirection": "調轉行車方向",
 	"oppositeDirection": "調頭",
 	"platformDoorSticker": "幕門貼紙",
-	"positionDescrTxt": "{name}方向 | {car}卡{door:gt; 0:{door}門; default:}",
+	"positionDescrDirection": "{name}方向",
+	"positionDescrCar": "{car}卡",
+	"positionDescrDoor": [
+		{
+			"declarations": ["input door: number", "local doorOrdinal = door: plural type=ordinal"],
+			"selectors": ["doorOrdinal"],
+			"match": {
+				"doorOrdinal=*": "{door}門"
+			}
+		}
+	],
 	"showUrbanLine": "顯示其他市區綫",
 	"to": "往",
 	"upDirection": "上行方向",

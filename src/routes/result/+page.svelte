@@ -66,7 +66,11 @@
 	});
 
 	const description = $derived.by(() => {
-		return `${m.positionDescrTxt({ name: destination, car: carNumber, door: doorPosition?.platform ?? -1 } as any)}`;
+		const dir = m.positionDescrDirection({ name: destination } as any);
+		const car = m.positionDescrCar({ car: carNumber } as any);
+		const doorPlatform = doorPosition?.platform ?? -1;
+		const door = doorPlatform > 0 ? m.positionDescrDoor({ door: doorPlatform } as any) : '';
+		return `${dir} | ${car}${door}`;
 	});
 
 	function terminal(direction: 'UP' | 'DOWN') {
@@ -123,7 +127,7 @@
 							</div>
 
 							<!-- direction marker -->
-							<div class="text-battleship-gray-700 flex items-center justify-between gap-x-2">
+							<div class="flex items-center justify-between gap-x-2 text-battleship-gray-700">
 								<span>←</span>
 
 								<div
@@ -250,7 +254,7 @@
 							<input
 								id="switch-component-on"
 								type="checkbox"
-								class="peer checked:bg-new-orleans-300 h-5 w-11 cursor-pointer appearance-none rounded-full bg-slate-100 transition-colors duration-500"
+								class="peer h-5 w-11 cursor-pointer appearance-none rounded-full bg-slate-100 transition-colors duration-500 checked:bg-new-orleans-300"
 								checked={form.showSticker}
 								onchange={() => (form.showSticker = !form.showSticker)}
 							/>
@@ -268,7 +272,7 @@
 
 				<div class="flex gap-x-4">
 					<button
-						class="bg-new-orleans-300 flex h-6 items-center gap-x-2 rounded px-1 text-center text-gray-800"
+						class="flex h-6 items-center gap-x-2 rounded bg-new-orleans-300 px-1 text-center text-gray-800"
 						onclick={() => (form.inbound = !form.inbound)}
 					>
 						<ArrowLeftRightIcon width={13} height={13} />
@@ -276,7 +280,7 @@
 					</button>
 
 					<button
-						class="bg-new-orleans-300 flex h-6 items-center gap-x-2 rounded px-1.5 text-center text-gray-800"
+						class="flex h-6 items-center gap-x-2 rounded bg-new-orleans-300 px-1.5 text-center text-gray-800"
 						onclick={() => (form.flip = !form.flip)}
 					>
 						<SymmetryVerticalIcon width={13} height={13} />
