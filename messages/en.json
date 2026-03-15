@@ -15,7 +15,7 @@
 	"position_descr_car": "Car {car}",
 	"position_descr_door": [
 		{
-			"declarations": ["input door: number", "local doorOrdinal = door: plural type=ordinal"],
+			"declarations": ["input door", "local doorOrdinal = door: plural type=ordinal"],
 			"selectors": ["doorOrdinal"],
 			"match": {
 				"doorOrdinal=one": ", {door}ˢᵗ Door",

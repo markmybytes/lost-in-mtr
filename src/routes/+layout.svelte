@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 	import TranslateIcon from '$lib/icons/TranslateIcon.svelte';
 	import './layout.css';
 	import { setLocale } from '$lib/paraglide/runtime';
@@ -55,7 +55,7 @@
 		<ul class="flex items-center gap-x-4">
 			<li>
 				<a
-					href={`${base}/`}
+					href={resolve('/')}
 					class="flex h-6 w-8 items-center justify-center"
 					data-sveltekit-replacestate
 				>
@@ -64,7 +64,7 @@
 			</li>
 			<li>
 				<a
-					href={`${base}/setting`}
+					href={resolve('/setting')}
 					class="flex h-6 w-8 items-center justify-center"
 					data-sveltekit-replacestate
 				>
@@ -73,7 +73,7 @@
 			</li>
 			<li>
 				<a
-					href={`${base}/guide`}
+					href={resolve('/guide')}
 					class="flex h-6 w-8 items-center justify-center"
 					data-sveltekit-replacestate
 				>

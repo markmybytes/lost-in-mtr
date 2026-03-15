@@ -5,7 +5,7 @@
 	import { Fleet } from '$lib/data';
 	import { textColor } from '$lib/utils';
 	import CaretRightFillIcon from '$lib/icons/CaretRightFillIcon.svelte';
-	import { base } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 
 	let fleets: Fleet.Fleets = $state({});
 
@@ -31,7 +31,7 @@
 		const matches: Array<keyof typeof lines> = [];
 		for (const [line, stocks] of Object.entries(fleets)) {
 			for (const stock of Object.values(stocks).flat()) {
-				const stockArr = stock.split(/[-\+]+/);
+				const stockArr = stock.split(/[-+]+/);
 				if (stockArr.includes(inputs.stockNumber)) {
 					matches.push(line as keyof typeof lines);
 				}
@@ -99,14 +99,14 @@
 
 <div class="flex h-full flex-col gap-y-3">
 	{#if hasUpdate}
-		<a href={`${base}/setting`} class="rounded-lg bg-white/90 p-2">
+		<a href={resolve('/setting')} class="rounded-lg bg-white/90 p-2">
 			<p class="text-new-orleans-900">🔔 {m.fleet_update_available()}</p>
 		</a>
 	{/if}
 
 	<div class="flex h-0 grow flex-col overflow-y-auto rounded-lg bg-white/90 p-2">
-		{#each [...results, ...(extendedResults?.lines ?? [])] as line}
-			{#each ['UP', 'DOWN'] as const as direction}
+		{#each [...results, ...(extendedResults?.lines ?? [])] as line (line)}
+			{#each ['UP', 'DOWN'] as const as direction (direction)}
 				<a
 					href={results.includes(line)
 						? `${base}/result?l=${line}&vn=${inputs.stockNumber}&u=${direction == 'UP'}`
@@ -125,7 +125,11 @@
 						</div>
 
 						<p>
-							{`${m.to()} ${lines[line]['terminals'][direction].map((s) => m[s]?.() ?? s).join(m.slash())}`}
+							{`${m.to()} ${
+								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+								// @ts-expect-error
+								lines[line]['terminals'][direction].map((s) => m[s]?.() ?? s).join(m.slash())
+							}`}
 						</p>
 					</div>
 
@@ -162,9 +166,9 @@
 
 		<div class="flex h-54 gap-x-2 lg:h-44">
 			<div class="flex h-full w-2/3 flex-col gap-y-2 text-xl">
-				{#each [['7', '8', '9'], ['4', '5', '6'], ['1', '2', '3']] as numbers}
+				{#each [['7', '8', '9'], ['4', '5', '6'], ['1', '2', '3']] as numbers, row (row)}
 					<div class="flex grow gap-x-2">
-						{#each numbers as number}
+						{#each numbers as number (number)}
 							<button
 								class="flex-1 rounded-xs bg-white"
 								onclick={() => {
@@ -207,7 +211,7 @@
 
 			<div class="grow overflow-y-scroll">
 				<div class="grid grow grid-cols-2 gap-1">
-					{#each alphabetChoices as alphabet}
+					{#each alphabetChoices as alphabet (alphabet)}
 						<div>
 							<button
 								class="h-12 w-full rounded bg-white disabled:bg-gray-200"

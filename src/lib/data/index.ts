@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import lines from '$lib/data/lines.json';
 
 /**

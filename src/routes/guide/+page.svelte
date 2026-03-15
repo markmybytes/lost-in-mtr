@@ -9,6 +9,7 @@
 			<h2 class="mb-2 font-bold">{m.car_door_number_q()}</h2>
 
 			<p class="text-sm">
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 				{@html m.car_door_number_a()}
 			</p>
 		</div>

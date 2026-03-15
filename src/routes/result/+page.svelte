@@ -66,17 +66,21 @@
 	});
 
 	const description = $derived.by(() => {
-		const dir = m.position_descr_direction({ name: destination } as any);
-		const car = m.position_descr_car({ car: carNumber } as any);
+		const dir = m.position_descr_direction({ name: destination });
+		const car = m.position_descr_car({ car: carNumber });
 		const doorPlatform = doorPosition?.platform ?? -1;
-		const door = doorPlatform > 0 ? m.position_descr_door({ door: doorPlatform } as any) : '';
+		const door = doorPlatform > 0 ? m.position_descr_door({ door: doorPlatform }) : '';
 		return `${dir} | ${car}${door}`;
 	});
 
 	function terminal(direction: 'UP' | 'DOWN') {
-		return lines[data.params.line]['terminals'][direction]
-			.map((s) => m[s]?.() ?? s)
-			.join(m.slash());
+		return (
+			lines[data.params.line]['terminals'][direction]
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-expect-error
+				.map((s) => m[s]?.() ?? s)
+				.join(m.slash())
+		);
 	}
 </script>
 
@@ -103,7 +107,7 @@
 				<div in:slide>
 					<div>
 						<p class="content-center text-center">
-							{m.car_number({ number: carNumber } as any)}
+							{m.car_number({ number: carNumber })}
 						</p>
 
 						<div
@@ -118,7 +122,7 @@
 								: 'transparent'}
 						>
 							<div class="flex justify-around" class:flex-row-reverse={form.flip}>
-								{#each Array(data.doorCount).keys() as i}
+								{#each Array(data.doorCount).keys() as i (i)}
 									<Door
 										active={doorPosition?.side == 'L' && doorPosition.index == i}
 										color={data.lineColor}
@@ -158,7 +162,7 @@
 							</div>
 
 							<div class="flex justify-around" class:flex-row-reverse={form.flip}>
-								{#each Array(data.doorCount).keys() as i}
+								{#each Array(data.doorCount).keys() as i (i)}
 									<Door
 										active={doorPosition?.side == 'R' && doorPosition.index == i}
 										color={data.lineColor}
@@ -172,7 +176,7 @@
 						class="mt-2 flex justify-around gap-x-0.5 overflow-y-auto"
 						class:flex-row-reverse={form.flip}
 					>
-						{#each data.formation as stock}
+						{#each data.formation as stock, i (i)}
 							<button
 								class="rounded-xs border px-0.5 font-mono text-[0.7rem]"
 								style:background-color={data.params.vehicleNumber == stock ? data.lineColor : ''}
@@ -300,7 +304,7 @@
 
 			<div class="col-span-6 flex flex-col gap-y-2">
 				<div class="flex gap-x-2">
-					{#each ['EAL', 'TML'].includes(data.params.line) ? ['U', 'D'] : ['A', 'B'] as side}
+					{#each ['EAL', 'TML'].includes(data.params.line) ? ['U', 'D'] : ['A', 'B'] as side, i (i)}
 						<button
 							type="button"
 							class="h-6.5 w-7 rounded border"
@@ -316,7 +320,7 @@
 				</div>
 
 				<div class="flex gap-x-2">
-					{#each Array.from(Array(data.doorCount).keys()).map((c) => c + 1) as i}
+					{#each Array.from(Array(data.doorCount).keys()).map((c) => c + 1) as i (i)}
 						<button
 							type="button"
 							class="h-6.5 w-7 rounded border"
