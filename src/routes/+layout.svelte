@@ -93,17 +93,24 @@
 						class="absolute right-0 z-10 mt-2 w-28 rounded-md border border-gray-200 bg-white text-center shadow-lg"
 						class:hidden={!showLocalDropdown}
 					>
-						{#each [['繁體中文', 'zh-Hant-HK'], ['English', 'en']] as lc}
-							<button
-								class="w-full px-4 py-2"
-								onclick={() => {
-									showLocalDropdown = false;
-									setLocale(lc[1]);
-								}}
-							>
-								{lc[0]}
-							</button>
-						{/each}
+						<button
+							class="w-full px-4 py-2"
+							onclick={() => {
+								showLocalDropdown = false;
+								setLocale('zh-Hant-HK');
+							}}
+						>
+							繁體中文
+						</button>
+						<button
+							class="w-full px-4 py-2"
+							onclick={() => {
+								showLocalDropdown = false;
+								setLocale('en');
+							}}
+						>
+							English
+						</button>
 					</div>
 				</div>
 			</li>
