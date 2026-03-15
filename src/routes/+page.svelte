@@ -100,7 +100,7 @@
 <div class="flex h-full flex-col gap-y-3">
 	{#if hasUpdate}
 		<a href={`${base}/setting`} class="rounded-lg bg-white/90 p-2">
-			<p class="text-new-orleans-900">🔔 {m.fleetUpdateAvailable()}</p>
+			<p class="text-new-orleans-900">🔔 {m.fleet_update_available()}</p>
 		</a>
 	{/if}
 
@@ -111,7 +111,7 @@
 					href={results.includes(line)
 						? `${base}/result?l=${line}&vn=${inputs.stockNumber}&u=${direction == 'UP'}`
 						: `${base}/result?l=${line}&rl=${extendedResults!.reference}&vn=${inputs.stockNumber}&u=${direction == 'UP'}`}
-					class="border-new-orleans-900 flex justify-between gap-x-2 py-2 not-first:border-t last:border-b"
+					class="flex justify-between gap-x-2 border-new-orleans-900 py-2 not-first:border-t last:border-b"
 				>
 					<div class="flex flex-col gap-1.5">
 						<div>
@@ -137,14 +137,14 @@
 		{/each}
 
 		{#if results.some((l) => Fleet.ubranLines.includes(l)) && !inputs.allUrbanLines}
-			<div class="border-new-orleans-900 flex justify-end border-t py-4 text-xs md:text-sm">
+			<div class="flex justify-end border-t border-new-orleans-900 py-4 text-xs md:text-sm">
 				<button
-					class="bg-new-orleans-400 cursor-pointer rounded p-1"
+					class="cursor-pointer rounded bg-new-orleans-400 p-1"
 					onclick={() => {
 						inputs.allUrbanLines = true;
 					}}
 				>
-					{m.showUrbanLine()}
+					{m.show_urban_line()}
 				</button>
 			</div>
 		{/if}
@@ -155,7 +155,7 @@
 			<input
 				type="text"
 				class="h-8 w-full bg-white px-2"
-				placeholder={`🔎 ${m.carNo()}`}
+				placeholder={`🔎 ${m.car_no()}`}
 				bind:value={inputs.stockNumber}
 			/>
 		</div>

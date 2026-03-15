@@ -66,10 +66,10 @@
 	});
 
 	const description = $derived.by(() => {
-		const dir = m.positionDescrDirection({ name: destination } as any);
-		const car = m.positionDescrCar({ car: carNumber } as any);
+		const dir = m.position_descr_direction({ name: destination } as any);
+		const car = m.position_descr_car({ car: carNumber } as any);
 		const doorPlatform = doorPosition?.platform ?? -1;
-		const door = doorPlatform > 0 ? m.positionDescrDoor({ door: doorPlatform } as any) : '';
+		const door = doorPlatform > 0 ? m.position_descr_door({ door: doorPlatform } as any) : '';
 		return `${dir} | ${car}${door}`;
 	});
 
@@ -103,7 +103,7 @@
 				<div in:slide>
 					<div>
 						<p class="content-center text-center">
-							{m.carNumber({ number: carNumber } as any)}
+							{m.car_number({ number: carNumber } as any)}
 						</p>
 
 						<div
@@ -136,7 +136,7 @@
 									class:text-end={form.flip}
 								>
 									<div class="col-span-2">
-										<p class="text-xs">{m.upDirection()}</p>
+										<p class="text-xs">{m.up_direction()}</p>
 										<p>
 											<span class="font-semibold">
 												{terminal('UP')}
@@ -145,7 +145,7 @@
 									</div>
 
 									<div class="col-span-2 text-end" class:text-start={form.flip}>
-										<p class="text-xs">{m.downDirection()}</p>
+										<p class="text-xs">{m.down_direction()}</p>
 										<p>
 											<span class="font-semibold">
 												{terminal('DOWN')}
@@ -265,7 +265,7 @@
 						</div>
 
 						<label for="switch-component-on" class="cursor-pointer text-sm text-slate-600">
-							{m.platformDoorSticker()}
+							{m.platform_door_sticker()}
 						</label>
 					</div>
 				</div>
@@ -276,7 +276,7 @@
 						onclick={() => (form.inbound = !form.inbound)}
 					>
 						<ArrowLeftRightIcon width={13} height={13} />
-						{m.oppositeDirection()}
+						{m.opposite_direction()}
 					</button>
 
 					<button
@@ -294,7 +294,7 @@
 		<div class="grid grid-cols-10 items-center gap-2">
 			<div class="col-span-4 flex">
 				<p class="flex items-center gap-x-2 font-medium text-gray-900">
-					{m.doorNo()}
+					{m.door_no()}
 				</p>
 			</div>
 

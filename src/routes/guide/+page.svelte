@@ -6,18 +6,18 @@
 <div class="flex h-full flex-col gap-y-4">
 	<div class="flex h-0 grow flex-col gap-y-2 overflow-y-auto rounded-lg bg-white/90 p-2">
 		<div>
-			<h2 class="mb-2 font-bold">{m.carDoorNumberQ()}</h2>
+			<h2 class="mb-2 font-bold">{m.car_door_number_q()}</h2>
 
 			<p class="text-sm">
-				{@html m.carDoorNumberA()}
+				{@html m.car_door_number_a()}
 			</p>
 		</div>
 
 		<div>
-			<h2 class="mb-2 font-bold">{m.findCarDoorNumberQ()}</h2>
+			<h2 class="mb-2 font-bold">{m.find_car_door_number_q()}</h2>
 			<ol class="flex list-decimal flex-col gap-y-3 pl-4 text-sm">
 				<li>
-					<p>{m.stickerNextToDoor()}</p>
+					<p>{m.sticker_next_to_door()}</p>
 
 					<img src="{base}/images/c_train_door.webp" alt="" class="p-1" />
 
@@ -25,7 +25,7 @@
 				</li>
 
 				<li>
-					<p>{m.routeMap()}</p>
+					<p>{m.route_map()}</p>
 
 					<img src="{base}/images/m_train_drm.webp" alt="" class="p-1" />
 
@@ -33,13 +33,13 @@
 				</li>
 
 				<li>
-					<p>{m.endAndLcd()}</p>
+					<p>{m.end_and_lcd()}</p>
 
 					<img src="{base}/images/m_train_end.webp" alt="" class="p-1" />
 
 					<img src="{base}/images/c_train_end.webp" alt="" class="p-1" />
 					<p class="text-xs text-gray-400">
-						{m.lcdNumberHint()}
+						{m.lcd_number_hint()}
 					</p>
 				</li>
 
@@ -56,10 +56,10 @@
 		</div>
 
 		<div>
-			<h2 class="mb-2 font-bold">{m.noResultWrongResultQ()}</h2>
+			<h2 class="mb-2 font-bold">{m.no_result_wrong_result_q()}</h2>
 
 			<p class="text-sm">
-				{m.noResultWrongResultA()}
+				{m.no_result_wrong_result_a()}
 			</p>
 		</div>
 	</div>
