@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import TranslateIcon from '$lib/icons/TranslateIcon.svelte';
-	import '../layout.css';
-	import { locale } from '$lib/i18n/translations';
+	import './layout.css';
+	import { setLocale } from '$lib/paraglide/runtime';
 	import GearIcon from '$lib/icons/GearIcon.svelte';
 	import SearchIcon from '$lib/icons/SearchIcon.svelte';
 	import QuestionLgIcon from '$lib/icons/QuestionLgIcon.svelte';
@@ -93,12 +93,12 @@
 						class="absolute right-0 z-10 mt-2 w-28 rounded-md border border-gray-200 bg-white text-center shadow-lg"
 						class:hidden={!showLocalDropdown}
 					>
-						{#each [['繁體中文', 'zh-hk'], ['English', 'en']] as lc}
+						{#each [['繁體中文', 'zh-Hant-HK'], ['English', 'en']] as lc}
 							<button
 								class="w-full px-4 py-2"
 								onclick={() => {
 									showLocalDropdown = false;
-									locale.set(lc[1]);
+									setLocale(lc[1]);
 								}}
 							>
 								{lc[0]}

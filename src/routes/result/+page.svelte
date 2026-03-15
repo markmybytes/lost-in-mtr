@@ -1,6 +1,6 @@
 <script lang="ts">
 	import lines from '$lib/data/lines.json';
-	import { t } from '$lib/i18n/translations';
+	import * as m from '$lib/paraglide/messages';
 	import ArrowLeftRightIcon from '$lib/icons/ArrowLeftRightIcon.svelte';
 	import ClipboardIcon from '$lib/icons/ClipboardIcon.svelte';
 	import SymmetryVerticalIcon from '$lib/icons/SymmetryVerticalIcon.svelte';
@@ -66,13 +66,13 @@
 	});
 
 	const description = $derived.by(() => {
-		return `${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: doorPosition?.platform ?? -1 } as any)}`;
+		return `${m.positionDescrTxt({ name: destination, car: carNumber, door: doorPosition?.platform ?? -1 } as any)}`;
 	});
 
 	function terminal(direction: 'UP' | 'DOWN') {
 		return lines[data.params.line]['terminals'][direction]
-			.map((s) => $t(`station.${s}`))
-			.join($t('common./'));
+			.map((s) => m[s]?.() ?? s)
+			.join(m.slash());
 	}
 </script>
 
@@ -86,11 +86,11 @@
 						style:background-color={data.lineColor}
 						style:color={textColor(data.lineColor)}
 					>
-						{$t(`line.${data.params.line}`)}
+						{m[data.params.line]?.() ?? data.params.line}
 					</span>
 
 					<p class=" min-w-0 items-center truncate">
-						{`${$t('common.to')} ${destination}`}
+						{`${m.to()} ${destination}`}
 					</p>
 				</div>
 			</div>
@@ -99,7 +99,7 @@
 				<div in:slide>
 					<div>
 						<p class="content-center text-center">
-							{$t('common.carNumber', { number: carNumber } as any)}
+							{m.carNumber({ number: carNumber } as any)}
 						</p>
 
 						<div
@@ -132,7 +132,7 @@
 									class:text-end={form.flip}
 								>
 									<div class="col-span-2">
-										<p class="text-xs">{$t('common.upDirection')}</p>
+										<p class="text-xs">{m.upDirection()}</p>
 										<p>
 											<span class="font-semibold">
 												{terminal('UP')}
@@ -141,7 +141,7 @@
 									</div>
 
 									<div class="col-span-2 text-end" class:text-start={form.flip}>
-										<p class="text-xs">{$t('common.downDirection')}</p>
+										<p class="text-xs">{m.downDirection()}</p>
 										<p>
 											<span class="font-semibold">
 												{terminal('DOWN')}
@@ -243,7 +243,7 @@
 				<div>
 					<div class="inline-flex items-center gap-2">
 						<label for="switch-component-on" class="cursor-pointer text-sm text-slate-600">
-							{$t('common.carriage')}
+							{m.carriage()}
 						</label>
 
 						<div class="relative inline-block h-5 w-11">
@@ -261,7 +261,7 @@
 						</div>
 
 						<label for="switch-component-on" class="cursor-pointer text-sm text-slate-600">
-							{$t('common.platformDoorSticker')}
+							{m.platformDoorSticker()}
 						</label>
 					</div>
 				</div>
@@ -272,7 +272,7 @@
 						onclick={() => (form.inbound = !form.inbound)}
 					>
 						<ArrowLeftRightIcon width={13} height={13} />
-						{$t('common.oppositeDirection')}
+						{m.oppositeDirection()}
 					</button>
 
 					<button
@@ -290,7 +290,7 @@
 		<div class="grid grid-cols-10 items-center gap-2">
 			<div class="col-span-4 flex">
 				<p class="flex items-center gap-x-2 font-medium text-gray-900">
-					{$t('common.doorNo')}
+					{m.doorNo()}
 				</p>
 			</div>
 

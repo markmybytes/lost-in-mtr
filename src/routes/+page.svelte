@@ -1,6 +1,6 @@
 <script lang="ts">
 	import lines from '$lib/data/lines.json';
-	import { t } from '$lib/i18n/translations';
+	import * as m from '$lib/paraglide/messages';
 	import { onMount } from 'svelte';
 	import { Fleet } from '$lib/data';
 	import { textColor } from '$lib/utils';
@@ -100,7 +100,7 @@
 <div class="flex h-full flex-col gap-y-3">
 	{#if hasUpdate}
 		<a href={`${base}/setting`} class="rounded-lg bg-white/90 p-2">
-			<p class="text-new-orleans-900">🔔 {$t('common.fleetUpdateAvailable')}</p>
+			<p class="text-new-orleans-900">🔔 {m.fleetUpdateAvailable()}</p>
 		</a>
 	{/if}
 
@@ -120,12 +120,12 @@
 								style:background-color={lines[line].color}
 								style:color={textColor(lines[line].color)}
 							>
-								{$t(`line.${line}`)}
+								{m[line]?.() ?? line}
 							</button>
 						</div>
 
 						<p>
-							{`${$t('common.to')} ${lines[line]['terminals'][direction].map((s) => $t(`station.${s}`)).join($t('common./'))}`}
+							{`${m.to()} ${lines[line]['terminals'][direction].map((s) => m[s]?.() ?? s).join(m.slash())}`}
 						</p>
 					</div>
 
@@ -144,7 +144,7 @@
 						inputs.allUrbanLines = true;
 					}}
 				>
-					{$t('common.showUrbanLine')}
+					{m.showUrbanLine()}
 				</button>
 			</div>
 		{/if}
@@ -155,7 +155,7 @@
 			<input
 				type="text"
 				class="h-8 w-full bg-white px-2"
-				placeholder={`🔎 ${$t('common.carNo')}`}
+				placeholder={`🔎 ${m.carNo()}`}
 				bind:value={inputs.stockNumber}
 			/>
 		</div>

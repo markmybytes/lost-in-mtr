@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { locale, t } from '$lib/i18n/translations';
+	import { getLocale } from '$lib/paraglide/runtime';
+	import * as m from '$lib/paraglide/messages';
 	import CaretDownFillIcon from '$lib/icons/CaretDownFillIcon.svelte';
 	import IosShareIcon from '$lib/icons/IosShareIcon.svelte';
 	import Spinner from '$lib/icons/Spinner.svelte';
@@ -17,13 +18,13 @@
 	});
 
 	let update = $state({
-		time: Fleet.lastUpdateTime()?.toLocaleString(locale.get()),
+		time: Fleet.lastUpdateTime()?.toLocaleString(getLocale()),
 		inprogress: false,
 		auto: Fleet.isAutoUpdate()
 	});
 
-	locale.subscribe((lc) => {
-		update.time = Fleet.lastUpdateTime()?.toLocaleString(lc);
+	$effect(() => {
+		update.time = Fleet.lastUpdateTime()?.toLocaleString(getLocale());
 	});
 
 	$effect(() => Fleet.setAutoUpdate(update.auto));
@@ -32,7 +33,7 @@
 <div class="flex flex-col gap-y-4">
 	<div class="flex items-center justify-between rounded bg-white p-2">
 		<div class="flex gap-x-2">
-			<h1 class="font-bold">{$t('common.version')}</h1>
+			<h1 class="font-bold">{m.version()}</h1>
 
 			<p>
 				{data.version ?? data.commitHash.slice(0, 8)}
@@ -41,10 +42,10 @@
 	</div>
 
 	<div class="flex flex-col gap-y-2 rounded bg-white p-2">
-		<h1 class="font-bold">{$t('setting.fleetData')}</h1>
+		<h1 class="font-bold">{m.fleetData()}</h1>
 
 		<div class="flex">
-			<p class="w-1/2">{$t('setting.autoUpdate')}</p>
+			<p class="w-1/2">{m.autoUpdate()}</p>
 			<div class="w-1/2 text-end text-gray-400">
 				<label class="inline-flex cursor-pointer items-center">
 					<input type="checkbox" class="peer sr-only" bind:checked={update.auto} />
@@ -56,7 +57,7 @@
 		</div>
 
 		<div>
-			<p class="w-1/2">{$t('setting.updateTime')}</p>
+			<p class="w-1/2">{m.updateTime()}</p>
 			<p class="text-gray-400">
 				{#if update.time !== null}
 					{update.time}
@@ -71,12 +72,12 @@
 				onclick={() => {
 					update.inprogress = true;
 					Fleet.get(true)
-						.then(() => (update.time = Fleet.lastUpdateTime()?.toLocaleString(locale.get())))
+						.then(() => (update.time = Fleet.lastUpdateTime()?.toLocaleString(getLocale())))
 						.finally(() => setTimeout(() => (update.inprogress = false), 200));
 				}}
 			>
 				{#if !update.inprogress}
-					{$t('setting.update')}
+					{m.update()}
 				{:else}
 					<Spinner class_="h-6 w-8 animate-spin fill-new-orleans-800 text-new-orleans-200"
 					></Spinner>
@@ -86,7 +87,7 @@
 	</div>
 
 	<div class="flex flex-col gap-y-2 rounded bg-white p-2">
-		<h1 class="font-bold">{$t('setting.pwaGuideTitle')}</h1>
+		<h1 class="font-bold">{m.pwaGuideTitle()}</h1>
 
 		<div>
 			<div class="flex w-1/2 gap-x-2">
@@ -136,7 +137,7 @@
 	<div class="flex flex-col gap-y-3 rounded bg-white p-2">
 		<div class="flex">
 			<p class="w-1/2">
-				{`${$t('setting.sourceCode')}${$t('common./')}${$t('setting.reportBugs')}`}
+				{`${m.sourceCode()}${m.slash()}${m.reportBugs()}`}
 			</p>
 			<a href="https://github.com/SuperDumbTM/lost-in-mtr" class="content-center font-mono"
 				>🔗 Github
@@ -144,7 +145,7 @@
 		</div>
 
 		<div class="flex">
-			<p class="w-1/2">{$t('setting.fleetDataSource')}</p>
+			<p class="w-1/2">{m.fleetDataSource()}</p>
 			<a href="https://hkrail.fandom.com/wiki/%E9%A6%96%E9%A0%81" class="content-center"
 				>🔗 香港鐵路大典
 			</a>
