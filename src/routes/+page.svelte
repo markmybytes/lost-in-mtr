@@ -128,7 +128,9 @@
 							{`${m.to()} ${
 								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 								// @ts-expect-error
-								lines[line]['terminals'][direction].map((s) => m[`station_${s.toLowerCase()}`]?.() ?? s).join(m.slash())
+								lines[line]['terminals'][direction]
+									.map((s) => m[`station_${s.toLowerCase()}`]?.() ?? s)
+									.join(m.slash())
 							}`}
 						</p>
 					</div>
