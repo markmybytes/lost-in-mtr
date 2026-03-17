@@ -1,11 +1,11 @@
 <script lang="ts">
 	import lines from '$lib/data/lines.json';
-	import { t } from '$lib/i18n/translations';
+	import * as m from '$lib/paraglide/messages';
 	import { onMount } from 'svelte';
 	import { Fleet } from '$lib/data';
 	import { textColor } from '$lib/utils';
 	import CaretRightFillIcon from '$lib/icons/CaretRightFillIcon.svelte';
-	import { base } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 
 	let fleets: Fleet.Fleets = $state({});
 
@@ -31,7 +31,7 @@
 		const matches: Array<keyof typeof lines> = [];
 		for (const [line, stocks] of Object.entries(fleets)) {
 			for (const stock of Object.values(stocks).flat()) {
-				const stockArr = stock.split(/[-\+]+/);
+				const stockArr = stock.split(/[-+]+/);
 				if (stockArr.includes(inputs.stockNumber)) {
 					matches.push(line as keyof typeof lines);
 				}
@@ -99,19 +99,19 @@
 
 <div class="flex h-full flex-col gap-y-3">
 	{#if hasUpdate}
-		<a href={`${base}/setting`} class="rounded-lg bg-white/90 p-2">
-			<p class="text-new-orleans-900">🔔 {$t('common.fleetUpdateAvailable')}</p>
+		<a href={resolve('/setting')} class="rounded-lg bg-white/90 p-2">
+			<p class="text-new-orleans-900">🔔 {m.fleet_update_available()}</p>
 		</a>
 	{/if}
 
 	<div class="flex h-0 grow flex-col overflow-y-auto rounded-lg bg-white/90 p-2">
-		{#each [...results, ...(extendedResults?.lines ?? [])] as line}
-			{#each ['UP', 'DOWN'] as const as direction}
+		{#each [...results, ...(extendedResults?.lines ?? [])] as line (line)}
+			{#each ['UP', 'DOWN'] as const as direction (direction)}
 				<a
 					href={results.includes(line)
 						? `${base}/result?l=${line}&vn=${inputs.stockNumber}&u=${direction == 'UP'}`
 						: `${base}/result?l=${line}&rl=${extendedResults!.reference}&vn=${inputs.stockNumber}&u=${direction == 'UP'}`}
-					class="border-new-orleans-900 flex justify-between gap-x-2 py-2 not-first:border-t last:border-b"
+					class="flex justify-between gap-x-2 border-new-orleans-900 py-2 not-first:border-t last:border-b"
 				>
 					<div class="flex flex-col gap-1.5">
 						<div>
@@ -120,12 +120,18 @@
 								style:background-color={lines[line].color}
 								style:color={textColor(lines[line].color)}
 							>
-								{$t(`line.${line}`)}
+								{m[`line_${line.toLowerCase()}`]?.() ?? line}
 							</button>
 						</div>
 
 						<p>
-							{`${$t('common.to')} ${lines[line]['terminals'][direction].map((s) => $t(`station.${s}`)).join($t('common./'))}`}
+							{`${m.to()} ${
+								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+								// @ts-expect-error
+								lines[line]['terminals'][direction]
+									.map((s) => m[`station_${s.toLowerCase()}`]?.() ?? s)
+									.join(m.slash())
+							}`}
 						</p>
 					</div>
 
@@ -137,14 +143,14 @@
 		{/each}
 
 		{#if results.some((l) => Fleet.ubranLines.includes(l)) && !inputs.allUrbanLines}
-			<div class="border-new-orleans-900 flex justify-end border-t py-4 text-xs md:text-sm">
+			<div class="flex justify-end border-t border-new-orleans-900 py-4 text-xs md:text-sm">
 				<button
-					class="bg-new-orleans-400 cursor-pointer rounded p-1"
+					class="cursor-pointer rounded bg-new-orleans-400 p-1"
 					onclick={() => {
 						inputs.allUrbanLines = true;
 					}}
 				>
-					{$t('common.showUrbanLine')}
+					{m.show_urban_line()}
 				</button>
 			</div>
 		{/if}
@@ -155,16 +161,16 @@
 			<input
 				type="text"
 				class="h-8 w-full bg-white px-2"
-				placeholder={`🔎 ${$t('common.carNo')}`}
+				placeholder={`🔎 ${m.car_no()}`}
 				bind:value={inputs.stockNumber}
 			/>
 		</div>
 
 		<div class="flex h-54 gap-x-2 lg:h-44">
 			<div class="flex h-full w-2/3 flex-col gap-y-2 text-xl">
-				{#each [['7', '8', '9'], ['4', '5', '6'], ['1', '2', '3']] as numbers}
+				{#each [['7', '8', '9'], ['4', '5', '6'], ['1', '2', '3']] as numbers, row (row)}
 					<div class="flex grow gap-x-2">
-						{#each numbers as number}
+						{#each numbers as number (number)}
 							<button
 								class="flex-1 rounded-xs bg-white"
 								onclick={() => {
@@ -207,7 +213,7 @@
 
 			<div class="grow overflow-y-scroll">
 				<div class="grid grow grid-cols-2 gap-1">
-					{#each alphabetChoices as alphabet}
+					{#each alphabetChoices as alphabet (alphabet)}
 						<div>
 							<button
 								class="h-12 w-full rounded bg-white disabled:bg-gray-200"

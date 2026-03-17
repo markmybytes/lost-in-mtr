@@ -1,6 +1,6 @@
 <script lang="ts">
 	import lines from '$lib/data/lines.json';
-	import { t } from '$lib/i18n/translations';
+	import * as m from '$lib/paraglide/messages';
 	import ArrowLeftRightIcon from '$lib/icons/ArrowLeftRightIcon.svelte';
 	import ClipboardIcon from '$lib/icons/ClipboardIcon.svelte';
 	import SymmetryVerticalIcon from '$lib/icons/SymmetryVerticalIcon.svelte';
@@ -66,13 +66,21 @@
 	});
 
 	const description = $derived.by(() => {
-		return `${$t('common.positionDescrTxt', { name: destination, car: carNumber, door: doorPosition?.platform ?? -1 } as any)}`;
+		const dir = m.position_direction({ name: destination });
+		const car = m.position_car({ car: carNumber });
+		const doorPlatform = doorPosition?.platform ?? -1;
+		const door = doorPlatform > 0 ? m.position_door({ door: doorPlatform }) : '';
+		return `${dir} | ${car}${door}`;
 	});
 
 	function terminal(direction: 'UP' | 'DOWN') {
-		return lines[data.params.line]['terminals'][direction]
-			.map((s) => $t(`station.${s}`))
-			.join($t('common./'));
+		return (
+			lines[data.params.line]['terminals'][direction]
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-expect-error
+				.map((s) => m[`station_${s.toLowerCase()}`]?.() ?? s)
+				.join(m.slash())
+		);
 	}
 </script>
 
@@ -86,11 +94,16 @@
 						style:background-color={data.lineColor}
 						style:color={textColor(data.lineColor)}
 					>
-						{$t(`line.${data.params.line}`)}
+						<!-- prettier-ignore -->
+						{
+							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+							// @ts-expect-error
+							m[`line_${data.params.line.toLowerCase()}`]?.() ?? data.params.line
+						}
 					</span>
 
 					<p class=" min-w-0 items-center truncate">
-						{`${$t('common.to')} ${destination}`}
+						{`${m.to()} ${destination}`}
 					</p>
 				</div>
 			</div>
@@ -99,7 +112,7 @@
 				<div in:slide>
 					<div>
 						<p class="content-center text-center">
-							{$t('common.carNumber', { number: carNumber } as any)}
+							{m.car_number({ number: carNumber })}
 						</p>
 
 						<div
@@ -114,7 +127,7 @@
 								: 'transparent'}
 						>
 							<div class="flex justify-around" class:flex-row-reverse={form.flip}>
-								{#each Array(data.doorCount).keys() as i}
+								{#each Array(data.doorCount).keys() as i (i)}
 									<Door
 										active={doorPosition?.side == 'L' && doorPosition.index == i}
 										color={data.lineColor}
@@ -123,7 +136,7 @@
 							</div>
 
 							<!-- direction marker -->
-							<div class="text-battleship-gray-700 flex items-center justify-between gap-x-2">
+							<div class="flex items-center justify-between gap-x-2 text-battleship-gray-700">
 								<span>←</span>
 
 								<div
@@ -132,7 +145,7 @@
 									class:text-end={form.flip}
 								>
 									<div class="col-span-2">
-										<p class="text-xs">{$t('common.upDirection')}</p>
+										<p class="text-xs">{m.up_direction()}</p>
 										<p>
 											<span class="font-semibold">
 												{terminal('UP')}
@@ -141,7 +154,7 @@
 									</div>
 
 									<div class="col-span-2 text-end" class:text-start={form.flip}>
-										<p class="text-xs">{$t('common.downDirection')}</p>
+										<p class="text-xs">{m.down_direction()}</p>
 										<p>
 											<span class="font-semibold">
 												{terminal('DOWN')}
@@ -154,7 +167,7 @@
 							</div>
 
 							<div class="flex justify-around" class:flex-row-reverse={form.flip}>
-								{#each Array(data.doorCount).keys() as i}
+								{#each Array(data.doorCount).keys() as i (i)}
 									<Door
 										active={doorPosition?.side == 'R' && doorPosition.index == i}
 										color={data.lineColor}
@@ -168,7 +181,7 @@
 						class="mt-2 flex justify-around gap-x-0.5 overflow-y-auto"
 						class:flex-row-reverse={form.flip}
 					>
-						{#each data.formation as stock}
+						{#each data.formation as stock, i (i)}
 							<button
 								class="rounded-xs border px-0.5 font-mono text-[0.7rem]"
 								style:background-color={data.params.vehicleNumber == stock ? data.lineColor : ''}
@@ -239,18 +252,18 @@
 		</div>
 
 		<div class="border-t border-gray-200 pt-3 pb-1">
-			<div class="flex flex-wrap justify-between text-sm">
+			<div class="flex flex-wrap items-center justify-between gap-2 text-sm">
 				<div>
 					<div class="inline-flex items-center gap-2">
 						<label for="switch-component-on" class="cursor-pointer text-sm text-slate-600">
-							{$t('common.carriage')}
+							{m.carriage()}
 						</label>
 
 						<div class="relative inline-block h-5 w-11">
 							<input
 								id="switch-component-on"
 								type="checkbox"
-								class="peer checked:bg-new-orleans-300 h-5 w-11 cursor-pointer appearance-none rounded-full bg-slate-100 transition-colors duration-500"
+								class="peer h-5 w-11 cursor-pointer appearance-none rounded-full bg-slate-100 transition-colors duration-500 checked:bg-new-orleans-300"
 								checked={form.showSticker}
 								onchange={() => (form.showSticker = !form.showSticker)}
 							/>
@@ -261,22 +274,25 @@
 						</div>
 
 						<label for="switch-component-on" class="cursor-pointer text-sm text-slate-600">
-							{$t('common.platformDoorSticker')}
+							{m.platform_door_sticker()}
 						</label>
 					</div>
 				</div>
 
 				<div class="flex gap-x-4">
 					<button
-						class="bg-new-orleans-300 flex h-6 items-center gap-x-2 rounded px-1 text-center text-gray-800"
+						class="flex h-6 max-w-24 items-center gap-x-2 rounded bg-new-orleans-300 px-1 text-center text-gray-800"
 						onclick={() => (form.inbound = !form.inbound)}
 					>
 						<ArrowLeftRightIcon width={13} height={13} />
-						{$t('common.oppositeDirection')}
+
+						<span class="truncate">
+							{m.opposite_direction()}
+						</span>
 					</button>
 
 					<button
-						class="bg-new-orleans-300 flex h-6 items-center gap-x-2 rounded px-1.5 text-center text-gray-800"
+						class="flex h-6 items-center gap-x-2 rounded bg-new-orleans-300 px-1.5 text-center text-gray-800"
 						onclick={() => (form.flip = !form.flip)}
 					>
 						<SymmetryVerticalIcon width={13} height={13} />
@@ -290,13 +306,13 @@
 		<div class="grid grid-cols-10 items-center gap-2">
 			<div class="col-span-4 flex">
 				<p class="flex items-center gap-x-2 font-medium text-gray-900">
-					{$t('common.doorNo')}
+					{m.door_no()}
 				</p>
 			</div>
 
 			<div class="col-span-6 flex flex-col gap-y-2">
 				<div class="flex gap-x-2">
-					{#each ['EAL', 'TML'].includes(data.params.line) ? ['U', 'D'] : ['A', 'B'] as side}
+					{#each ['EAL', 'TML'].includes(data.params.line) ? ['U', 'D'] : ['A', 'B'] as side, i (i)}
 						<button
 							type="button"
 							class="h-6.5 w-7 rounded border"
@@ -312,7 +328,7 @@
 				</div>
 
 				<div class="flex gap-x-2">
-					{#each Array.from(Array(data.doorCount).keys()).map((c) => c + 1) as i}
+					{#each Array.from(Array(data.doorCount).keys()).map((c) => c + 1) as i (i)}
 						<button
 							type="button"
 							class="h-6.5 w-7 rounded border"

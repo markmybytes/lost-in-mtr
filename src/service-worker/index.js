@@ -3,6 +3,7 @@
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const sw = /** @type {ServiceWorkerGlobalScope} */ (/** @type {unknown} */ (self));
 
 import { build, files, version } from '$service-worker';

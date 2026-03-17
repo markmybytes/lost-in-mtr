@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { locale, t } from '$lib/i18n/translations';
+	import { getLocale } from '$lib/paraglide/runtime';
+	import * as m from '$lib/paraglide/messages';
 	import CaretDownFillIcon from '$lib/icons/CaretDownFillIcon.svelte';
 	import IosShareIcon from '$lib/icons/IosShareIcon.svelte';
 	import Spinner from '$lib/icons/Spinner.svelte';
@@ -17,13 +18,13 @@
 	});
 
 	let update = $state({
-		time: Fleet.lastUpdateTime()?.toLocaleString(locale.get()),
+		time: Fleet.lastUpdateTime()?.toLocaleString(getLocale()),
 		inprogress: false,
 		auto: Fleet.isAutoUpdate()
 	});
 
-	locale.subscribe((lc) => {
-		update.time = Fleet.lastUpdateTime()?.toLocaleString(lc);
+	$effect(() => {
+		update.time = Fleet.lastUpdateTime()?.toLocaleString(getLocale());
 	});
 
 	$effect(() => Fleet.setAutoUpdate(update.auto));
@@ -32,7 +33,7 @@
 <div class="flex flex-col gap-y-4">
 	<div class="flex items-center justify-between rounded bg-white p-2">
 		<div class="flex gap-x-2">
-			<h1 class="font-bold">{$t('common.version')}</h1>
+			<h1 class="font-bold">{m.app_version()}</h1>
 
 			<p>
 				{data.version ?? data.commitHash.slice(0, 8)}
@@ -41,22 +42,22 @@
 	</div>
 
 	<div class="flex flex-col gap-y-2 rounded bg-white p-2">
-		<h1 class="font-bold">{$t('setting.fleetData')}</h1>
+		<h1 class="font-bold">{m.fleet_data()}</h1>
 
 		<div class="flex">
-			<p class="w-1/2">{$t('setting.autoUpdate')}</p>
+			<p class="w-1/2">{m.app_auto_update()}</p>
 			<div class="w-1/2 text-end text-gray-400">
 				<label class="inline-flex cursor-pointer items-center">
 					<input type="checkbox" class="peer sr-only" bind:checked={update.auto} />
 					<div
-						class="peer peer-checked:bg-new-orleans-500 relative h-6 w-11 rounded-full bg-gray-200 peer-focus:ring-2 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white"
+						class="peer relative h-6 w-11 rounded-full bg-gray-200 peer-checked:bg-new-orleans-500 peer-focus:ring-2 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white"
 					></div>
 				</label>
 			</div>
 		</div>
 
 		<div>
-			<p class="w-1/2">{$t('setting.updateTime')}</p>
+			<p class="w-1/2">{m.update_time()}</p>
 			<p class="text-gray-400">
 				{#if update.time !== null}
 					{update.time}
@@ -66,17 +67,17 @@
 
 		<div class="flex justify-end">
 			<button
-				class="bg-new-orleans-500 rounded px-5 py-1"
+				class="rounded bg-new-orleans-500 px-5 py-1"
 				disabled={update.inprogress}
 				onclick={() => {
 					update.inprogress = true;
 					Fleet.get(true)
-						.then(() => (update.time = Fleet.lastUpdateTime()?.toLocaleString(locale.get())))
+						.then(() => (update.time = Fleet.lastUpdateTime()?.toLocaleString(getLocale())))
 						.finally(() => setTimeout(() => (update.inprogress = false), 200));
 				}}
 			>
 				{#if !update.inprogress}
-					{$t('setting.update')}
+					{m.app_update()}
 				{:else}
 					<Spinner class_="h-6 w-8 animate-spin fill-new-orleans-800 text-new-orleans-200"
 					></Spinner>
@@ -86,7 +87,7 @@
 	</div>
 
 	<div class="flex flex-col gap-y-2 rounded bg-white p-2">
-		<h1 class="font-bold">{$t('setting.pwaGuideTitle')}</h1>
+		<h1 class="font-bold">{m.help_pwa_guide()}</h1>
 
 		<div>
 			<div class="flex w-1/2 gap-x-2">
@@ -102,7 +103,7 @@
 			</div>
 
 			{#if pwaGuideShow.ios}
-				<p class="text-battleship-gray-800 text-sm" transition:slide={{ duration: 100 }}>
+				<p class="text-sm text-battleship-gray-800" transition:slide={{ duration: 100 }}>
 					在 Safai 中點擊
 					<span class="inline-block"><IosShareIcon></IosShareIcon></span>
 					按鈕，再點擊「加至主畫面」選項。
@@ -124,7 +125,7 @@
 			</div>
 
 			{#if pwaGuideShow.an}
-				<p class="text-battleship-gray-800 text-sm" transition:slide={{ duration: 100 }}>
+				<p class="text-sm text-battleship-gray-800" transition:slide={{ duration: 100 }}>
 					在 Chrome 中點擊
 					<span class="inline-block"><ThreeDotsVerticalIcon></ThreeDotsVerticalIcon></span>
 					按鈕，再點擊「新增至主畫面」或「安裝應用程式」選項。
@@ -136,7 +137,7 @@
 	<div class="flex flex-col gap-y-3 rounded bg-white p-2">
 		<div class="flex">
 			<p class="w-1/2">
-				{`${$t('setting.sourceCode')}${$t('common./')}${$t('setting.reportBugs')}`}
+				{`${m.help_source_code()}${m.slash()}${m.help_report_bugs()}`}
 			</p>
 			<a href="https://github.com/SuperDumbTM/lost-in-mtr" class="content-center font-mono"
 				>🔗 Github
@@ -144,7 +145,7 @@
 		</div>
 
 		<div class="flex">
-			<p class="w-1/2">{$t('setting.fleetDataSource')}</p>
+			<p class="w-1/2">{m.fleet_data_source()}</p>
 			<a href="https://hkrail.fandom.com/wiki/%E9%A6%96%E9%A0%81" class="content-center"
 				>🔗 香港鐵路大典
 			</a>

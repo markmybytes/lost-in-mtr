@@ -1,23 +1,24 @@
 <script>
 	import { base } from '$app/paths';
-	import { t } from '$lib/i18n/translations';
+	import * as m from '$lib/paraglide/messages';
 </script>
 
 <div class="flex h-full flex-col gap-y-4">
 	<div class="flex h-0 grow flex-col gap-y-2 overflow-y-auto rounded-lg bg-white/90 p-2">
 		<div>
-			<h2 class="mb-2 font-bold">{$t('qna.carDoorNumberQ')}</h2>
+			<h2 class="mb-2 font-bold">{m.faq_car_door_number_q()}</h2>
 
 			<p class="text-sm">
-				{@html $t('qna.carDoorNumberA')}
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+				{@html m.faq_car_door_number_a()}
 			</p>
 		</div>
 
 		<div>
-			<h2 class="mb-2 font-bold">{$t('qna.findCarDoorNumberQ')}</h2>
+			<h2 class="mb-2 font-bold">{m.faq_find_car_door_number_q()}</h2>
 			<ol class="flex list-decimal flex-col gap-y-3 pl-4 text-sm">
 				<li>
-					<p>{$t('qna.stickerNextToDoor')}</p>
+					<p>{m.faq_sticker_next_to_door()}</p>
 
 					<img src="{base}/images/c_train_door.webp" alt="" class="p-1" />
 
@@ -25,7 +26,7 @@
 				</li>
 
 				<li>
-					<p>{$t('qna.routeMap')}</p>
+					<p>{m.faq_route_map()}</p>
 
 					<img src="{base}/images/m_train_drm.webp" alt="" class="p-1" />
 
@@ -33,18 +34,18 @@
 				</li>
 
 				<li>
-					<p>{$t('qna.endAndLcd')}</p>
+					<p>{m.faq_end_and_lcd()}</p>
 
 					<img src="{base}/images/m_train_end.webp" alt="" class="p-1" />
 
 					<img src="{base}/images/c_train_end.webp" alt="" class="p-1" />
 					<p class="text-xs text-gray-400">
-						{$t('qna.lcdNumberHint')}
+						{m.faq_lcd_number_hint()}
 					</p>
 				</li>
 
 				<li>
-					<p>{$t('qna.tv')}</p>
+					<p>{m.faq_tv()}</p>
 
 					<img src="{base}/images/ikk_train_tv.webp" alt="" class="p-1" />
 
@@ -56,10 +57,10 @@
 		</div>
 
 		<div>
-			<h2 class="mb-2 font-bold">{$t('qna.noResultWrongResultQ')}</h2>
+			<h2 class="mb-2 font-bold">{m.faq_no_result_wrong_result_q()}</h2>
 
 			<p class="text-sm">
-				{$t('qna.noResultWrongResultA')}
+				{m.faq_no_result_wrong_result_a()}
 			</p>
 		</div>
 	</div>

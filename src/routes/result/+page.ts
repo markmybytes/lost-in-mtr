@@ -44,7 +44,7 @@ export const load: PageLoad = async ({ url }) => {
 
 	for (const [stockName, stocks] of Object.entries(fleets[params.referenceLine ?? params.line])) {
 		for (const stock of stocks) {
-			const cars = stock.split(/[-\+]+/);
+			const cars = stock.split(/[-+]+/);
 			if (cars.includes(params.vehicleNumber)) {
 				return {
 					stockName: stockName,

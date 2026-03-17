@@ -1,19 +1,18 @@
 # lost-in-mtr
-<a id="readme-top"></a>
 
+<a id="readme-top"></a>
 
 <!-- PROJECT SHIELDS -->
 <div align="center">
 
-  [![Tag][tag-shield]][tag-url]
-  [![Contributors][contributors-shield]][contributors-url]
-  [![Forks][forks-shield]][forks-url]
-  [![Stargazers][stars-shield]][stars-url]
-  [![Issues][issues-shield]][issues-url]
-  [![License][license-shield]][license-url]
-  
-</div>
+[![Tag][tag-shield]][tag-url]
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![License][license-shield]][license-url]
 
+</div>
 
 <!-- PROJECT LOGO -->
 <br />
@@ -33,8 +32,8 @@
   </p>
 </div>
 
-
 <!-- ABOUT THE PROJECT -->
+
 ## 簡介
 
 <p align="center">
@@ -48,14 +47,15 @@
 <p align="right">(<a href="#readme-top">回到最頂</a>)</p>
 
 ### 使用的第三方工具
+
 [<img src="https://img.shields.io/badge/bootstrap%20icons-7532fa?style=for-the-badge&logo=bootstrap&logoColor=white">](https://icons.getbootstrap.com/)
 [<img src="https://img.shields.io/badge/svelte-ff3e00?style=for-the-badge&logo=svelte&logoColor=white">](https://svelte.dev/)
 [<img src="https://img.shields.io/badge/tailwindcss-38bdf8?style=for-the-badge&logo=tailwindcss&logoColor=white">](https://tailwindcss.com/)
 
 <p align="right">(<a href="#readme-top">回到最頂</a>)</p>
 
-
 <!-- GETTING STARTED -->
+
 ## 開發
 
 ### 所需軟件
@@ -71,6 +71,7 @@ npm install
 ### 常用指令
 
 - Debug run
+
   ```sh
   npm run dev
   ```
@@ -82,8 +83,8 @@ npm install
 
 <p align="right">(<a href="#readme-top">回到最頂</a>)</p>
 
-
 <!-- USAGE EXAMPLES -->
+
 ## 使用
 
 ### 搜尋
@@ -93,20 +94,19 @@ npm install
 
 <img width="365" height="492" alt="image" src="https://github.com/user-attachments/assets/37f3eb5c-69ae-4c34-9a33-1bacc30e0ed4" alt="search result screenshot" />
 
-
 ### 搜尋結果
 
 搜尋結果設有兩種顯示模式。
 
-| 車廂佈局 | 幕門貼紙 |
-|---|---|
+| 車廂佈局                                                                                                      | 幕門貼紙                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | <img src="https://github.com/user-attachments/assets/905b735f-cc96-44a7-bdb8-878ef422d809" alt="Layout Mode"> | <img src="https://github.com/user-attachments/assets/18fd5b37-4b6a-4917-bcd9-7a93812af27b" alt="PSD Label Mode"> |
 
 <p align="right">(<a href="#readme-top">回到最頂</a>)</p>
 
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [tag-url]: https://github.com/markmybytes/lost-in-mtr/releases
 [tag-shield]: https://img.shields.io/github/v/tag/markmybytes/lost-in-mtr?style=for-the-badge&label=LATEST&color=%23B1B1B1
 [contributors-shield]: https://img.shields.io/github/contributors/markmybytes/lost-in-mtr.svg?style=for-the-badge
