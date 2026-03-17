@@ -1,0 +1,25 @@
+name: Lint & Format
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-and-format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          cache: 'npm'
+          node-version-file: 'package.json'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run lint and format checks
+        run: npm run lint
