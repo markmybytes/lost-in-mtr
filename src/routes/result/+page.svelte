@@ -94,7 +94,12 @@
 						style:background-color={data.lineColor}
 						style:color={textColor(data.lineColor)}
 					>
-						{m[`line_${data.params.line.toLowerCase()}`]?.() ?? data.params.line}
+						<!-- prettier-ignore -->
+						{
+							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+							// @ts-expect-error
+							m[`line_${data.params.line.toLowerCase()}`]?.() ?? data.params.line
+						}
 					</span>
 
 					<p class=" min-w-0 items-center truncate">
