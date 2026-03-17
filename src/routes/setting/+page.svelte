@@ -33,7 +33,7 @@
 <div class="flex flex-col gap-y-4">
 	<div class="flex items-center justify-between rounded bg-white p-2">
 		<div class="flex gap-x-2">
-			<h1 class="font-bold">{m.version()}</h1>
+			<h1 class="font-bold">{m.app_version()}</h1>
 
 			<p>
 				{data.version ?? data.commitHash.slice(0, 8)}
@@ -45,7 +45,7 @@
 		<h1 class="font-bold">{m.fleet_data()}</h1>
 
 		<div class="flex">
-			<p class="w-1/2">{m.auto_update()}</p>
+			<p class="w-1/2">{m.app_auto_update()}</p>
 			<div class="w-1/2 text-end text-gray-400">
 				<label class="inline-flex cursor-pointer items-center">
 					<input type="checkbox" class="peer sr-only" bind:checked={update.auto} />
@@ -77,7 +77,7 @@
 				}}
 			>
 				{#if !update.inprogress}
-					{m.update()}
+					{m.app_update()}
 				{:else}
 					<Spinner class_="h-6 w-8 animate-spin fill-new-orleans-800 text-new-orleans-200"
 					></Spinner>

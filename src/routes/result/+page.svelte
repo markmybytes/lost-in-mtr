@@ -66,10 +66,10 @@
 	});
 
 	const description = $derived.by(() => {
-		const dir = m.position_descr_direction({ name: destination });
-		const car = m.position_descr_car({ car: carNumber });
+		const dir = m.position_direction({ name: destination });
+		const car = m.position_car({ car: carNumber });
 		const doorPlatform = doorPosition?.platform ?? -1;
-		const door = doorPlatform > 0 ? m.position_descr_door({ door: doorPlatform }) : '';
+		const door = doorPlatform > 0 ? m.position_door({ door: doorPlatform }) : '';
 		return `${dir} | ${car}${door}`;
 	});
 
@@ -78,7 +78,7 @@
 			lines[data.params.line]['terminals'][direction]
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-expect-error
-				.map((s) => m[s]?.() ?? s)
+				.map((s) => m[`station_${s.toLowerCase()}`]?.() ?? s)
 				.join(m.slash())
 		);
 	}
@@ -94,7 +94,7 @@
 						style:background-color={data.lineColor}
 						style:color={textColor(data.lineColor)}
 					>
-						{m[data.params.line]?.() ?? data.params.line}
+						{m[`line_${data.params.line.toLowerCase()}`]?.() ?? data.params.line}
 					</span>
 
 					<p class=" min-w-0 items-center truncate">

@@ -120,7 +120,7 @@
 								style:background-color={lines[line].color}
 								style:color={textColor(lines[line].color)}
 							>
-								{m[line]?.() ?? line}
+								{m[`line_${line.toLowerCase()}`]?.() ?? line}
 							</button>
 						</div>
 
@@ -128,7 +128,7 @@
 							{`${m.to()} ${
 								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 								// @ts-expect-error
-								lines[line]['terminals'][direction].map((s) => m[s]?.() ?? s).join(m.slash())
+								lines[line]['terminals'][direction].map((s) => m[`station_${s.toLowerCase()}`]?.() ?? s).join(m.slash())
 							}`}
 						</p>
 					</div>
