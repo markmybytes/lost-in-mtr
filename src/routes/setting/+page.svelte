@@ -87,7 +87,7 @@
 	</div>
 
 	<div class="flex flex-col gap-y-2 rounded bg-white p-2">
-		<h1 class="font-bold">{m.pwa_guide_title()}</h1>
+		<h1 class="font-bold">{m.help_pwa_guide()}</h1>
 
 		<div>
 			<div class="flex w-1/2 gap-x-2">
@@ -137,7 +137,7 @@
 	<div class="flex flex-col gap-y-3 rounded bg-white p-2">
 		<div class="flex">
 			<p class="w-1/2">
-				{`${m.source_code()}${m.slash()}${m.report_bugs()}`}
+				{`${m.help_source_code()}${m.slash()}${m.help_report_bugs()}`}
 			</p>
 			<a href="https://github.com/SuperDumbTM/lost-in-mtr" class="content-center font-mono"
 				>🔗 Github
