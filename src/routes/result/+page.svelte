@@ -247,7 +247,7 @@
 		</div>
 
 		<div class="border-t border-gray-200 pt-3 pb-1">
-			<div class="flex flex-wrap justify-between text-sm">
+			<div class="flex flex-wrap items-center justify-between gap-2 text-sm">
 				<div>
 					<div class="inline-flex items-center gap-2">
 						<label for="switch-component-on" class="cursor-pointer text-sm text-slate-600">
@@ -276,11 +276,14 @@
 
 				<div class="flex gap-x-4">
 					<button
-						class="flex h-6 items-center gap-x-2 rounded bg-new-orleans-300 px-1 text-center text-gray-800"
+						class="flex h-6 max-w-24 items-center gap-x-2 rounded bg-new-orleans-300 px-1 text-center text-gray-800"
 						onclick={() => (form.inbound = !form.inbound)}
 					>
 						<ArrowLeftRightIcon width={13} height={13} />
-						{m.opposite_direction()}
+
+						<span class="truncate">
+							{m.opposite_direction()}
+						</span>
 					</button>
 
 					<button
