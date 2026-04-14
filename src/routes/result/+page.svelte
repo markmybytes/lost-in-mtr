@@ -10,7 +10,7 @@
 	import Door from '$lib/components/result/Door.svelte';
 	import type { PageProps } from './$types';
 	import { slide, fly } from 'svelte/transition';
-	import { calculateCarNumber, calculateDoorPosition, getAbsoluteCarNumber } from '$lib/utils/trainPosition';
+	import { calculateCarNumber, calculateDoorPosition, getAbsoluteCarNumber } from '$lib/utils/door';
 
 	let { data }: PageProps = $props();
 
