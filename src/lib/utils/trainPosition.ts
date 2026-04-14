@@ -53,7 +53,7 @@ export function calculateDoorPosition(
 	form: { door: { side: string | null; number: number | null }; inbound: boolean },
 	doorCount: number
 ): {
-	side: 'L' | 'R';
+	side: 'T' | 'B';
 	index: number;
 	platform: number;
 } | null {
@@ -72,14 +72,14 @@ export function calculateDoorPosition(
 	if (flippedSides) {
 		const index = form.door.number - 1;
 		return {
-			side: ['U', 'A'].includes(form.door.side) ? 'L' : 'R',
+			side: ['U', 'A'].includes(form.door.side) ? 'T' : 'B',
 			index: index,
 			platform: form.inbound ? index + 1 : doorCount - index
 		};
 	} else {
 		const index = doorCount - form.door.number;
 		return {
-			side: ['U', 'A'].includes(form.door.side) ? 'R' : 'L',
+			side: ['U', 'A'].includes(form.door.side) ? 'B' : 'T',
 			index: doorCount - form.door.number,
 			platform: form.inbound ? index + 1 : doorCount - index
 		};

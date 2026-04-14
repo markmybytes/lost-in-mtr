@@ -103,7 +103,7 @@
 							<div class="flex justify-around" class:flex-row-reverse={form.flip}>
 								{#each Array(data.doorCount).keys() as i (i)}
 									<Door
-										active={doorPosition?.side == 'L' && doorPosition.index == i}
+										active={doorPosition?.side == 'T' && doorPosition.index == i}
 										color={data.lineColor}
 									/>
 								{/each}
@@ -143,7 +143,7 @@
 							<div class="flex justify-around" class:flex-row-reverse={form.flip}>
 								{#each Array(data.doorCount).keys() as i (i)}
 									<Door
-										active={doorPosition?.side == 'R' && doorPosition.index == i}
+										active={doorPosition?.side == 'B' && doorPosition.index == i}
 										color={data.lineColor}
 									/>
 								{/each}
