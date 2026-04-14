@@ -23,7 +23,7 @@
 	/**
 	 * The absolute car number of the target vehicle, starting from 1 at the "up" side.
 	 */
-	const carNumberAbs = data.formation.indexOf(data.params.vehicleNumber) + 1;
+	const carNumberAbs = $derived(data.formation.indexOf(data.params.vehicleNumber) + 1);
 
 	/**
 	 * Adjusted car number based on direction.
