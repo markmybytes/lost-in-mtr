@@ -202,25 +202,37 @@
 					<div
 						class="relative flex h-72 items-center justify-center rounded-t-xl bg-[#e8e8e8] font-bold text-[#0e253a]"
 					>
-						<p>
+						<div>
 							<span class="text-[198px]">{carNumber}</span>
-							<span class="text-[168px]">-</span>
-							<span class="text-[148px]">{doorPosition?.platform ?? 'x'}</span>
-						</p>
+							{#if data.params.line != 'AEL'}
+								<span class="text-[168px]">-</span>
+								<span class="text-[148px]">{doorPosition?.platform ?? 'x'}</span>
+							{/if}
+						</div>
 					</div>
 					<div
 						class="flex flex-col items-center justify-center rounded-b-xl bg-[#0e253a] py-3 text-[#e8e8e8]"
 					>
-						<p class="flex w-full text-5xl">
-							<span class="w-2/5 text-end">車廂</span>
-							<span class="w-1/5 text-center">—</span>
-							<span class="w-2/5">車門</span>
-						</p>
-						<p class="flex w-full justify-center text-4xl">
-							<span class="w-2/5 text-end">Car</span>
-							<span class="w-1/5 text-center">—</span>
-							<span class="w-2/5">Door</span>
-						</p>
+						{#if data.params.line != 'AEL'}
+							<p class="flex w-full text-5xl">
+								<span class="w-2/5 text-end">車廂</span>
+								<span class="w-1/5 text-center">—</span>
+								<span class="w-2/5">車門</span>
+							</p>
+							<p class="flex w-full justify-center text-4xl">
+								<span class="w-2/5 text-end">Car</span>
+
+								<span class="w-1/5 text-center">—</span>
+								<span class="w-2/5">Door</span>
+							</p>
+						{:else}
+							<p class="flex w-full text-5xl">
+								<span class="w-full text-center">車廂</span>
+							</p>
+							<p class="flex w-full justify-center text-4xl">
+								<span class="w-full text-center">Car</span>
+							</p>
+						{/if}
 					</div>
 				</div>
 			{/if}
