@@ -29,9 +29,13 @@
 	 * Adjusted car number based on direction.
 	 */
 	const carNumber = $derived.by(() => {
-		return form.inbound
-			? carNumberAbs
-			: ((data.formation.length - carNumberAbs) % data.formation.length) + 1;
+		const offset = data.params.line == 'AEL' && !form.inbound ? -1 : 0;
+
+		return (
+			(form.inbound
+				? carNumberAbs
+				: ((data.formation.length - carNumberAbs) % data.formation.length) + 1) + offset
+		);
 	});
 
 	const destination = $derived.by(() => {
