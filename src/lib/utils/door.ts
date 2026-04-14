@@ -62,7 +62,7 @@ export function calculateDoorPosition(
 	}
 
 	// Some train stocks have reversed door side mapping in certain carriages.
-	// The default positioning assumes side U/A maps to right (R) and D/B maps to left (L) when facing the "up" direction.
+	// The default positioning assumes side U/A maps to top (T) and D/B maps to bottom (B) when facing the "up" direction.
 	const flippedSides =
 		!['AEL', 'DRL', 'EAL', 'TCL', 'TML'].includes(line) &&
 		((stockName === '現代化列車' && [1, 4, 7].includes(carNumberAbs)) ||
