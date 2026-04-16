@@ -14,11 +14,21 @@
 
 	let { data }: PageProps = $props();
 
-	const form = $state({
-		inbound: data.params.inbound,
-		door: data.params.door,
+	const form = $state<{
+		inbound: boolean;
+		door: { side: 'A' | 'B' | 'U' | 'D' | null; number: number | null };
+		flip: boolean;
+		showSticker: boolean;
+	}>({
+		inbound: true,
+		door: { side: null, number: null },
 		flip: false,
 		showSticker: false
+	});
+
+	$effect(() => {
+		form.inbound = data.params.inbound;
+		form.door = data.params.door;
 	});
 
 	/**
