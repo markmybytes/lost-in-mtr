@@ -10,64 +10,44 @@
 	import Door from '$lib/components/result/Door.svelte';
 	import type { PageProps } from './$types';
 	import { slide, fly } from 'svelte/transition';
+	import { calculateCarNumber, calculateDoorPosition, getAbsoluteCarNumber } from '$lib/utils/door';
 
 	let { data }: PageProps = $props();
 
-	const form = $state({
-		inbound: data.params.inbound,
-		door: data.params.door,
+	const form = $state<{
+		inbound: boolean;
+		door: { side: 'A' | 'B' | 'U' | 'D' | null; number: number | null };
+		flip: boolean;
+		showSticker: boolean;
+	}>({
+		inbound: true,
+		door: { side: null, number: null },
 		flip: false,
 		showSticker: false
+	});
+
+	$effect(() => {
+		form.inbound = data.params.inbound;
+		form.door = data.params.door;
 	});
 
 	/**
 	 * The absolute car number of the target vehicle, starting from 1 at the "up" side.
 	 */
-	const carNumberAbs = $derived(data.formation.indexOf(data.params.vehicleNumber) + 1);
+	const carNumberAbs = $derived(getAbsoluteCarNumber(data.params.vehicleNumber, data.formation));
 
 	/**
 	 * Adjusted car number based on direction.
 	 */
-	const carNumber = $derived.by(() => {
-		const offset = data.params.line == 'AEL' && !form.inbound ? -1 : 0;
+	const carNumber = $derived(
+		calculateCarNumber(data.params.line, form.inbound, data.params.vehicleNumber, data.formation)
+	);
 
-		return (
-			(form.inbound
-				? carNumberAbs
-				: ((data.formation.length - carNumberAbs) % data.formation.length) + 1) + offset
-		);
-	});
+	const destination = $derived.by(() => terminal(form.inbound ? 'UP' : 'DOWN'));
 
-	const destination = $derived.by(() => {
-		return terminal(form.inbound ? 'UP' : 'DOWN');
-	});
-
-	const doorPosition = $derived.by(() => {
-		if (form.door.number === null || form.door.side === null || form.door.number > data.doorCount) {
-			return null;
-		}
-
-		if (
-			!['AEL', 'DRL', 'EAL', 'TCL', 'TML'].includes(data.params.line) &&
-			((data.stockName == '現代化列車' && [1, 4, 7].includes(carNumberAbs)) ||
-				(data.stockName == '南港島綫中國長春製列車' && carNumberAbs == 3) ||
-				(data.stockName != '現代化列車' && [1, 2, 4, 6].includes(carNumberAbs)))
-		) {
-			const index = form.door.number - 1;
-			return {
-				side: ['U', 'A'].includes(form.door.side) ? 'L' : 'R',
-				index: index,
-				platform: form.inbound ? index + 1 : data.doorCount - index
-			};
-		} else {
-			const index = data.doorCount - form.door.number;
-			return {
-				side: ['U', 'A'].includes(form.door.side) ? 'R' : 'L',
-				index: data.doorCount - form.door.number,
-				platform: form.inbound ? index + 1 : data.doorCount - index
-			};
-		}
-	});
+	const doorPosition = $derived(
+		calculateDoorPosition(data.params.line, data.stockName, carNumberAbs, form, data.doorCount)
+	);
 
 	const description = $derived.by(() => {
 		const dir = m.position_direction({ name: destination });
@@ -133,7 +113,7 @@
 							<div class="flex justify-around" class:flex-row-reverse={form.flip}>
 								{#each Array(data.doorCount).keys() as i (i)}
 									<Door
-										active={doorPosition?.side == 'L' && doorPosition.index == i}
+										active={doorPosition?.side == 'T' && doorPosition.index == i}
 										color={data.lineColor}
 									/>
 								{/each}
@@ -173,7 +153,7 @@
 							<div class="flex justify-around" class:flex-row-reverse={form.flip}>
 								{#each Array(data.doorCount).keys() as i (i)}
 									<Door
-										active={doorPosition?.side == 'R' && doorPosition.index == i}
+										active={doorPosition?.side == 'B' && doorPosition.index == i}
 										color={data.lineColor}
 									/>
 								{/each}

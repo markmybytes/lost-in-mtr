@@ -38,24 +38,33 @@ export namespace Fleet {
 		let data = localStorage.getItem('fleets');
 
 		if (nocache || data === null || (isAutoUpdate() && shouldCheckUpdate())) {
-			await hasUpdate().then((result) => {
-				if (!nocache && !result.has && data !== null) {
-					return;
+			try {
+				const updateInfo = await hasUpdate();
+
+				// If no update needed and we have cached data, return it
+				if (!nocache && !updateInfo.has && data !== null) {
+					return JSON.parse(data);
 				}
 
-				localStorage.setItem('fleetsHash', result.newHash);
+				// Fetch and cache new data
+				localStorage.setItem('fleetsHash', updateInfo.newHash);
 
-				return fetch(
+				const response = await fetch(
 					'https://raw.githubusercontent.com/markmybytes/lost-in-mtr/refs/heads/data/fleet.min.json',
 					{ cache: 'no-store' }
-				)
-					.then((response) => response.text())
-					.then((raw) => {
-						localStorage.setItem('fleets', raw);
-						localStorage.setItem('fleetsTimestamp', Date.now().toString());
-						data = raw;
-					});
-			});
+				);
+				const raw = await response.text();
+				localStorage.setItem('fleets', raw);
+				localStorage.setItem('fleetsTimestamp', Date.now().toString());
+				data = raw;
+			} catch (error) {
+				console.error('Failed to fetch fleet data:', error);
+				// Return stale cached data if available
+				if (data !== null) {
+					return JSON.parse(data);
+				}
+				return null;
+			}
 		}
 
 		if (data === null) {
