@@ -18,7 +18,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/markmybytes/lost-in-mtr">
-    <img src="https://github.com/user-attachments/assets/43b3154a-968a-499b-bf7a-a6ec325429b5" alt="迷失港鐵標誌" width="80" height="80">
+    <img src="https://github.com/markmybytes/lost-in-mtr/blob/main/static/favicon.svg" alt="迷失港鐵標誌" width="80" height="80">
   </a>
 
   <h3 align="center">迷失港鐵</h3>
