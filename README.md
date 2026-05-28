@@ -71,7 +71,7 @@
 
 ### 所需軟件
 
-- [Node.js 24](https://nodejs.org/en/download/package-manager)
+- Volta
 
 ### 安裝 Dependency
 
