@@ -39,5 +39,8 @@
 		"@inlang/paraglide-js": "^2.14.0",
 		"svelte": "^5.51.0",
 		"tailwindcss": "^4.1.18"
+	},
+	"volta": {
+		"node": "24.16.0"
 	}
 }
